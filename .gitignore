@@ -1,0 +1,45 @@
+# Dependencias y paquetes
+node_modules/
+package-lock.json
+
+# Entorno y credenciales sensibles (claves, passwords, tokens)
+.env
+.env.local
+.env.*.local
+*.env
+config.local.json
+secrets/
+credentials.json
+*.pem
+*.key
+
+# Archivos de base de datos local y volcados sensibles
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.bak
+
+# Documentos reales escaneados o datos privados de usuarios
+/uploads/
+/documentos_privados/
+/pdfs/
+*.pdf
+*.xlsx
+*.xls
+*.csv
+
+# Logs y cachés
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos del sistema operativo e IDEs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.user
