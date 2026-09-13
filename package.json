@@ -1,0 +1,16 @@
+{
+  "name": "sistema-gestion-ugel08",
+  "version": "1.0.1",
+  "description": "Sistema de Gestión, Consulta y Localización de Resoluciones Directorales - UGEL 08 Cañete",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "ugel08",
+    "resoluciones",
+    "gobierno"
+  ],
+  "author": "UGEL 08",
+  "license": "ISC"
+}

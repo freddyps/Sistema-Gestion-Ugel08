@@ -4,6 +4,15 @@ Registro de cambios y versiones del **Sistema de Gestión y Localización de Res
 
 ---
 
+## [v1.0.1] - 2026-09-13
+### ⚡ Servidor de Ejecución y Enrutamiento Limpio
+- **Servidor Web Incorporado (`server.js`)**:
+  - Implementación de servidor local con Node.js en el puerto 3000.
+  - Soporte para URLs limpias (permite acceder tanto a `/dashboard` como a `/dashboard.html` sin error 404).
+  - Configuración de `package.json` con comando directo `npm start`.
+
+---
+
 ## [v1.0.0] - 2026-09-13
 ### 🚀 Lanzamiento Inicial
 - **Estructura y Módulos Principales**:
