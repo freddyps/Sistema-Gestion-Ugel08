@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Documentos Digitales - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  
+  <!-- Sidebar Oficial (6 módulos) -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Documentos Digitales y Visor Integrado</h2>
+          <p class="topbar-subtitle">Visualización de expedientes PDF oficiales con folios autenticados</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button onclick="openPdfViewerModal('RD-3874-2026', 8, '2.4 MB')" class="btn btn-primary btn--rounded">
+          📄 Abrir Visor Completo
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body: Split View (Listado + Previsualizador) -->
+    <div class="page-body">
+      
+      <div class="grid-12">
+        
+        <!-- Left Side: List of Digital Documents (Col 5) -->
+        <div class="col-5">
+          <div class="card card--p">
+            <div class="card-header">
+              <h3 class="card-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                Catálogo de Documentos Digitalizados
+              </h3>
+              <span class="badge badge-blue" id="docCountBadge">Cargando...</span>
+            </div>
+            
+            <p class="text-xs" style="color: var(--slate-500); margin: 0 0 16px;">
+              Seleccione cualquier resolución para previsualizar sus folios en el visor interactivo lateral:
+            </p>
+
+            <div class="space-y-2" id="docsCatalogList" style="display: flex; flex-direction: column; gap: 8px;">
+              <!-- Renderizado dinámico -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Interactive Live PDF Document Viewer (Col 7) -->
+        <div class="col-7">
+          <div class="split-viewer-wrap">
+            
+            <!-- Viewer Top Bar -->
+            <div class="split-viewer-topbar">
+              <div class="flex-center gap-3">
+                <div class="pdf-icon-mini">PDF</div>
+                <div>
+                  <h4 style="font-size: 14px; font-weight: 700; color: white; margin: 0; font-family: var(--font-display);" id="liveDocTitle">
+                    RD-3874-2026.pdf
+                  </h4>
+                  <span class="text-xs" style="color: var(--slate-400);" id="liveDocMeta">
+                    8 páginas • 2.4 MB • Autenticado
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex-center gap-2">
+                <button onclick="openModalFromCurrentLive()" class="btn btn-primary btn--xs">
+                  Pantalla Completa ⛶
+                </button>
+              </div>
+            </div>
+
+            <!-- In-Page Viewer Canvas -->
+            <div class="split-viewer-canvas">
+              <div id="liveSheetCanvas" class="split-viewer-sheet" style="font-family: 'Times New Roman', serif;">
+                <!-- Contenido de la página renderizado dinámicamente -->
+              </div>
+            </div>
+
+            <!-- Viewer Bottom Toolbar Controls -->
+            <div class="split-viewer-footer">
+              <div class="flex-center gap-2">
+                <button onclick="navLivePage(-1)" class="btn btn-ghost btn--xs">◀ Anterior</button>
+                <span class="page-indicator" id="livePageIndicator">Página 1 de 8</span>
+                <button onclick="navLivePage(1)" class="btn btn-ghost btn--xs">Siguiente ▶</button>
+              </div>
+
+              <div class="flex-center gap-2">
+                <button onclick="showToast('Descargando archivo oficial...', 'success')" class="btn btn-ghost btn--xs">
+                  ⬇ Descargar
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let liveState = {
+    numero_rd: "RD-3874-2026",
+    nombre_archivo: "RD-3874-2026.pdf",
+    totalPaginas: 8,
+    tamanio: "2.4 MB",
+    currentPage: 1,
+    asunto: "Nombramiento docente"
+  };
+
+  let resolucionesConPdf = [];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("documentos");
+
+    const all = window.resolutionService.getAll();
+    resolucionesConPdf = all.filter(r => r.tiene_documento);
+
+    document.getElementById("docCountBadge").innerText = `${resolucionesConPdf.length} archivos disponibles`;
+
+    renderCatalog();
+    renderLivePage(1);
+  });
+
+  function renderCatalog() {
+    const container = document.getElementById("docsCatalogList");
+
+    container.innerHTML = resolucionesConPdf.map((r, index) => {
+      const isActive = r.numero_rd === liveState.numero_rd;
+
+      return `
+        <div onclick="selectDocumentToPreview('${r.numero_rd}', '${r.documento.nombre_archivo}', ${r.documento.numero_paginas}, '${r.documento.tamanio}', '${r.asunto}', this)"
+             class="doc-row ${isActive ? 'active' : ''}">
+          <div class="flex-center gap-3">
+            <div class="doc-icon" style="width: 32px; height: 32px; font-size: 10px;">PDF</div>
+            <div>
+              <h4 style="font-size: 12px; font-weight: 700; color: var(--slate-900); margin: 0;">${r.numero_rd}</h4>
+              <p style="font-size: 11px; color: var(--slate-500); margin: 2px 0 0;">${r.documento.numero_paginas} pág. • ${r.documento.tamanio} • ${r.administrado_nombre}</p>
+            </div>
+          </div>
+          <span class="text-xs ${isActive ? 'badge badge-blue' : ''}" style="${isActive ? '' : 'color: var(--slate-400);'}">
+            ${isActive ? 'Viendo ▶' : 'Ver &rarr;'}
+          </span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function selectDocumentToPreview(numero_rd, nombre_archivo, totalPaginas, tamanio, asunto, element) {
+    liveState.numero_rd = numero_rd;
+    liveState.nombre_archivo = nombre_archivo;
+    liveState.totalPaginas = totalPaginas;
+    liveState.tamanio = tamanio;
+    liveState.asunto = asunto;
+    liveState.currentPage = 1;
+
+    document.querySelectorAll(".doc-row").forEach(el => {
+      el.className = "doc-row";
+      const badge = el.querySelector("span:last-child");
+      if (badge) {
+        badge.className = "text-xs";
+        badge.style.color = "var(--slate-400)";
+        badge.innerText = "Ver →";
+      }
+    });
+
+    if (element) {
+      element.className = "doc-row active";
+      const badge = element.querySelector("span:last-child");
+      if (badge) {
+        badge.className = "text-xs badge badge-blue";
+        badge.style.color = "";
+        badge.innerText = "Viendo ▶";
+      }
+    }
+
+    document.getElementById("liveDocTitle").innerText = nombre_archivo;
+    document.getElementById("liveDocMeta").innerText = `${totalPaginas} páginas • ${tamanio} • Autenticado`;
+
+    renderLivePage(1);
+    showToast(`Cargando en visor: ${numero_rd}`, "info");
+  }
+
+  function renderLivePage(page) {
+    liveState.currentPage = page;
+    document.getElementById("livePageIndicator").innerText = `Página ${page} de ${liveState.totalPaginas}`;
+    const canvas = document.getElementById("liveSheetCanvas");
+
+    canvas.innerHTML = `
+      <div style="border-bottom: 2px solid var(--primary); padding-bottom: 12px; margin-bottom: 16px; text-align: center;">
+        <h5 style="font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin: 0;">REPÚBLICA DEL PERÚ</h5>
+        <h6 style="font-size: 11px; font-weight: 700; color: var(--slate-700); margin: 2px 0;">DRE LIMA PROVINCIAS</h6>
+        <h4 style="font-size: 13px; font-weight: 900; color: #1e3a8a; margin: 2px 0;">UGEL N° 08 - CAÑETE</h4>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 16px;">
+        <h3 style="font-size: 15px; font-weight: 900; color: var(--slate-900); margin: 0;">
+          RESOLUCIÓN DIRECTORAL N.º ${liveState.numero_rd.replace(/[^\d-]/g, '')}
+        </h3>
+        <p style="font-size: 11px; font-style: italic; color: var(--slate-500); margin: 2px 0;">
+          San Vicente de Cañete • Folio N° ${page} de ${liveState.totalPaginas}
+        </p>
+      </div>
+
+      <div style="font-size: 12px; line-height: 1.7; text-align: justify; color: var(--slate-800); flex: 1;">
+        <p><strong>VISTO:</strong> El expediente administrativo de la Resolución Directoral ${liveState.numero_rd}, adjunto en ${liveState.totalPaginas} folios útiles debidamente foliados;</p>
+        <p><strong>CONSIDERANDO:</strong></p>
+        <p>Que, de conformidad con la Ley General de Educación N° 28044 y la Ley de Reforma Magisterial N° 29944;</p>
+        <p>Que, mediante trámite documentario se ha evaluado el petitorio correspondiente al asunto: <em>"${liveState.asunto}"</em>;</p>
+        <p style="text-align: center; font-weight: bold; margin: 12px 0;">SE RESUELVE:</p>
+        <p><strong>ARTÍCULO 1°.- APROBAR</strong> lo dispuesto en el expediente y antecedentes de la Resolución Directoral ${liveState.numero_rd}.</p>
+        <p><strong>ARTÍCULO 2°.- CUSTODIAR</strong> el legajo físico original en el Archivo Institucional de la UGEL N° 08 Cañete conforme a ley.</p>
+      </div>
+
+      <div style="margin-top: 32px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--slate-300); padding-top: 12px; font-family: var(--font-base); font-size: 10px;">
+        <div>Folio ${page} / ${liveState.totalPaginas}<br><span style="color: var(--slate-500);">Documento Autenticado</span></div>
+        <div style="text-align: center; border-top: 1px solid var(--slate-800); width: 160px; padding-top: 2px;">
+          <strong>DIRECCIÓN GENERAL</strong><br>UGEL 08 Cañete
+        </div>
+      </div>
+    `;
+  }
+
+  function navLivePage(delta) {
+    const next = liveState.currentPage + delta;
+    if (next >= 1 && next <= liveState.totalPaginas) {
+      renderLivePage(next);
+    }
+  }
+
+  function openModalFromCurrentLive() {
+    openPdfViewerModal(liveState.numero_rd, liveState.totalPaginas, liveState.tamanio, liveState.nombre_archivo);
+  }
+</script>
+</body>
+</html>

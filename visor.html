@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor de Documentos Oficiales - UGEL 08 Cañete</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-900 text-white font-sans antialiased h-screen flex flex-col overflow-hidden">
+
+  <!-- Top Header Bar -->
+  <header class="h-16 bg-slate-950 border-b border-slate-800 px-6 flex items-center justify-between shrink-0 shadow-md">
+    <div class="flex items-center gap-4">
+      <a href="documentos.html" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+        &larr; Volver
+      </a>
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center justify-center text-red-400 font-bold text-xs">
+          PDF
+        </div>
+        <div>
+          <h1 class="text-sm md:text-base font-bold text-white font-['Outfit']" id="vDocTitle">R.D. N.º 154-2022.pdf</h1>
+          <p class="text-xs text-slate-400">18 páginas • 4.8 MB • UGEL 08 Cañete</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button onclick="showToast('Documento impreso conforme a ley', 'info'); window.print();" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        Imprimir
+      </button>
+      <button onclick="showToast('Descargando archivo oficial...', 'success')" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Descargar
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewer Body: Sidebar Thumbnails + Big Document Sheet -->
+  <div class="flex-1 flex overflow-hidden bg-slate-800">
+    
+    <!-- Left Thumbnails Sidebar (1..18) -->
+    <aside class="w-60 bg-slate-950 border-r border-slate-800 overflow-y-auto p-4 flex flex-col gap-3 shrink-0 hidden md:flex" id="vThumbnailsContainer">
+      <!-- Rendered via JS -->
+    </aside>
+
+    <!-- Center Document Canvas Viewport -->
+    <main class="flex-1 overflow-y-auto p-6 md:p-12 flex justify-center items-start bg-slate-800/90">
+      <div id="vDocumentSheet" class="w-full max-w-3xl min-h-[1050px] bg-white text-slate-900 shadow-2xl rounded-sm p-12 md:p-16 flex flex-col relative transition-transform origin-top">
+        <!-- Rendered via JS -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Bottom Toolbar Controls -->
+  <footer class="h-14 bg-slate-950 border-t border-slate-800 px-6 flex items-center justify-between text-white shrink-0 text-sm">
+    <div class="flex items-center gap-2">
+      <button onclick="changeVPage(-1)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-semibold transition">
+        ◀ Anterior
+      </button>
+      <span class="px-3 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs font-bold text-blue-400" id="vPageIndicator">
+        Página 1 de 18
+      </span>
+      <button onclick="changeVPage(1)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-semibold transition">
+        Siguiente ▶
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button onclick="zoomV(-15)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-semibold transition">
+        Zoom −
+      </button>
+      <span class="text-xs font-bold text-slate-300 w-12 text-center" id="vZoomIndicator">100%</span>
+      <button onclick="zoomV(15)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-xs font-semibold transition">
+        Zoom +
+      </button>
+      <button onclick="resetZoomV()" class="px-3 py-1.5 bg-blue-600/30 hover:bg-blue-600/50 border border-blue-500/40 text-blue-300 rounded-lg text-xs font-semibold transition">
+        Ajustar Pantalla
+      </button>
+    </div>
+  </footer>
+
+  <script src="js/mockData.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let vState = {
+      currentPage: 1,
+      totalPages: 18,
+      zoom: 100,
+      docName: 'R.D. N.º 154-2022.pdf'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const docParam = urlParams.get('doc');
+      if (docParam) {
+        vState.docName = docParam;
+        document.getElementById('vDocTitle').innerText = docParam;
+      }
+      renderVThumbnails(vState.totalPages);
+      renderVPage(1);
+    });
+
+    function renderVThumbnails(count) {
+      const container = document.getElementById('vThumbnailsContainer');
+      container.innerHTML = Array.from({ length: count }, (_, i) => {
+        const p = i + 1;
+        return `
+          <div onclick="renderVPage(${p})" id="vthumb-${p}" class="cursor-pointer group flex flex-col items-center gap-1.5 p-2 rounded-lg transition ${p === 1 ? 'bg-blue-600/20 border border-blue-500' : 'bg-slate-900 border border-slate-800 hover:border-slate-600'}">
+            <div class="w-32 h-44 bg-white rounded shadow text-[3px] text-slate-400 p-2.5 overflow-hidden flex flex-col justify-between pointer-events-none">
+              <div>
+                <div class="h-2 bg-slate-300 rounded w-full mb-1"></div>
+                <div class="h-1 bg-slate-200 rounded w-3/4 mb-1"></div>
+                <div class="h-1 bg-slate-200 rounded w-5/6 mb-2"></div>
+                <div class="h-12 bg-slate-50 border border-slate-200 p-1 text-[3px] text-slate-600">
+                  RESOLUCIÓN DIRECTORAL UGEL 08 CAÑETE - FOLIO ${p}
+                </div>
+              </div>
+              <div class="flex justify-between items-center text-[3.5px] text-slate-400 pt-1 border-t border-slate-100 font-bold">
+                <span>Pág ${p}</span>
+                <div class="w-3.5 h-3.5 rounded-full bg-blue-100"></div>
+              </div>
+            </div>
+            <span class="text-xs font-semibold text-slate-400 group-hover:text-white">Página ${p}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderVPage(pageNum) {
+      vState.currentPage = pageNum;
+      const sheet = document.getElementById('vDocumentSheet');
+      const indicator = document.getElementById('vPageIndicator');
+      if (indicator) indicator.innerText = `Página ${pageNum} de ${vState.totalPages}`;
+
+      document.querySelectorAll('[id^="vthumb-"]').forEach(el => {
+        el.className = 'cursor-pointer group flex flex-col items-center gap-1.5 p-2 rounded-lg transition bg-slate-900 border border-slate-800 hover:border-slate-600';
+      });
+      const active = document.getElementById(`vthumb-${pageNum}`);
+      if (active) {
+        active.className = 'cursor-pointer group flex flex-col items-center gap-1.5 p-2 rounded-lg transition bg-blue-600/20 border border-blue-500';
+        active.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+
+      if (!sheet) return;
+
+      if (pageNum === 1) {
+        sheet.innerHTML = `
+          <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-center">
+            <div>
+              <h2 class="text-xs font-black tracking-widest text-slate-900 uppercase">REPÚBLICA DEL PERÚ</h2>
+              <h3 class="text-sm font-bold text-slate-700">GOBIERNO REGIONAL DE LIMA - DRELP</h3>
+              <h4 class="text-base font-extrabold text-blue-900 font-['Outfit']">UNIDAD DE GESTIÓN EDUCATIVA LOCAL N° 08 - CAÑETE</h4>
+            </div>
+            <img src="assets/logo-ugel08.svg" class="w-16 h-16" alt="Sello UGEL 08">
+          </div>
+
+          <div class="text-center my-4 pb-4 border-b border-slate-200">
+            <h1 class="text-2xl font-black text-slate-900 font-serif tracking-wide">
+              RESOLUCIÓN DIRECTORAL N.º 0154 - 2022 - UGEL N° 08
+            </h1>
+            <p class="text-sm italic text-slate-600 mt-1">San Vicente de Cañete, 14 de Junio de 2022</p>
+          </div>
+
+          <div class="space-y-4 text-justify font-serif text-slate-800 text-base leading-relaxed flex-1">
+            <p><strong>VISTO:</strong> El Expediente N° 08420-2022-UGEL08, el Informe Escalafonario N° 012-2022, el Acta de Adjudicación de fecha 02 de junio de 2022, y demás documentos sustentatorios adjuntos en un total de 18 folios útiles;</p>
+            
+            <p><strong>CONSIDERANDO:</strong></p>
+            <p>Que, de conformidad con lo dispuesto en la Ley General de Educación N° 28044, la Ley de Reforma Magisterial N° 29944 y su Reglamento aprobado por Decreto Supremo N° 004-2013-ED;</p>
+            <p>Que, mediante solicitud presentada con Registro SISGEDO N° 45892, el docente <strong>JUAN PÉREZ RAMOS</strong>, identificado con DNI N° 42891044, solicita su reasignación por interés personal en la plaza de Profesor del nivel secundario en la especialidad de Matemática;</p>
+            <p>Que, la Comisión de Reasignación Docente de la Unidad de Gestión Educativa Local N° 08 Cañete, mediante Acta Final N° 08-2022, ha determinado que el recurrente cumple estrictamente con los requisitos de ley y el puntaje necesario en el cuadro de méritos respectivo;</p>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-300 flex justify-between items-end">
+            <div class="text-xs text-slate-500 font-sans">
+              Folio N° 01 / 18<br>
+              Expediente: EXP-2022-08420<br>
+              Custodia: Archivo Central - Caja 18
+            </div>
+            <div class="text-center font-sans border-t border-slate-800 pt-2 px-6">
+              <p class="text-xs font-bold text-slate-900">DIRECCIÓN GENERAL</p>
+              <p class="text-[11px] text-slate-600">UGEL N° 08 - CAÑETE</p>
+              <p class="text-[10px] text-slate-400 font-mono">Firma Digital Verificada</p>
+            </div>
+          </div>
+        `;
+      } else if (pageNum === vState.totalPages) {
+        sheet.innerHTML = `
+          <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-center">
+            <div>
+              <h2 class="text-xs font-black tracking-widest text-slate-900 uppercase">REPÚBLICA DEL PERÚ</h2>
+              <h4 class="text-base font-extrabold text-blue-900 font-['Outfit']">RESOLUCIÓN DIRECTORAL N.º 0154 - 2022</h4>
+              <span class="text-xs font-semibold text-slate-500">DISPOSICIONES FINALES Y NOTIFICACIÓN</span>
+            </div>
+            <img src="assets/logo-ugel08.svg" class="w-14 h-14" alt="Sello UGEL 08">
+          </div>
+
+          <div class="space-y-4 text-justify font-serif text-slate-800 text-base leading-relaxed flex-1">
+            <p class="text-center font-bold text-lg text-slate-900">SE RESUELVE:</p>
+            <p><strong>ARTÍCULO 1°.- APROBAR</strong> la reasignación por la causal de interés personal a favor del docente <strong>JUAN PÉREZ RAMOS</strong>, en la I.E. CNI 20066 del distrito de San Luis, provincia de Cañete, con efectividad al periodo lectivo correspondiente.</p>
+            <p><strong>ARTÍCULO 2°.- DISPONER</strong> que el Área de Trámite Documentario y Archivo Central de la UGEL 08 Cañete proceda con la custodia física del legajo en el <strong>Ambiente N° 1, Estante E-03, Caja 18</strong>.</p>
+            <p><strong>ARTÍCULO 3°.- NOTIFICAR</strong> la presente resolución al administrado e instancias de gestión correspondientes de acuerdo a ley.</p>
+
+            <div class="mt-6 bg-slate-50 border border-slate-300 rounded-lg p-4 font-sans text-xs text-slate-700">
+              <p class="font-bold text-slate-900 mb-1">CONSTANCIA DE FEDATEADO Y DIGITALIZACIÓN:</p>
+              <p>Documento matriz microfilmado y custodiado conforme al marco de modernización de gestión documental de la UGEL 08 Cañete.</p>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-300 flex justify-between items-end">
+            <div class="text-xs text-slate-500 font-sans">
+              Folio N° ${pageNum} / 18<br>
+              Código de Verificación: FED-UGEL08-${pageNum}92
+            </div>
+            <div class="text-center font-sans border-t border-slate-800 pt-2 px-6">
+              <p class="text-xs font-bold text-slate-900">LIC. MARCELINO QUISPE</p>
+              <p class="text-[11px] text-slate-600">DIRECTOR DEL PROGRAMA SECTORIAL III</p>
+              <p class="text-[10px] text-slate-400">UGEL N° 08 - CAÑETE</p>
+            </div>
+          </div>
+        `;
+      } else {
+        sheet.innerHTML = `
+          <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-center">
+            <div>
+              <h2 class="text-xs font-black tracking-widest text-slate-900 uppercase">REPÚBLICA DEL PERÚ</h2>
+              <h4 class="text-sm font-bold text-blue-900">ANTECEDENTES TÉCNICOS Y SUSTENTO ESCALAFONARIO</h4>
+            </div>
+            <span class="text-xs font-bold bg-slate-100 text-slate-700 px-3 py-1 rounded">Folio ${pageNum}</span>
+          </div>
+
+          <div class="space-y-4 text-justify font-serif text-slate-800 text-base leading-relaxed flex-1">
+            <h3 class="font-bold text-base text-slate-900 font-sans border-b border-slate-200 pb-2">
+              EVALUACIÓN Y REVISIÓN DE ANTECEDENTES (FOLIO ${pageNum})
+            </h3>
+            
+            <p>Continuación de los antecedentes que forman parte integrante del expediente resolutivo de la UGEL N° 08 Cañete:</p>
+
+            <div class="my-4 border border-slate-300 rounded overflow-hidden font-sans text-xs">
+              <table class="w-full text-left">
+                <thead class="bg-slate-100 border-b border-slate-300 text-slate-700 font-bold">
+                  <tr>
+                    <th class="p-2.5">Ítem</th>
+                    <th class="p-2.5">Documento de Sustento</th>
+                    <th class="p-2.5">Folio</th>
+                    <th class="p-2.5">Estado</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200">
+                  <tr>
+                    <td class="p-2.5">01</td>
+                    <td class="p-2.5 font-medium">Informe Escalafonario de Tiempo de Servicios</td>
+                    <td class="p-2.5">F-${pageNum + 1}</td>
+                    <td class="p-2.5 text-emerald-700 font-bold">CONFORME</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5">02</td>
+                    <td class="p-2.5 font-medium">Constancia de Desempeño Laboral Cañete</td>
+                    <td class="p-2.5">F-${pageNum + 2}</td>
+                    <td class="p-2.5 text-emerald-700 font-bold">CONFORME</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5">03</td>
+                    <td class="p-2.5 font-medium">Verificación Nexus Minedu 2022</td>
+                    <td class="p-2.5">F-${pageNum + 3}</td>
+                    <td class="p-2.5 text-blue-700 font-bold">VALIDADO</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>Se deja constancia que los antecedentes adjuntos en este folio guardan total correspondencia con los archivos originales custodiados en el Archivo Central.</p>
+          </div>
+
+          <div class="mt-8 pt-4 border-t border-slate-300 flex justify-between items-end">
+            <div class="text-xs text-slate-500 font-sans">
+              Folio N° 0${pageNum} / 18
+            </div>
+            <div class="text-center font-sans border-t border-slate-800 pt-1 px-4 text-xs">
+              <p class="font-bold text-slate-900">ESPECIALISTA EN ESCALAFÓN</p>
+              <p class="text-[10px] text-slate-500">UGEL 08 Cañete</p>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function changeVPage(delta) {
+      const next = vState.currentPage + delta;
+      if (next >= 1 && next <= vState.totalPages) {
+        renderVPage(next);
+      }
+    }
+
+    function zoomV(delta) {
+      vState.zoom = Math.max(70, Math.min(160, vState.zoom + delta));
+      const sheet = document.getElementById('vDocumentSheet');
+      const ind = document.getElementById('vZoomIndicator');
+      if (sheet) sheet.style.transform = `scale(${vState.zoom / 100})`;
+      if (ind) ind.innerText = `${vState.zoom}%`;
+    }
+
+    function resetZoomV() {
+      vState.zoom = 100;
+      const sheet = document.getElementById('vDocumentSheet');
+      const ind = document.getElementById('vZoomIndicator');
+      if (sheet) sheet.style.transform = `scale(1)`;
+      if (ind) ind.innerText = `100%`;
+    }
+  </script>
+</body>
+</html>

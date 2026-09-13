@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes e Indicadores - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  
+  <!-- Sidebar Oficial (6 módulos) -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Reportes Estadísticos e Indicadores del Acervo</h2>
+          <p class="topbar-subtitle">Informes consolidados de Resoluciones Directorales por Año, Área, Estado y Ubicación</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button onclick="showToast('Exportando reporte en formato consolidado (simulado)...', 'success')" class="btn btn-emerald btn--rounded">
+          Exportar Reporte
+        </button>
+        <button onclick="window.print()" class="btn btn-ghost btn--rounded">
+          Imprimir
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+      
+      <!-- Filtros del Reporte -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            Parámetros del Reporte
+          </h3>
+          <button onclick="resetReportFilters()" class="text-xs" style="color: var(--slate-500); font-weight: 700; background: none; border: none; cursor: pointer;">
+            Restablecer Filtros
+          </button>
+        </div>
+
+        <div class="form-grid-3">
+          <div>
+            <label class="form-label">Año</label>
+            <select id="repAnioSelect" class="form-select" onchange="calculateReportMetrics()">
+              <option value="">-- Todos los años (2020–2026) --</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2020">2020</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Área de Origen</label>
+            <select id="repAreaSelect" class="form-select" onchange="calculateReportMetrics()">
+              <option value="">-- Todas las áreas --</option>
+              <option value="Recursos Humanos">Recursos Humanos</option>
+              <option value="Gestión Pedagógica">Gestión Pedagógica</option>
+              <option value="Gestión Institucional">Gestión Institucional</option>
+              <option value="Administración y Finanzas">Administración y Finanzas</option>
+              <option value="Asesoría Jurídica">Asesoría Jurídica</option>
+              <option value="Infraestructura">Infraestructura</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Estado de Resolución</label>
+            <select id="repEstadoSelect" class="form-select" onchange="calculateReportMetrics()">
+              <option value="">-- Todos los estados --</option>
+              <option value="Archivado">Archivado</option>
+              <option value="Notificado">Notificado</option>
+              <option value="Pendiente de notificación">Pendiente de notificación</option>
+              <option value="Observado">Observado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Row -->
+      <div class="kpi-grid">
+        <div class="rep-kpi-card" data-border="primary">
+          <span class="rep-kpi-label">Total Resoluciones</span>
+          <span class="rep-kpi-value" id="repTotalVal">0</span>
+          <p class="rep-kpi-sub">Bajo el filtro actual</p>
+        </div>
+
+        <div class="rep-kpi-card" data-border="emerald">
+          <span class="rep-kpi-label">Con PDF Digital</span>
+          <span class="rep-kpi-value rep-kpi-value--emerald" id="repPdfVal">0</span>
+          <p class="rep-kpi-sub" id="repPdfPercent">0% digitalizado</p>
+        </div>
+
+        <div class="rep-kpi-card" data-border="amber">
+          <span class="rep-kpi-label">Notificadas</span>
+          <span class="rep-kpi-value rep-kpi-value--amber" id="repNotifVal">0</span>
+          <p class="rep-kpi-sub">Con cargo registrado</p>
+        </div>
+
+        <div class="rep-kpi-card" data-border="red">
+          <span class="rep-kpi-label">Archivadas Físicamente</span>
+          <span class="rep-kpi-value" style="color: var(--purple-600);" id="repArchivadasVal">0</span>
+          <p class="rep-kpi-sub">Con ubicación en caja</p>
+        </div>
+      </div>
+
+      <!-- Gráficos y Distribución -->
+      <div class="grid-5col">
+        
+        <!-- Gráfico de barras por Año -->
+        <div class="card card--p">
+          <div class="card-header">
+            <h3 class="card-title">Distribución Histórica por Año de Emisión</h3>
+            <span class="badge badge-blue">UGEL 08</span>
+          </div>
+
+          <div class="bar-chart-visual" id="repBarChartDistribution">
+            <!-- Barras generadas dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Distribución por Estado (Barras de Progreso) -->
+        <div class="card card--p" style="display: flex; flex-direction: column; justify-content: center; gap: 16px;">
+          <h3 class="card-title">Distribución por Estado Operativo</h3>
+
+          <!-- Notificadas -->
+          <div class="progress-group">
+            <div class="progress-row">
+              <span style="color: var(--emerald-700);">Notificadas / Archivadas</span>
+              <span id="repStatusOkCount" style="color: var(--slate-700);">0</span>
+            </div>
+            <div class="progress-track">
+              <div id="repStatusOkBar" class="progress-fill progress-fill--emerald" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Pendientes -->
+          <div class="progress-group">
+            <div class="progress-row">
+              <span style="color: var(--amber-700);">Pendientes de Notificación</span>
+              <span id="repStatusPendCount" style="color: var(--slate-700);">0</span>
+            </div>
+            <div class="progress-track">
+              <div id="repStatusPendBar" class="progress-fill progress-fill--amber" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- Observadas -->
+          <div class="progress-group">
+            <div class="progress-row">
+              <span style="color: var(--red-700);">Observadas</span>
+              <span id="repStatusObsCount" style="color: var(--slate-700);">0</span>
+            </div>
+            <div class="progress-track">
+              <div id="repStatusObsBar" class="progress-fill progress-fill--red" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="report-summary-box">
+            <p style="font-weight: 700; color: var(--slate-800); margin: 0 0 4px;">📌 Resumen de Indicadores:</p>
+            <p style="margin: 0;" id="repSummaryText">
+              Calculando indicadores en base al acervo documental simulado...
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Tabla Detallada del Reporte -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title card-title--lg">Listado Consolidado del Reporte</h3>
+          <span class="text-xs" style="color: var(--slate-500);" id="repTableCount">0 registros</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table data-table--sm">
+            <thead>
+              <tr>
+                <th>N° RD</th>
+                <th>Año</th>
+                <th>Fecha</th>
+                <th>Administrado</th>
+                <th>Área</th>
+                <th>Ubicación Física</th>
+                <th>Estado</th>
+                <th>Documento</th>
+                <th style="text-align: right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="repTableBody">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("reportes");
+    calculateReportMetrics();
+  });
+
+  function calculateReportMetrics() {
+    const anio = document.getElementById("repAnioSelect").value;
+    const area = document.getElementById("repAreaSelect").value;
+    const estado = document.getElementById("repEstadoSelect").value;
+
+    let all = window.resolutionService.getAll();
+
+    if (anio) all = all.filter(r => Number(r.anio) === Number(anio));
+    if (area) all = all.filter(r => r.area_origen === area);
+    if (estado) all = all.filter(r => r.estado === estado);
+
+    const total = all.length;
+    const conPdf = all.filter(r => r.tiene_documento).length;
+    const notificadas = all.filter(r => r.estado === "Notificado" || r.fecha_notificacion).length;
+    const archivadas = all.filter(r => r.estado === "Archivado").length;
+    const pendientes = all.filter(r => r.estado === "Pendiente de notificación" || r.estado === "Registrado").length;
+    const observadas = all.filter(r => r.estado === "Observado").length;
+
+    document.getElementById("repTotalVal").innerText = total.toLocaleString();
+    document.getElementById("repPdfVal").innerText = conPdf.toLocaleString();
+    document.getElementById("repPdfPercent").innerText = total > 0 ? `${Math.round((conPdf / total) * 100)}% con PDF` : "0%";
+    document.getElementById("repNotifVal").innerText = notificadas.toLocaleString();
+    document.getElementById("repArchivadasVal").innerText = archivadas.toLocaleString();
+
+    // Actualizar barras de estado
+    const okPercent = total > 0 ? Math.round((archivadas / total) * 100) : 0;
+    const pendPercent = total > 0 ? Math.round((pendientes / total) * 100) : 0;
+    const obsPercent = total > 0 ? Math.round((observadas / total) * 100) : 0;
+
+    document.getElementById("repStatusOkCount").innerText = `${archivadas} (${okPercent}%)`;
+    document.getElementById("repStatusOkBar").style.width = `${okPercent}%`;
+
+    document.getElementById("repStatusPendCount").innerText = `${pendientes} (${pendPercent}%)`;
+    document.getElementById("repStatusPendBar").style.width = `${pendPercent}%`;
+
+    document.getElementById("repStatusObsCount").innerText = `${observadas} (${obsPercent}%)`;
+    document.getElementById("repStatusObsBar").style.width = `${obsPercent}%`;
+
+    document.getElementById("repSummaryText").innerHTML = `
+      El catálogo actual cuenta con <strong>${total}</strong> resoluciones bajo los filtros seleccionados, con una tasa de digitalización del <strong>${okPercent}%</strong> y <strong>${archivadas}</strong> expedientes custodiados en caja física.
+    `;
+
+    renderBarChart(all);
+    renderReportTable(all);
+  }
+
+  function renderBarChart(list) {
+    const container = document.getElementById("repBarChartDistribution");
+    const years = [2020, 2022, 2023, 2024, 2025, 2026];
+
+    const counts = {};
+    years.forEach(y => counts[y] = 0);
+    list.forEach(r => {
+      if (counts[r.anio] !== undefined) counts[r.anio]++;
+    });
+
+    const maxVal = Math.max(...Object.values(counts), 1);
+
+    container.innerHTML = years.map(y => {
+      const val = counts[y];
+      const heightPercent = Math.max(12, Math.round((val / maxVal) * 100));
+
+      return `
+        <div class="bar-column">
+          <div class="bar-fill" style="height: ${heightPercent}%;">
+            <span class="bar-fill-val">${val}</span>
+          </div>
+          <span class="bar-label">${y}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderReportTable(list) {
+    const tbody = document.getElementById("repTableBody");
+    document.getElementById("repTableCount").innerText = `${list.length} registros`;
+
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding: 24px; color: var(--slate-400);">No se encontraron resoluciones con los parámetros seleccionados.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(r => `
+      <tr>
+        <td class="td-code">${r.numero_rd}</td>
+        <td><span class="badge badge-slate">${r.anio}</span></td>
+        <td style="color: var(--slate-600);">${r.fecha_emision}</td>
+        <td class="td-name">${r.administrado_nombre}</td>
+        <td>${r.area_origen}</td>
+        <td>
+          ${r.tiene_ubicacion ? `<span class="badge-caja">📦 ${r.ubicacion_caja}</span>` : `<span style="color: var(--slate-400); font-size: 11px;">Pendiente</span>`}
+        </td>
+        <td>${renderBadgeEstado(r.estado)}</td>
+        <td>
+          ${r.tiene_documento ? `<span class="badge badge-blue">PDF Disponible</span>` : `<span style="color: var(--slate-400); font-size: 11px;">Sin PDF</span>`}
+        </td>
+        <td style="text-align: right;">
+          <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
+            👁 Ver
+          </a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function resetReportFilters() {
+    document.getElementById("repAnioSelect").value = "";
+    document.getElementById("repAreaSelect").value = "";
+    document.getElementById("repEstadoSelect").value = "";
+    calculateReportMetrics();
+    showToast("Filtros de reporte restablecidos", "info");
+  }
+</script>
+</body>
+</html>

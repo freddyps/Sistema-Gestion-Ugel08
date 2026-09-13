@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Institucional - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="login-page">
+
+  <div class="login-card animate-scale-in">
+    
+    <!-- Logo & Header -->
+    <div class="login-logo-wrap">
+      <img src="assets/logo-ugel08.svg" alt="UGEL 08 Cañete">
+      <span class="login-sup">Gobierno Regional de Lima • DRELP</span>
+      <h2 class="login-title">UGEL N° 08 - CAÑETE</h2>
+      <p class="login-sub">Sistema de Gestión, Consulta y Localización de Resoluciones Directorales</p>
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)" class="login-form">
+      <div>
+        <label for="username" class="form-label">Usuario Institucional / DNI</label>
+        <input type="text" id="username" required value="admin" class="form-input">
+      </div>
+
+      <div>
+        <label for="password" class="form-label">Contraseña</label>
+        <input type="password" id="password" required value="ugel2026" class="form-input">
+      </div>
+
+      <div>
+        <label for="role" class="form-label">Perfil / Rol de Demostración</label>
+        <select id="role" class="form-select">
+          <option value="marcos" selected>Marcos — Archivo y Localización de Resoluciones</option>
+          <option value="admin">Administrador General del Sistema</option>
+          <option value="resoluciones">Especialista de Resoluciones (Registro y Edición)</option>
+          <option value="archivo">Responsable de Archivo Central</option>
+          <option value="consulta">Usuario de Consulta (Solo lectura)</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn--xl btn--uppercase btn--rounded">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+        INICIAR SESIÓN INSTITUCIONAL
+      </button>
+    </form>
+
+    <!-- Footer Note -->
+    <div class="login-footer">
+      <p>Prototipo Funcional de Demostración • UGEL 08 Cañete © 2026</p>
+    </div>
+
+  </div>
+
+  <div id="toastContainer"></div>
+
+  <!-- Capa de Datos y Servicios -->
+  <script src="js/data/mockDatabase.js"></script>
+  <script src="js/services/db.js"></script>
+  <script src="js/services/resolutionService.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById("role").value;
+      const user = window.authService.login(role);
+      showToast(`Iniciando sesión como ${user.nombre}...`, "success");
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 700);
+    }
+  </script>
+</body>
+</html>

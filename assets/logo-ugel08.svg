@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="navyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2C59" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#DC2626" />
+      <stop offset="100%" stop-color="#991B1B" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Base Circle Seal -->
+  <circle cx="200" cy="200" r="185" fill="url(#navyGrad)" filter="url(#shadow)" />
+  <circle cx="200" cy="200" r="172" fill="none" stroke="url(#goldGrad)" stroke-width="4" stroke-dasharray="8 4"/>
+  <circle cx="200" cy="200" r="162" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="2"/>
+
+  <!-- Shield Outer -->
+  <path d="M 200,75 C 260,75 295,95 295,145 C 295,235 240,285 200,310 C 160,285 105,235 105,145 C 105,95 140,75 200,75 Z" fill="#FFFFFF" filter="url(#shadow)"/>
+  <!-- Shield Inner -->
+  <path d="M 200,83 C 253,83 285,101 285,145 C 285,227 234,274 200,298 C 166,274 115,227 115,145 C 115,101 147,83 200,83 Z" fill="url(#navyGrad)"/>
+
+  <!-- Shield Top Band (Peru Flag Theme) -->
+  <path d="M 115,140 L 285,140 C 285,115 260,88 200,83 C 140,88 115,115 115,140 Z" fill="url(#redGrad)"/>
+
+  <!-- Open Book Symbol (Education) -->
+  <g transform="translate(200, 185)">
+    <path d="M -50,-10 C -25,-25 0,-15 0,-15 L 0,40 C 0,40 -25,30 -50,45 Z" fill="#F8FAFC" stroke="url(#navyGrad)" stroke-width="2"/>
+    <path d="M 50,-10 C 25,-25 0,-15 0,-15 L 0,40 C 0,40 25,30 50,45 Z" fill="#FFFFFF" stroke="url(#navyGrad)" stroke-width="2"/>
+    <path d="M 0,-15 L 0,40" stroke="url(#goldGrad)" stroke-width="4"/>
+    <path d="M 0,-45 C -12,-30 -5,-20 0,-10 C 5,-20 12,-30 0,-45 Z" fill="url(#goldGrad)"/>
+    <circle cx="0" cy="-45" r="4" fill="#FEF3C7"/>
+  </g>
+
+  <!-- Number 08 Badge -->
+  <rect x="155" y="240" width="90" height="34" rx="17" fill="url(#goldGrad)"/>
+  <text x="200" y="263" font-family="'Segoe UI', Arial, sans-serif" font-weight="900" font-size="20" fill="#0F2C59" text-anchor="middle">N° 08</text>
+
+  <!-- Curved Text Top: UGEL 08 CAÑETE -->
+  <path id="textArcTop" d="M 50,200 A 150,150 0 0,1 350,200" fill="none"/>
+  <text font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="21" fill="#FFFFFF" letter-spacing="3">
+    <textPath href="#textArcTop" startOffset="50%" text-anchor="middle">UGEL 08 - CAÑETE</textPath>
+  </text>
+
+  <!-- Curved Text Bottom: GOBIERNO REGIONAL DE LIMA -->
+  <path id="textArcBottom" d="M 350,200 A 150,150 0 0,1 50,200" fill="none"/>
+  <text font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="14" fill="#F59E0B" letter-spacing="2">
+    <textPath href="#textArcBottom" startOffset="50%" text-anchor="middle">GOBIERNO REGIONAL DE LIMA</textPath>
+  </text>
+</svg>

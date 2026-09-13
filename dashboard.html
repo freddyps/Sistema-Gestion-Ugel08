@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Principal - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  
+  <!-- Sidebar Oficial (6 módulos) -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Panel de Control General</h2>
+          <p class="topbar-subtitle">Sistema de Gestión, Consulta y Localización de Resoluciones Directorales</p>
+        </div>
+        <span class="dot-badge dot-badge--blue">
+          <span class="dot"></span>
+          Sede Principal Cañete
+        </span>
+      </div>
+
+      <div class="topbar-right">
+        <div class="input-wrapper">
+          <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" id="globalSearchInput" placeholder="Buscar RD (Ej: 3874, Juan Pérez)..." 
+                 class="search-pill" onkeydown="if(event.key==='Enter') executeQuickSearch();">
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+      
+      <!-- Welcome Hero Banner -->
+      <div class="hero-banner animate-fade-in">
+        <div>
+          <span class="hero-badge">Módulo de Resoluciones Directorales • UGEL 08</span>
+          <h2 class="hero-title">Sistema de Gestión, Consulta y Localización</h2>
+          <p class="hero-desc">
+            Localice en segundos expedientes en cajas físicas, acceda a los documentos PDF oficiales asociados, consulte el estado de notificación y mantenga la trazabilidad de cada resolución.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <a href="resoluciones.html" class="btn btn-primary btn--lg btn--rounded">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Buscar Resolución
+          </a>
+          <a href="registrar-resolucion.html" class="btn btn-white-ghost btn--lg btn--rounded">
+            + Nueva RD
+          </a>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Grid (Calculado dinámicamente) -->
+      <div class="kpi-grid">
+        
+        <div class="kpi-card" data-accent="primary">
+          <div class="kpi-body">
+            <span class="kpi-label">Total Resoluciones</span>
+            <span class="kpi-value" id="statTotal">0</span>
+            <p class="kpi-sub">Registradas en el sistema</p>
+          </div>
+          <div class="kpi-icon kpi-icon--primary">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          </div>
+        </div>
+
+        <div class="kpi-card" data-accent="emerald">
+          <div class="kpi-body">
+            <span class="kpi-label">Con Documento PDF</span>
+            <span class="kpi-value" id="statConPdf" style="color: var(--emerald-700);">0</span>
+            <p class="kpi-sub" id="statConPdfSub">Digitalizadas y disponibles</p>
+          </div>
+          <div class="kpi-icon kpi-icon--emerald">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          </div>
+        </div>
+
+        <div class="kpi-card" data-accent="amber">
+          <div class="kpi-body">
+            <span class="kpi-label">Pendientes de Notificar</span>
+            <span class="kpi-value" id="statPendientes" style="color: var(--amber-600);">0</span>
+            <p class="kpi-sub">En trámite de entrega</p>
+          </div>
+          <div class="kpi-icon kpi-icon--amber">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          </div>
+        </div>
+
+        <div class="kpi-card" data-accent="purple">
+          <div class="kpi-body">
+            <span class="kpi-label">Archivadas Físicamente</span>
+            <span class="kpi-value" id="statArchivadas" style="color: var(--purple-600);">0</span>
+            <p class="kpi-sub">Con caja y estante asignados</p>
+          </div>
+          <div class="kpi-icon kpi-icon--purple">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Demo Highlight Card ("¿Dónde está?") -->
+      <div class="card card--p" style="border-left: 5px solid var(--blue); background: linear-gradient(to right, #ffffff, #f0f7ff);">
+        <div class="flex-between">
+          <div class="flex-center gap-3">
+            <div style="font-size: 28px;">📍</div>
+            <div>
+              <span class="badge badge-blue">Resolución Real del Archivo UGEL 08</span>
+              <h3 class="card-title card-title--lg" style="margin-top: 4px;">Resolución Directoral RD-3874-2026</h3>
+              <p class="text-xs" style="color: var(--slate-600); margin: 2px 0 0;">
+                Administrado: <strong>YARANGA GUTIERREZ LUIS ALBERTO</strong> • Asunto: Proceso Administrativo Disciplinario • Expediente: EXP-2026-003874
+              </p>
+            </div>
+          </div>
+          <div class="flex-center gap-2">
+            <a href="detalle-resolucion.html?id=1" class="btn btn-primary btn--sm btn--rounded">
+              📍 Ver "¿Dónde está?" y Ficha Completa
+            </a>
+            <button onclick="openPdfViewerModal('RD-3874-2026', 8, '2.4 MB')" class="btn btn-ghost btn--sm btn--rounded">
+              📄 Ver PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Modules Access -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            Acceso Rápido a Operaciones
+          </h3>
+        </div>
+
+        <div class="module-grid">
+          
+          <a href="resoluciones.html" class="module-card border-blue">
+            <div class="module-icon module-icon--blue">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <h4 class="module-title">Consultar Resoluciones</h4>
+            <p class="module-desc">Búsqueda rápida por número, DNI, administrado o asunto.</p>
+            <span class="module-cta module-cta--blue">Abrir buscador &rarr;</span>
+          </a>
+
+          <a href="registrar-resolucion.html" class="module-card border-blue">
+            <div class="module-icon module-icon--primary">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </div>
+            <h4 class="module-title">Registrar Nueva RD</h4>
+            <p class="module-desc">Ingresar nueva resolución, asociar PDF y registrar ubicación física.</p>
+            <span class="module-cta module-cta--blue">Nuevo registro &rarr;</span>
+          </a>
+
+          <a href="ubicacion.html" class="module-card border-purple">
+            <div class="module-icon module-icon--purple">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            </div>
+            <h4 class="module-title">Archivo y Ubicación Física</h4>
+            <p class="module-desc">Localizador rápido por caja, estante y rango de folios físicos.</p>
+            <span class="module-cta module-cta--purple">Localizador &rarr;</span>
+          </a>
+
+          <a href="documentos.html" class="module-card border-emerald">
+            <div class="module-icon module-icon--emerald">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            </div>
+            <h4 class="module-title">Documentos Digitales</h4>
+            <p class="module-desc">Visor integrado de archivos PDF con navegación de folios.</p>
+            <span class="module-cta module-cta--emerald">Abrir visor &rarr;</span>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Recent Resolutions Table -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Últimas Resoluciones Directorales Registradas
+          </h3>
+          <a href="resoluciones.html" class="text-xs" style="color: var(--blue); font-weight: 700;">Ver todas las resoluciones &rarr;</a>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>N° RD</th>
+                <th>Año</th>
+                <th>Administrado</th>
+                <th>Asunto</th>
+                <th>Estado</th>
+                <th>Ubicación Física</th>
+                <th>Documento</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="dashTableBody">
+              <!-- Renderizado dinámico desde resolutionService -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("dashboard");
+    loadDashboardData();
+  });
+
+  function loadDashboardData() {
+    const stats = window.resolutionService.getStats();
+    
+    document.getElementById("statTotal").innerText = stats.total.toLocaleString();
+    document.getElementById("statConPdf").innerText = stats.conPdf.toLocaleString();
+    document.getElementById("statConPdfSub").innerText = `${Math.round((stats.conPdf / stats.total) * 100)}% del acervo digitalizado`;
+    document.getElementById("statPendientes").innerText = stats.pendientes.toLocaleString();
+    document.getElementById("statArchivadas").innerText = stats.archivadas.toLocaleString();
+
+    // Cargar las 6 resoluciones más recientes
+    const all = window.resolutionService.getAll();
+    const recent = all.slice(0, 6);
+
+    const tbody = document.getElementById("dashTableBody");
+    if (!recent.length) {
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 32px; color: var(--slate-400);">No hay resoluciones registradas.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = recent.map(r => `
+      <tr>
+        <td class="td-code">${r.numero_rd}</td>
+        <td><span class="badge badge-slate">${r.anio}</span></td>
+        <td class="td-name">
+          ${r.administrado_nombre}
+          ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
+        </td>
+        <td class="td-muted" style="max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${r.asunto}">
+          ${r.asunto}
+        </td>
+        <td>${renderBadgeEstado(r.estado)}</td>
+        <td>
+          ${r.tiene_ubicacion ? `
+            <span class="badge-caja">📦 ${r.ubicacion_caja}</span>
+          ` : `
+            <span style="font-size: 11px; color: var(--slate-400); font-style: italic;">Pendiente</span>
+          `}
+        </td>
+        <td>
+          ${r.tiene_documento ? `
+            <button onclick="openPdfViewerModal('${r.numero_rd}', ${r.documento.numero_paginas}, '${r.documento.tamanio}')" class="badge-pdf-dark" title="Ver PDF">
+              📄 PDF
+            </button>
+          ` : `
+            <span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>
+          `}
+        </td>
+        <td>
+          <div class="flex-center gap-2">
+            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
+              👁 Ver
+            </a>
+            <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar">
+              ✏
+            </a>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function executeQuickSearch() {
+    const q = document.getElementById("globalSearchInput").value.trim();
+    if (q) {
+      window.location.href = `resoluciones.html?q=${encodeURIComponent(q)}`;
+    }
+  }
+</script>
+</body>
+</html>

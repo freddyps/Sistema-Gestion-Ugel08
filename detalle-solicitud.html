@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Solicitud - UGEL 08 Cañete</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased">
+
+<div class="flex min-h-screen">
+  
+  <!-- Sidebar Navigation -->
+  <aside class="w-72 bg-gradient-to-b from-[#07192F] to-[#0A2540] text-white fixed top-0 bottom-0 left-0 z-50 flex flex-col shadow-2xl">
+    <div class="p-6 border-b border-white/10 flex items-center gap-3">
+      <img src="assets/logo-ugel08.svg" alt="UGEL 08 Logo" class="w-12 h-12 shrink-0">
+      <div>
+        <h1 class="font-extrabold text-base tracking-tight font-['Outfit']">UGEL 08 CAÑETE</h1>
+        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Archivo & Resoluciones</span>
+      </div>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto p-4 space-y-1 text-sm font-medium">
+      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Menú Principal</div>
+      
+      <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="solicitudes.html" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-blue-600 text-white font-semibold shadow-lg shadow-blue-600/30">
+        <div class="flex items-center gap-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          <span>Solicitudes</span>
+        </div>
+        <span class="bg-red-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">3</span>
+      </a>
+
+      <div class="flex items-center gap-3 px-3 py-2.5 text-slate-300">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span>Resoluciones</span>
+      </div>
+      <div class="ml-8 pl-3 border-l border-white/10 space-y-1">
+        <a href="resoluciones.html" class="block py-1 text-slate-400 hover:text-white text-xs">• Buscar Resolución</a>
+        <a href="registrar-resolucion.html" class="block py-1 text-slate-400 hover:text-white text-xs">• Registrar Nueva</a>
+      </div>
+
+      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-4 pb-2">Gestión Documental</div>
+      <a href="ubicacion.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        <span>Ubicación Física</span>
+      </a>
+
+      <a href="documentos.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        <span>Documentos (Visor)</span>
+      </a>
+
+      <a href="entregas.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+        <span>Entregas Digitales</span>
+      </a>
+
+      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-4 pb-2">Administración</div>
+      <a href="reportes.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        <span>Reportes</span>
+      </a>
+    </nav>
+
+    <div class="p-4 border-t border-white/10 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-600 border border-blue-400 flex items-center justify-center font-bold text-sm">
+          M
+        </div>
+        <div>
+          <p class="text-xs font-bold text-white">Marcos</p>
+          <p class="text-[10px] text-slate-400">Gestión de Resoluciones</p>
+        </div>
+      </div>
+      <a href="index.html" class="p-1.5 text-slate-400 hover:text-red-400 rounded-md transition" title="Cerrar Sesión">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="flex-1 ml-72 flex flex-col min-h-screen">
+    
+    <!-- Topbar -->
+    <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-40 shadow-sm">
+      <div class="flex items-center gap-4">
+        <h2 class="text-lg font-bold text-[#0A2540] font-['Outfit']" id="topbarTitle">Atención de Solicitud: SOL-2026-000125</h2>
+        <span class="bg-amber-50 text-amber-700 border border-amber-200 text-xs px-3 py-1 rounded-full font-semibold" id="solStatusBadge">
+          PENDIENTE
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="solicitudes.html" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
+          &larr; Volver a Solicitudes
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="p-8 flex-1 flex flex-col gap-6">
+      
+      <!-- Top Grid: Request Info (Left) + Physical Location Box (Right) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left: Request Dossier Card (Col 7) -->
+        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-4">
+              <div>
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Requerimiento Ciudadano</span>
+                <h3 class="text-xl font-black text-slate-900 font-['Outfit'] mt-0.5" id="solCode">SOL-2026-000125</h3>
+              </div>
+              <span class="text-xs text-slate-500 font-medium" id="solFecha">Fecha: 02/09/2026</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-xs mb-4">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <span class="text-slate-400 font-bold uppercase text-[10px]">Solicitante / Administrado</span>
+                <p class="font-bold text-slate-900 text-sm mt-0.5" id="solApplicant">Prof. Juan Pérez Ramos</p>
+                <p class="text-slate-500 text-[11px]" id="solDni">DNI: 42891044</p>
+              </div>
+
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <span class="text-slate-400 font-bold uppercase text-[10px]">Resolución Requerida</span>
+                <p class="font-bold text-blue-700 text-sm mt-0.5" id="solRdNumber">R.D. N.º 154-2022</p>
+                <p class="text-slate-500 text-[11px]" id="solRdYear">Año de Emisión: 2022</p>
+              </div>
+            </div>
+
+            <div class="bg-blue-50/50 p-3.5 rounded-xl border border-blue-100 text-xs">
+              <span class="font-bold text-slate-700 uppercase text-[10px]">Motivo / Trámite Solicitado:</span>
+              <p class="text-slate-800 mt-1" id="solReason">
+                Solicito copia autenticada de resolución directoral de reasignación docente por interés personal para trámite de escalafón.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Physical Archive Box Highlight Card (Col 5) -->
+        <div class="lg:col-span-5 bg-gradient-to-br from-[#07192F] to-[#0A2540] rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
+                  📦
+                </div>
+                <h4 class="font-bold text-sm font-['Outfit'] text-white">UBICACIÓN EN ARCHIVO FÍSICO</h4>
+              </div>
+              <span class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded">
+                Custodia UGEL 08
+              </span>
+            </div>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between py-1.5 border-b border-white/5">
+                <span class="text-slate-400">Local de Custodia:</span>
+                <span class="font-bold text-white" id="locLocal">Archivo Central (Sede Cañete)</span>
+              </div>
+              <div class="flex justify-between py-1.5 border-b border-white/5">
+                <span class="text-slate-400">Ambiente & Estante:</span>
+                <span class="font-bold text-white" id="locAmbiente">Ambiente N° 1 • Estante E-03</span>
+              </div>
+              <div class="flex justify-between py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3">
+                <span class="font-bold text-amber-300">Caja de Archivo:</span>
+                <span class="font-black text-amber-400 text-sm" id="locCaja">Caja 18</span>
+              </div>
+              <div class="flex justify-between py-1.5">
+                <span class="text-slate-400">Rango de Resoluciones:</span>
+                <span class="text-slate-300 font-mono" id="locRango">R.D. 140 – R.D. 160</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-[11px] text-slate-400 mt-4 italic">
+            El personal de archivo puede verificar la documentación física en la Caja 18 si se requiere cotejo.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Associated Documents & Delivery Selection Workspace -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-4 mb-5">
+          <div>
+            <h3 class="font-bold text-base text-[#0A2540] font-['Outfit'] flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Documentos Digitales Asociados para Entrega
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Marcos puede revisar los PDFs en el visor y seleccionar qué documentos entregar al solicitante:
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="toggleSelectAllDocs(true)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+              Marcar Todos
+            </button>
+            <button onclick="toggleSelectAllDocs(false)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+              Desmarcar
+            </button>
+          </div>
+        </div>
+
+        <!-- Documents List -->
+        <div class="space-y-3" id="docSelectionList">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Sticky Delivery Preparation Bar -->
+        <div class="mt-6 bg-gradient-to-r from-slate-900 via-[#0A2540] to-blue-950 text-white rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl border border-slate-700">
+          <div class="flex items-center gap-6">
+            <div>
+              <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Documentos Seleccionados:</span>
+              <p class="text-lg font-black text-blue-400 font-['Outfit']" id="summaryDocCount">2 seleccionados</p>
+            </div>
+            <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+            <div>
+              <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Folios:</span>
+              <p class="text-lg font-black text-white font-['Outfit']" id="summaryPageCount">30 páginas</p>
+            </div>
+            <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+            <div>
+              <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Peso Total:</span>
+              <p class="text-lg font-black text-white font-['Outfit']" id="summarySize">6.9 MB</p>
+            </div>
+          </div>
+
+          <button onclick="abrirModalConfirmacionEntrega()" id="btnGenerarEntrega" class="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl text-xs tracking-wider uppercase transition shadow-lg shadow-blue-600/40 flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+            GENERAR ENTREGA DIGITAL
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal 1: Confirmación de Entrega -->
+<div id="modalConfirmarEntrega" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+      <h3 class="font-bold text-base text-slate-900 font-['Outfit'] flex items-center gap-2">
+        <span>🔐 Confirmar Preparación de Entrega Digital</span>
+      </h3>
+      <button onclick="cerrarModalConfirmacion()" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+    </div>
+
+    <p class="text-xs text-slate-600 mb-4">
+      Se generará un enlace digital seguro y único con vigencia de 7 días hábiles para el solicitante <strong id="modalConfApplicant">Prof. Juan Pérez Ramos</strong>.
+    </p>
+
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2 mb-5">
+      <div class="flex justify-between">
+        <span class="text-slate-500">Documentos a entregar:</span>
+        <strong class="text-slate-800" id="modalConfDocs">2 archivos</strong>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-slate-500">Total de Folios autorizados:</span>
+        <strong class="text-slate-800" id="modalConfPages">30 páginas</strong>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-slate-500">Resolución Matriz:</span>
+        <strong class="text-blue-700">R.D. N.º 154-2022</strong>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <button onclick="cerrarModalConfirmacion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+        Cancelar
+      </button>
+      <button onclick="ejecutarGeneracionEntrega()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-lg shadow-blue-600/30 transition flex items-center gap-2">
+        Confirmar y Generar Enlace
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal 2: Enlace Generado y Opciones de Compartir -->
+<div id="modalEntregaExitosa" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+  <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200">
+    <div class="text-center mb-5">
+      <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 font-black text-xl flex items-center justify-center mx-auto mb-2">
+        ✓
+      </div>
+      <h3 class="font-extrabold text-lg text-slate-900 font-['Outfit']">Entrega Digital Generada con Éxito</h3>
+      <p class="text-xs text-slate-500">El expediente digital está listo para ser entregado al administrado.</p>
+    </div>
+
+    <!-- Generated Secure Link Box -->
+    <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-5">
+      <div class="flex justify-between items-center mb-1 text-xs">
+        <span class="font-bold text-blue-900">Código de Entrega: <span id="genCodEntrega" class="font-mono text-blue-700">ENT-2026-000045</span></span>
+        <span class="bg-emerald-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full">🟢 DISPONIBLE</span>
+      </div>
+
+      <div class="flex items-center gap-2 mt-2">
+        <input type="text" id="genLinkInput" readonly value="https://sistema-ugelsimulacion.gob.pe/documentos/ENT-2026-000045" 
+               class="w-full bg-white border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 font-semibold focus:outline-none">
+        <button onclick="copiarEnlaceGenerado()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shrink-0 shadow transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+          Copiar Enlace
+        </button>
+      </div>
+
+      <div class="flex justify-between items-center mt-3 pt-2 border-t border-blue-200/60 text-[11px] text-blue-800">
+        <span>Vigencia: <strong>7 días hábiles</strong></span>
+        <a id="btnAbrirPortalCiudadano" href="consulta-ciudadano.html?codigo=ENT-2026-000045" target="_blank" class="font-bold text-blue-600 hover:underline">
+          Abrir en Portal Ciudadano &rarr;
+        </a>
+      </div>
+    </div>
+
+    <!-- Channels to Share -->
+    <h4 class="font-bold text-xs text-slate-700 uppercase tracking-wider mb-2">Medios Alternativos para Compartir:</h4>
+    <div class="grid grid-cols-2 gap-2 text-xs mb-5">
+      <button onclick="simularWhatsApp()" class="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-semibold flex items-center gap-2 transition">
+        <span>📱 WhatsApp</span>
+      </button>
+      <button onclick="simularCorreo()" class="p-2.5 rounded-xl border border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-900 font-semibold flex items-center gap-2 transition">
+        <span>✉️ Correo Institucional</span>
+      </button>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <a href="entregas.html" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs transition">
+        Ver Historial de Entregas
+      </a>
+      <button onclick="cerrarModalExito()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+        Listo
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/mockData.js"></script>
+<script src="js/app.js"></script>
+<script src="js/pdfViewer.js"></script>
+<script src="js/deliveryFlow.js"></script>
+</body>
+</html>

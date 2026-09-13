@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resoluciones Directorales - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  
+  <!-- Sidebar Oficial (6 módulos) -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Buscador y Consulta de Resoluciones Directorales</h2>
+          <p class="topbar-subtitle">Búsqueda rápida por número, DNI, administrado, asunto o expediente</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="registrar-resolucion.html" class="btn btn-primary btn--rounded">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Nueva Resolución
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+      
+      <!-- Filter and Search Box -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            Criterios de Búsqueda y Filtros Combinados
+          </h3>
+          <button type="button" onclick="resetFilters()" class="text-xs" style="color: var(--slate-500); font-weight: 700; background: none; border: none; cursor: pointer;">
+            Limpiar Filtros
+          </button>
+        </div>
+
+        <form id="searchFilterForm" onsubmit="applyFilters(event)">
+          <!-- Buscador principal -->
+          <div style="margin-bottom: 16px;">
+            <label class="form-label" style="font-size: 13px;">Búsqueda Rápida (Número RD, DNI, Nombre, Asunto o Expediente)</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" id="filterQuery" placeholder="Ejemplo: 3874, Juan Pérez, nombramiento, 12345678..." class="form-input" style="padding-left: 40px; font-size: 14px; padding-top: 10px; padding-bottom: 10px;">
+            </div>
+          </div>
+
+          <!-- Filtros avanzados -->
+          <div class="form-grid-3">
+            <div>
+              <label class="form-label">Año de Emisión</label>
+              <select id="filterAnio" class="form-select" onchange="applyFilters()">
+                <option value="">-- Todos los años --</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2020">2020</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label">Área de Origen</label>
+              <select id="filterArea" class="form-select" onchange="applyFilters()">
+                <option value="">-- Todas las áreas --</option>
+                <option value="Recursos Humanos">Recursos Humanos</option>
+                <option value="Gestión Pedagógica">Gestión Pedagógica</option>
+                <option value="Gestión Institucional">Gestión Institucional</option>
+                <option value="Administración y Finanzas">Administración y Finanzas</option>
+                <option value="Asesoría Jurídica">Asesoría Jurídica</option>
+                <option value="Infraestructura">Infraestructura</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label">Estado de la RD</label>
+              <select id="filterEstado" class="form-select" onchange="applyFilters()">
+                <option value="TODOS">-- Todos los estados --</option>
+                <option value="Archivado">Archivado</option>
+                <option value="Notificado">Notificado</option>
+                <option value="Pendiente de notificación">Pendiente de notificación</option>
+                <option value="Remitido a archivo">Remitido a archivo</option>
+                <option value="Observado">Observado</option>
+                <option value="Registrado">Registrado</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label">Documento Digital (PDF)</label>
+              <select id="filterDocumento" class="form-select" onchange="applyFilters()">
+                <option value="TODOS">-- Todos --</option>
+                <option value="DISPONIBLE">Con PDF disponible</option>
+                <option value="NO_DISPONIBLE">Sin PDF disponible</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label">Ubicación Física</label>
+              <select id="filterUbicacion" class="form-select" onchange="applyFilters()">
+                <option value="TODOS">-- Todas --</option>
+                <option value="CON_UBICACION">Con caja y ubicación asignada</option>
+                <option value="SIN_UBICACION">Ubicación pendiente de registrar</option>
+              </select>
+            </div>
+
+            <div style="display: flex; align-items: flex-end;">
+              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 38px;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                BUSCAR RESOLUCIÓN
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Results Table Card -->
+      <div class="card card--p">
+        <div class="card-header">
+          <div class="flex-center gap-3">
+            <h3 class="card-title card-title--lg">
+              Resultados de la Búsqueda
+            </h3>
+            <span id="resultsCountBadge" class="badge badge-blue">
+              Cargando...
+            </span>
+          </div>
+
+          <div class="flex-center gap-2">
+            <span class="text-xs" style="color: var(--slate-500);">Mostrar por página:</span>
+            <select id="pageSizeSelect" class="form-select" style="width: 75px; padding: 4px 8px;" onchange="changePageSize()">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>N° RD</th>
+                <th>Año</th>
+                <th>Fecha</th>
+                <th>Administrado / Interesado</th>
+                <th>Asunto</th>
+                <th>Expediente</th>
+                <th>Área</th>
+                <th>Documento</th>
+                <th>Ubicación Física</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="resultsTableBody">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <div id="paginationWrap" class="flex-between" style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--slate-100);">
+          <span class="text-xs" style="color: var(--slate-500);" id="paginationInfo">Mostrando 1 a 10 de 16</span>
+          <div class="flex-center gap-2" id="paginationButtons">
+            <!-- Botones dinámicos -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div id="modalDelete" class="modal-overlay">
+  <div class="modal-box modal-box--md">
+    <div class="modal-header">
+      <h3 class="modal-title" style="color: var(--red-600);">
+        ⚠️ Confirmar Eliminación de Resolución
+      </h3>
+      <button onclick="closeDeleteModal()" class="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="text-sm" style="color: var(--slate-700); margin: 0 0 12px;">
+        ¿Está seguro de eliminar esta resolución directoral del sistema?
+      </p>
+      <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 8px; padding: 12px; font-size: 12px;">
+        <strong>Resolución:</strong> <span id="deleteRdNumber" class="td-code">-</span><br>
+        <strong>Administrado:</strong> <span id="deleteRdPerson">-</span>
+      </div>
+      <p class="text-xs" style="color: var(--slate-400); margin: 12px 0 0;">
+        Esta acción registrará la baja en la trazabilidad del sistema.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeDeleteModal()" class="btn btn-light">Cancelar</button>
+      <button onclick="confirmDeleteRd()" class="btn btn-primary" style="background: var(--red-600);">
+        Eliminar Registro
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let currentResults = [];
+  let currentPage = 1;
+  let pageSize = 10;
+  let targetDeleteId = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("resoluciones");
+
+    // Verificar si viene una consulta rápida por URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const qParam = urlParams.get("q");
+    if (qParam) {
+      document.getElementById("filterQuery").value = qParam;
+    }
+
+    applyFilters();
+  });
+
+  function applyFilters(e) {
+    if (e) e.preventDefault();
+
+    const filters = {
+      query: document.getElementById("filterQuery").value,
+      anio: document.getElementById("filterAnio").value,
+      area: document.getElementById("filterArea").value,
+      estado: document.getElementById("filterEstado").value,
+      documento: document.getElementById("filterDocumento").value,
+      ubicacion: document.getElementById("filterUbicacion").value
+    };
+
+    currentResults = window.resolutionService.search(filters);
+    currentPage = 1;
+    renderTable();
+  }
+
+  function resetFilters() {
+    document.getElementById("searchFilterForm").reset();
+    applyFilters();
+    showToast("Filtros restablecidos", "info");
+  }
+
+  function changePageSize() {
+    pageSize = parseInt(document.getElementById("pageSizeSelect").value, 10);
+    currentPage = 1;
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById("resultsTableBody");
+    const countBadge = document.getElementById("resultsCountBadge");
+    const total = currentResults.length;
+
+    countBadge.innerText = `${total} encontrada${total === 1 ? '' : 's'}`;
+
+    if (!total) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="11" class="text-center" style="padding: 48px;">
+            <div style="font-size: 36px; margin-bottom: 8px;">🔍</div>
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--slate-800); margin: 0;">No se encontraron Resoluciones Directorales</h4>
+            <p class="text-xs" style="color: var(--slate-500); margin: 4px 0 16px;">Pruebe ajustando los términos de búsqueda o limpiando los filtros seleccionados.</p>
+            <button onclick="resetFilters()" class="btn btn-light btn--sm">Limpiar filtros</button>
+          </td>
+        </tr>
+      `;
+      document.getElementById("paginationWrap").style.display = "none";
+      return;
+    }
+
+    document.getElementById("paginationWrap").style.display = "flex";
+
+    // Paginación
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, total);
+    const paginatedItems = currentResults.slice(startIndex, endIndex);
+
+    tbody.innerHTML = paginatedItems.map(r => `
+      <tr>
+        <td class="td-code">${r.numero_rd}</td>
+        <td><span class="badge badge-slate">${r.anio}</span></td>
+        <td style="color: var(--slate-600); white-space: nowrap;">${r.fecha_emision}</td>
+        <td class="td-name">
+          ${r.administrado_nombre}
+          ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
+        </td>
+        <td class="td-muted" style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${r.asunto}">
+          ${r.asunto}
+        </td>
+        <td style="font-family: monospace; font-size: 11px; color: var(--slate-600);">${r.expediente || '-'}</td>
+        <td style="color: var(--slate-700); font-weight: 500;">${r.area_origen}</td>
+        <td>
+          ${r.tiene_documento ? `
+            <button onclick="openPdfViewerModal('${r.numero_rd}', ${r.documento.numero_paginas}, '${r.documento.tamanio}')" class="badge-pdf-dark" title="Visualizar documento digital">
+              📄 PDF
+            </button>
+          ` : `
+            <span style="font-size: 10px; color: var(--slate-400); font-style: italic;">Sin PDF</span>
+          `}
+        </td>
+        <td>
+          ${r.tiene_ubicacion ? `
+            <a href="ubicacion.html?caja=${encodeURIComponent(r.ubicacion_caja)}" class="badge-caja" title="Ver en archivo">
+              📦 ${r.ubicacion_caja}
+            </a>
+          ` : `
+            <span style="font-size: 10px; color: var(--amber-700); background: var(--amber-50); padding: 2px 6px; border-radius: 4px;">Pendiente</span>
+          `}
+        </td>
+        <td>${renderBadgeEstado(r.estado)}</td>
+        <td style="text-align: right;">
+          <div class="flex-center gap-1" style="justify-content: flex-end;">
+            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs" title="Ver ficha completa y ¿Dónde está?">
+              👁 Ver
+            </a>
+            <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar resolución">
+              ✏
+            </a>
+            <button onclick="promptDeleteRd(${r.id}, '${r.numero_rd}', '${r.administrado_nombre}')" class="btn btn-light btn--xs" style="color: var(--red-600);" title="Eliminar">
+              🗑
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    // Actualizar controles de paginación
+    document.getElementById("paginationInfo").innerText = `Mostrando ${startIndex + 1} a ${endIndex} de ${total}`;
+    renderPaginationButtons(total);
+  }
+
+  function renderPaginationButtons(total) {
+    const totalPages = Math.ceil(total / pageSize);
+    const container = document.getElementById("paginationButtons");
+
+    if (totalPages <= 1) {
+      container.innerHTML = "";
+      return;
+    }
+
+    let html = `
+      <button onclick="goToPage(${currentPage - 1})" class="btn btn-light btn--xs" ${currentPage === 1 ? 'disabled style="opacity: 0.4;"' : ''}>
+        ◀ Anterior
+      </button>
+    `;
+
+    for (let p = 1; p <= totalPages; p++) {
+      html += `
+        <button onclick="goToPage(${p})" class="btn btn--xs ${currentPage === p ? 'btn-primary' : 'btn-light'}">
+          ${p}
+        </button>
+      `;
+    }
+
+    html += `
+      <button onclick="goToPage(${currentPage + 1})" class="btn btn-light btn--xs" ${currentPage === totalPages ? 'disabled style="opacity: 0.4;"' : ''}>
+        Siguiente ▶
+      </button>
+    `;
+
+    container.innerHTML = html;
+  }
+
+  function goToPage(page) {
+    currentPage = page;
+    renderTable();
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  }
+
+  // Modal de Eliminación
+  function promptDeleteRd(id, numero, persona) {
+    targetDeleteId = id;
+    document.getElementById("deleteRdNumber").innerText = numero;
+    document.getElementById("deleteRdPerson").innerText = persona;
+    document.getElementById("modalDelete").classList.add("open");
+  }
+
+  function closeDeleteModal() {
+    targetDeleteId = null;
+    document.getElementById("modalDelete").classList.remove("open");
+  }
+
+  function confirmDeleteRd() {
+    if (!targetDeleteId) return;
+    const ok = window.resolutionService.delete(targetDeleteId);
+    if (ok) {
+      showToast("Resolución eliminada correctamente.", "success");
+      closeDeleteModal();
+      applyFilters();
+    } else {
+      showToast("No se pudo eliminar la resolución.", "error");
+    }
+  }
+</script>
+</body>
+</html>

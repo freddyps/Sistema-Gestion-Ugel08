@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archivo y Ubicación Física - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  
+  <!-- Sidebar Oficial (6 módulos) -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Archivo y Localización Física ("¿Dónde está?")</h2>
+          <p class="topbar-subtitle">Localización por Sede, Ambiente, Estante, Archivador, Caja y Rango de Resoluciones</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="registrar-resolucion.html" class="btn btn-primary btn--rounded">
+          + Nueva Resolución
+        </a>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+      
+      <!-- Aviso metodológico -->
+      <div class="alert-box alert-box--amber">
+        <span style="font-size: 20px;">📦</span>
+        <div>
+          <strong>Sistema de Localización Física por Caja y Folios:</strong>
+          Permite al personal administrativo ubicar el legajo físico original en segundos mediante la búsqueda de caja ("Caja 025"), rango o número de resolución.
+        </div>
+      </div>
+
+      <!-- Buscador de Archivo -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Buscador en Archivo Físico
+          </h3>
+          <span class="text-xs" style="color: var(--slate-400);">Filtro reactivo</span>
+        </div>
+
+        <div class="form-grid-3">
+          <div style="grid-column: span 2;">
+            <label class="form-label">Buscar por Caja, Rango o Número de RD</label>
+            <div class="input-wrapper">
+              <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" id="ubicacionSearchInput" placeholder="Ejemplo: Caja 025, RD 3800, 3874, Estante A..." class="form-input" oninput="filterLocations()">
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Filtrar por Sede</label>
+            <select id="sedeSelect" class="form-select" onchange="filterLocations()">
+              <option value="">-- Todas las Sedes --</option>
+              <option value="Sede Principal">Sede Principal</option>
+              <option value="Archivo Histórico">Archivo Histórico (Anexo 2)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cajas de Archivo Grid -->
+      <div class="card card--p">
+        <div class="card-header">
+          <h3 class="card-title card-title--lg">
+            Cajas de Archivo Registradas y Expedientes en Custodia
+          </h3>
+          <span id="cajasCountBadge" class="badge badge-blue">Cargando...</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Caja de Archivo</th>
+                <th>Rango de Resoluciones</th>
+                <th>Sede</th>
+                <th>Ambiente</th>
+                <th>Estante</th>
+                <th>Archivador</th>
+                <th>Expedientes Contenidos</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="ubicacionesTableBody">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Resoluciones que se encuentran en la caja seleccionada -->
+      <div class="card card--p" id="resolucionesEnCajaCard" style="display: none;">
+        <div class="card-header">
+          <div>
+            <span class="badge badge-blue">Detalle de Contenido de Custodia</span>
+            <h3 class="card-title card-title--lg" style="margin-top: 4px;" id="cajaSeleccionadaTitle">
+              Resoluciones en Caja 025
+            </h3>
+          </div>
+          <button onclick="document.getElementById('resolucionesEnCajaCard').style.display='none'" class="btn btn-light btn--xs">
+            Cerrar detalle
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table data-table--sm">
+            <thead>
+              <tr>
+                <th>N° RD</th>
+                <th>Año</th>
+                <th>Administrado</th>
+                <th>Asunto</th>
+                <th>Estado</th>
+                <th>Documento</th>
+                <th style="text-align: right;">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="resolucionesEnCajaBody">
+              <!-- Renderizado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+<script>
+  let allUbicaciones = [];
+  let allResoluciones = [];
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("ubicacion");
+
+    allUbicaciones = window.locationService.getAll();
+    allResoluciones = window.resolutionService.getAll();
+
+    // Comprobar si viene parámetro de caja en URL (ej: ?caja=Caja%20025)
+    const urlParams = new URLSearchParams(window.location.search);
+    const cajaParam = urlParams.get("caja");
+    if (cajaParam) {
+      document.getElementById("ubicacionSearchInput").value = cajaParam;
+    }
+
+    filterLocations();
+
+    if (cajaParam) {
+      showResolucionesInCaja(cajaParam);
+    }
+  });
+
+  function filterLocations() {
+    const q = document.getElementById("ubicacionSearchInput").value.toLowerCase().trim();
+    const sede = document.getElementById("sedeSelect").value;
+
+    let filtered = allUbicaciones.filter(u => {
+      const matchQ = !q || 
+        (u.caja && u.caja.toLowerCase().includes(q)) ||
+        (u.rango && u.rango.toLowerCase().includes(q)) ||
+        (u.estante && u.estante.toLowerCase().includes(q)) ||
+        (u.archivador && u.archivador.toLowerCase().includes(q));
+
+      const matchSede = !sede || (u.sede && u.sede.includes(sede));
+
+      return matchQ && matchSede;
+    });
+
+    renderLocationsTable(filtered);
+  }
+
+  function renderLocationsTable(list) {
+    const tbody = document.getElementById("ubicacionesTableBody");
+    const badge = document.getElementById("cajasCountBadge");
+    badge.innerText = `${list.length} ubicaciones`;
+
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding: 32px; color: var(--slate-400);">No se encontraron cajas con los criterios especificados.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map(u => {
+      // Contar cuántas resoluciones están en esta caja
+      const count = allResoluciones.filter(r => r.ubicacion_id === u.id).length;
+
+      return `
+        <tr>
+          <td>
+            <strong class="badge-caja" style="font-size: 13px;">📦 ${u.caja}</strong>
+          </td>
+          <td style="font-weight: 700; color: var(--slate-800); font-family: monospace;">${u.rango || 'Sin rango'}</td>
+          <td style="color: var(--slate-600);">${u.sede}</td>
+          <td>${u.ambiente}</td>
+          <td><span class="badge badge-slate">${u.estante}</span></td>
+          <td>${u.archivador}</td>
+          <td>
+            <span class="badge ${count > 0 ? 'badge-blue' : 'badge-slate'}">
+              ${count} resolución${count === 1 ? '' : 'es'}
+            </span>
+          </td>
+          <td><span class="badge badge-notificada">${u.estado_archivo || 'Archivado'}</span></td>
+          <td style="text-align: right;">
+            <button onclick="showResolucionesInCaja('${u.caja}', ${u.id})" class="btn btn-primary btn--xs">
+              Ver expedientes &rarr;
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function showResolucionesInCaja(cajaNombre, ubicacionId) {
+    const rInBox = allResoluciones.filter(r => {
+      if (ubicacionId) return r.ubicacion_id === ubicacionId;
+      return r.ubicacion && r.ubicacion.caja.toLowerCase().includes(cajaNombre.toLowerCase());
+    });
+
+    const card = document.getElementById("resolucionesEnCajaCard");
+    const title = document.getElementById("cajaSeleccionadaTitle");
+    const tbody = document.getElementById("resolucionesEnCajaBody");
+
+    card.style.display = "block";
+    title.innerText = `Expedientes Físicos en: ${cajaNombre} (${rInBox.length} encontrados)`;
+
+    if (!rInBox.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center" style="padding: 24px; color: var(--slate-400);">No se registran resoluciones vinculadas a esta caja en el catálogo.</td></tr>`;
+    } else {
+      tbody.innerHTML = rInBox.map(r => `
+        <tr>
+          <td class="td-code">${r.numero_rd}</td>
+          <td><span class="badge badge-slate">${r.anio}</span></td>
+          <td class="td-name">${r.administrado_nombre}</td>
+          <td class="td-muted" style="max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.asunto}</td>
+          <td>${renderBadgeEstado(r.estado)}</td>
+          <td>
+            ${r.tiene_documento ? `
+              <button onclick="openPdfViewerModal('${r.numero_rd}', ${r.documento.numero_paginas}, '${r.documento.tamanio}')" class="badge-pdf-dark">
+                📄 PDF
+              </button>
+            ` : `<span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>`}
+          </td>
+          <td style="text-align: right;">
+            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
+              👁 Ver detalle
+            </a>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
