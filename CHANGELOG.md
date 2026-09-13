@@ -4,6 +4,22 @@ Registro de cambios y versiones del **Sistema de Gestión y Localización de Res
 
 ---
 
+## [v1.1.0] - 2026-09-13
+### 🏗️ Reestructuración Arquitectónica y Capa Backend API REST
+- **Backend Modular por Capas (`backend/`)**:
+  - `backend/config/dataStore.js`: Almacén y lógica centralizada para persistencia de datos y estadísticas.
+  - `backend/controllers/`: Controladores desacoplados para `resolucionesController.js`, `solicitudesController.js` y `ubicacionesController.js`.
+  - `backend/routes/api.js`: Endpoints REST formales (`/api/resoluciones`, `/api/solicitudes`, `/api/ubicaciones`, `/api/stats`).
+  - Servidor Express en `server.js` con soporte para URLs limpias, CORS y manejo de errores 404 personalizado.
+- **Frontend Unificado (`js/services/apiClient.js` & Sidebar)**:
+  - Creación de cliente HTTP centralizado para consumir los endpoints REST.
+  - Estandarización de la navegación lateral (`renderSidebar`) en todos los módulos (`solicitudes.html`, `entregas.html`, `detalle-solicitud.html`), eliminando menús duplicados o desalineados.
+  - Compatibilidad total de diseño y layout CSS semántico.
+- **Bases de Datos (`database/schemas/`)**:
+  - Organización de esquemas relacionales limpios para MySQL y SQL Server.
+
+---
+
 ## [v1.0.1] - 2026-09-13
 ### ⚡ Servidor de Ejecución y Enrutamiento Limpio
 - **Servidor Web Incorporado (`server.js`)**:

@@ -1,61 +1,78 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
+const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
-const PORT = 3000;
+const app = express();
+const PORT = process.env.PORT || 3000;
 const BASE_DIR = __dirname;
 
-const MIME_TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.js': 'application/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.ico': 'image/x-icon',
-  '.pdf': 'application/pdf'
-};
+// Middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const server = http.createServer((req, res) => {
-  let reqUrl = req.url.split('?')[0];
-  if (reqUrl === '/') reqUrl = '/index.html';
+// Rutas de la API RESTful institucional
+const apiRoutes = require('./backend/routes/api');
+app.use('/api', apiRoutes);
 
-  let filePath = path.join(BASE_DIR, reqUrl);
+// Servir archivos estáticos del Frontend
+app.use(express.static(BASE_DIR));
 
-  // Si no tiene extensión y no existe directamente, probar agregando .html (ej. /dashboard -> /dashboard.html)
-  if (!path.extname(filePath) && !fs.existsSync(filePath)) {
-    if (fs.existsSync(filePath + '.html')) {
-      filePath += '.html';
+// Middleware para URLs amigables (ej: /dashboard -> /dashboard.html) y 404
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+
+  let reqPath = req.path;
+  if (reqPath === '/') reqPath = '/index.html';
+
+  let filePath = path.join(BASE_DIR, reqPath);
+
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    return res.sendFile(filePath);
+  }
+
+  // Si no tiene extensión, intentar con .html
+  if (!path.extname(reqPath)) {
+    const htmlPath = filePath + '.html';
+    if (fs.existsSync(htmlPath)) {
+      return res.sendFile(htmlPath);
     }
   }
 
-  fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
-      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-      res.end(`
-        <!DOCTYPE html>
-        <html>
-        <head><title>404 - Página no encontrada</title><meta charset="utf-8"></head>
-        <body style="font-family:sans-serif; text-align:center; padding:50px;">
-          <h2>404 - Página no encontrada</h2>
-          <p>El archivo o ruta solicitada no existe.</p>
-          <a href="/index.html" style="color:#2563eb; font-weight:bold;">Ir al Inicio de Sesión</a> | 
-          <a href="/dashboard.html" style="color:#2563eb; font-weight:bold;">Ir al Dashboard</a>
-        </body>
-        </html>
-      `);
-      return;
-    }
-
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-
-    res.writeHead(200, { 'Content-Type': contentType });
-    fs.createReadStream(filePath).pipe(res);
-  });
+  // Página 404 personalizada con diseño UGEL
+  res.status(404).send(`
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="utf-8">
+      <title>404 - UGEL 08 Cañete</title>
+      <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body style="display:flex; align-items:center; justify-content:center; min-height:100vh; background:#f1f5f9; font-family:sans-serif;">
+      <div style="text-align:center; background:white; padding:40px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.05); max-width:480px;">
+        <h1 style="color:#0f172a; margin:0 0 8px;">404</h1>
+        <h3 style="color:#334155; margin:0 0 16px;">Página no encontrada</h3>
+        <p style="color:#64748b; font-size:14px; margin-bottom:24px;">La ruta solicitada no existe en el sistema de gestión y localización de resoluciones.</p>
+        <a href="/dashboard.html" style="background:#2563eb; color:white; padding:10px 20px; border-radius:8px; text-decoration:none; font-weight:bold; font-size:14px;">Volver al Dashboard</a>
+      </div>
+    </body>
+    </html>
+  `);
 });
 
-server.listen(PORT, () => {
-  console.log(`Servidor institucional UGEL 08 corriendo en: http://localhost:${PORT}`);
+// Manejador global de errores
+app.use((err, req, res, next) => {
+  console.error("Error en servidor:", err);
+  res.status(500).json({ success: false, message: "Error interno del servidor", error: err.message });
+});
+
+app.listen(PORT, () => {
+  console.log(`=======================================================`);
+  console.log(`  SISTEMA UGEL 08 CAÑETE - ARQUITECTURA MODULAR ACTIVA `);
+  console.log(`  Servidor HTTP + API REST corriendo en: http://localhost:${PORT}`);
+  console.log(`  API Resoluciones: http://localhost:${PORT}/api/resoluciones`);
+  console.log(`=======================================================`);
 });

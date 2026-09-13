@@ -8,93 +8,23 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased app-layout">
 
-<div class="flex min-h-screen">
-  
-  <!-- Sidebar Navigation -->
-  <aside class="w-72 bg-gradient-to-b from-[#07192F] to-[#0A2540] text-white fixed top-0 bottom-0 left-0 z-50 flex flex-col shadow-2xl">
-    <div class="p-6 border-b border-white/10 flex items-center gap-3">
-      <img src="assets/logo-ugel08.svg" alt="UGEL 08 Logo" class="w-12 h-12 shrink-0">
-      <div>
-        <h1 class="font-extrabold text-base tracking-tight font-['Outfit']">UGEL 08 CAÑETE</h1>
-        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Archivo & Resoluciones</span>
-      </div>
-    </div>
-
-    <nav class="flex-1 overflow-y-auto p-4 space-y-1 text-sm font-medium">
-      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 py-2">Menú Principal</div>
-      
-      <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-        <span>Dashboard</span>
-      </a>
-
-      <a href="solicitudes.html" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-blue-600 text-white font-semibold shadow-lg shadow-blue-600/30">
-        <div class="flex items-center gap-3">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          <span>Solicitudes</span>
-        </div>
-        <span class="bg-red-500 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">3</span>
-      </a>
-
-      <div class="flex items-center gap-3 px-3 py-2.5 text-slate-300">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-        <span>Resoluciones</span>
-      </div>
-      <div class="ml-8 pl-3 border-l border-white/10 space-y-1">
-        <a href="resoluciones.html" class="block py-1 text-slate-400 hover:text-white text-xs">• Buscar Resolución</a>
-        <a href="registrar-resolucion.html" class="block py-1 text-slate-400 hover:text-white text-xs">• Registrar Nueva</a>
-      </div>
-
-      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-4 pb-2">Gestión Documental</div>
-      <a href="ubicacion.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-        <span>Ubicación Física</span>
-      </a>
-
-      <a href="documentos.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-        <span>Documentos (Visor)</span>
-      </a>
-
-      <a href="entregas.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-        <span>Entregas Digitales</span>
-      </a>
-
-      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-4 pb-2">Administración</div>
-      <a href="reportes.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-white/10 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-        <span>Reportes</span>
-      </a>
-    </nav>
-
-    <div class="p-4 border-t border-white/10 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full bg-blue-600 border border-blue-400 flex items-center justify-center font-bold text-sm">
-          M
-        </div>
-        <div>
-          <p class="text-xs font-bold text-white">Marcos</p>
-          <p class="text-[10px] text-slate-400">Gestión de Resoluciones</p>
-        </div>
-      </div>
-      <a href="index.html" class="p-1.5 text-slate-400 hover:text-red-400 rounded-md transition" title="Cerrar Sesión">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-      </a>
-    </div>
-  </aside>
+  <!-- Sidebar Unificado -->
+  <aside class="sidebar" id="mainSidebar"></aside>
 
   <!-- Main Content Wrapper -->
-  <main class="flex-1 ml-72 flex flex-col min-h-screen">
+  <main class="main-content">
     
     <!-- Topbar -->
-    <header class="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-40 shadow-sm">
-      <div class="flex items-center gap-4">
-        <h2 class="text-lg font-bold text-[#0A2540] font-['Outfit']">Bandeja de Solicitudes de Copias y Resoluciones</h2>
-        <span class="bg-amber-50 text-amber-700 border border-amber-200 text-xs px-3 py-1 rounded-full font-semibold">
-          3 Solicitudes Nuevas
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Bandeja de Solicitudes de Copias y Resoluciones</h2>
+          <p class="topbar-subtitle">Gestión de trámites, localización física de cajas y entrega de copias autenticadas</p>
+        </div>
+        <span class="badge badge-amber" style="font-weight: 700;">
+          3 Solicitudes Activas
         </span>
       </div>
 
@@ -161,10 +91,14 @@
 </div>
 
 <script src="js/mockData.js"></script>
+<script src="js/services/apiClient.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pdfViewer.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    if (typeof renderSidebar === 'function') {
+      renderSidebar('solicitudes');
+    }
     const list = ResolutionStore.getSolicitudes();
     const tbody = document.getElementById('solicitudesTableBody');
 
