@@ -175,16 +175,49 @@ const antecedentService = {
 
 // 7. SERVICIO PRINCIPAL: RESOLUCIONES DIRECTORALES
 const resolutionService = {
+  _cachedAll: null,
+
+  _invalidateCache() {
+    this._cachedAll = null;
+  },
+
   getAll() {
+    if (this._cachedAll) {
+      return this._cachedAll;
+    }
     const rawResoluciones = window.db.getTable("resoluciones");
-    // Enriquecer cada resolución con los objetos relacionados
-    return rawResoluciones.map(r => this._enrich(r));
+    
+    // Precargar entidades relacionadas en Maps para O(1) lookup en vez de find() O(N) por cada registro
+    const personasMap = new Map((window.db.getTable("personas") || []).map(p => [Number(p.id), p]));
+    const ubicacionesMap = new Map((window.db.getTable("ubicaciones") || []).map(u => [Number(u.id), u]));
+    const documentosMap = new Map((window.db.getTable("documentos") || []).map(d => [Number(d.id), d]));
+
+    this._cachedAll = rawResoluciones.map(r => {
+      const persona = r.administrado_id ? personasMap.get(Number(r.administrado_id)) : null;
+      const ubicacion = r.ubicacion_id ? ubicacionesMap.get(Number(r.ubicacion_id)) : null;
+      const documento = r.documento_id ? documentosMap.get(Number(r.documento_id)) : null;
+
+      return {
+        ...r,
+        persona,
+        ubicacion,
+        documento,
+        administrado_nombre: persona ? `${persona.nombres} ${persona.apellidos}`.trim() : "No registrado",
+        administrado_dni: persona ? persona.dni : "",
+        tiene_documento: Boolean(documento && documento.estado === "Disponible"),
+        tiene_ubicacion: Boolean(ubicacion && ubicacion.caja),
+        ubicacion_caja: ubicacion ? ubicacion.caja : "Sin ubicación",
+        ubicacion_rango: ubicacion ? ubicacion.rango : "",
+        ubicacion_resumen: ubicacion ? `${ubicacion.sede} • ${ubicacion.ambiente} • ${ubicacion.estante} • ${ubicacion.caja}` : "Pendiente de registro"
+      };
+    });
+
+    return this._cachedAll;
   },
 
   getById(id) {
-    const raw = window.db.getById("resoluciones", id);
-    if (!raw) return null;
-    return this._enrich(raw);
+    const all = this.getAll();
+    return all.find(r => Number(r.id) === Number(id)) || null;
   },
 
   findByNumero(numero) {
@@ -198,30 +231,7 @@ const resolutionService = {
   },
 
   _enrich(r) {
-    const persona = r.administrado_id ? personService.getById(r.administrado_id) : null;
-    const ubicacion = r.ubicacion_id ? locationService.getById(r.ubicacion_id) : null;
-    const documento = r.documento_id ? documentService.getById(r.documento_id) : null;
-    const notificacion = notificationService.getByResolutionId(r.id);
-    const antecedentes = antecedentService.getByResolutionId(r.id);
-    const historial = historyService.getByResolutionId(r.id);
-
-    return {
-      ...r,
-      persona,
-      ubicacion,
-      documento,
-      notificacion,
-      antecedentes,
-      historial,
-      // Propiedades de conveniencia para filtros y visualización rápida
-      administrado_nombre: persona ? `${persona.nombres} ${persona.apellidos}`.trim() : "No registrado",
-      administrado_dni: persona ? persona.dni : "",
-      tiene_documento: Boolean(documento && documento.estado === "Disponible"),
-      tiene_ubicacion: Boolean(ubicacion && ubicacion.caja),
-      ubicacion_caja: ubicacion ? ubicacion.caja : "Sin ubicación",
-      ubicacion_rango: ubicacion ? ubicacion.rango : "",
-      ubicacion_resumen: ubicacion ? `${ubicacion.sede} • ${ubicacion.ambiente} • ${ubicacion.estante} • ${ubicacion.caja}` : "Pendiente de registro"
-    };
+    return this.getById(r.id) || r;
   },
 
   search(filters = {}) {
@@ -410,10 +420,12 @@ const resolutionService = {
       estado_nuevo: newRd.estado
     });
 
+    this._invalidateCache();
     return this.getById(newRd.id);
   },
 
   update(id, formData, currentUser = "Administrador") {
+    this._invalidateCache();
     const current = this.getById(id);
     if (!current) throw new Error("La resolución solicitada no existe.");
 
@@ -522,6 +534,7 @@ const resolutionService = {
       estado_nuevo: nuevoEstado
     });
 
+    this._invalidateCache();
     return this.getById(id);
   },
 
@@ -553,6 +566,7 @@ const resolutionService = {
       estado_nuevo: nuevoEstado
     });
 
+    this._invalidateCache();
     return this.getById(id);
   },
 
@@ -570,6 +584,7 @@ const resolutionService = {
       estado_nuevo: "Eliminado"
     });
 
+    this._invalidateCache();
     return window.db.delete("resoluciones", id);
   },
 

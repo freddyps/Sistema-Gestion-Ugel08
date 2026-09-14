@@ -7,12 +7,18 @@
 const DB_KEY = "UGEL08_RD_DATABASE_V2";
 
 const db = {
+  _cache: null,
+
   _getStorage() {
+    if (this._cache) {
+      return this._cache;
+    }
     try {
       const data = localStorage.getItem(DB_KEY);
       if (!data) {
         this._initStorage();
-        return JSON.parse(localStorage.getItem(DB_KEY));
+        this._cache = JSON.parse(localStorage.getItem(DB_KEY));
+        return this._cache;
       }
       const parsed = JSON.parse(data);
       // Auto-migración si faltan colecciones agregadas recientemente en SEED_DATA
@@ -34,15 +40,18 @@ const db = {
           this._setStorage(parsed);
         }
       }
-      return parsed;
+      this._cache = parsed;
+      return this._cache;
     } catch (e) {
       console.warn("Error leyendo localStorage, reestableciendo datos semilla", e);
       this._initStorage();
-      return window.SEED_DATA;
+      this._cache = window.SEED_DATA;
+      return this._cache;
     }
   },
 
   _setStorage(data) {
+    this._cache = data;
     try {
       localStorage.setItem(DB_KEY, JSON.stringify(data));
     } catch (e) {
@@ -52,6 +61,7 @@ const db = {
 
   _initStorage() {
     if (typeof window.SEED_DATA !== "undefined") {
+      this._cache = window.SEED_DATA;
       localStorage.setItem(DB_KEY, JSON.stringify(window.SEED_DATA));
     }
   },

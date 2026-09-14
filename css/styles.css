@@ -279,6 +279,18 @@ input, select, textarea { font-family: inherit; }
 }
 .nav-submenu.open {
   display: flex;
+  animation: submenuFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes submenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .nav-sublink {
   display: flex;
@@ -2377,3 +2389,30 @@ input, select, textarea { font-family: inherit; }
   body            { background: white !important; }
   .print-section  { break-inside: avoid; }
 }
+
+/* ============================================================
+   OPTIMIZACIONES DE RENDIMIENTO Y VELOCIDAD (ZERO LAG)
+   ============================================================ */
+.page-body {
+  animation: fastFadeIn 0.12s ease-out;
+  will-change: opacity, transform;
+}
+
+@keyframes fastFadeIn {
+  from {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aceleración por hardware para interacción fluida */
+.nav-link, .nav-sublink, .nav-parent, .btn, .card {
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
