@@ -375,6 +375,305 @@
   </div>
 </div>
 
+<!-- ============================================================
+     MODAL PANEL PROFESIONAL: REGISTRO / EDICIÓN DE RESOLUCIÓN
+     ============================================================ -->
+<div id="modalResolucion" class="modal-overlay" onclick="handleBackdropClick(event)">
+  <div class="modal-resolucion-box" role="dialog" aria-modal="true" aria-labelledby="modalResolucionTitle">
+    
+    <!-- Header del Panel -->
+    <div class="modal-resolucion-header">
+      <div class="modal-resolucion-header-left">
+        <div class="modal-resolucion-icon-badge">
+          <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-resolucion-title" id="modalResolucionTitle">Registrar Nueva Resolución Directoral</h3>
+          <p class="modal-resolucion-sub">
+            <span>Oficina de Resoluciones</span>
+            <span>•</span>
+            <span id="modalResolucionTag" style="background: rgba(37, 99, 235, 0.35); padding: 1px 8px; border-radius: 9999px; font-weight: 600; font-size: 11px; color: #bfdbfe;">Gestión 2026</span>
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="closeModalResolucion()" class="modal-resolucion-close" title="Cerrar panel (Esc)">
+        ✕
+      </button>
+    </div>
+
+    <!-- Formulario completo en 5 bloques dinámicos -->
+    <form id="formModalResolucion" onsubmit="handleSaveModalResolucion(event)" style="display: flex; flex-direction: column; flex: 1; overflow: hidden; margin: 0;">
+      
+      <div class="modal-resolucion-body">
+        
+        <!-- Alerta informativa oficial -->
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 18px; line-height: 1;">ℹ️</span>
+          <div style="font-size: 12px; color: #1e3a8a; line-height: 1.5;">
+            <strong>Proceso Administrativo Oficial:</strong> El número de RD corresponde al documento físico firmado por el Director. La asignación física de estante y caja corresponde exclusivamente al área de <strong>Archivo Central (Marcos)</strong> una vez remitido el expediente.
+          </div>
+        </div>
+
+        <!-- BLOQUE 1: DATOS DE LA RESOLUCIÓN DIRECTORAL -->
+        <div class="modal-form-card">
+          <div class="modal-form-card-head">
+            <h4 class="modal-form-card-title">
+              <span class="badge-num">1</span>
+              Datos de la Resolución Directoral Autógrafa
+            </h4>
+            <span style="font-size: 11px; font-weight: 600; color: var(--blue);">* Campos obligatorios</span>
+          </div>
+          <div class="modal-form-card-body">
+            <div class="form-grid-3" style="gap: 14px;">
+              <div>
+                <label class="form-label">Número de Resolución *</label>
+                <div style="position: relative;">
+                  <input type="text" id="mRegNumero" placeholder="Ej: RD-3874-2026" required class="form-input" style="font-weight: 700; color: var(--blue); padding-right: 32px;" oninput="actualizarNombrePdfAutomatico()">
+                  <span style="position: absolute; right: 10px; top: 10px; font-size: 11px; color: var(--slate-400);">RD</span>
+                </div>
+                <span class="td-muted" style="font-size: 10px; display: block; margin-top: 3px;">Según documento autógrafo firmado</span>
+              </div>
+              <div>
+                <label class="form-label">Año de Emisión *</label>
+                <input type="number" id="mRegAnio" value="2026" required min="1990" max="2035" class="form-input" onchange="actualizarNombrePdfAutomatico()">
+              </div>
+              <div>
+                <label class="form-label">Fecha de Emisión / Firma *</label>
+                <input type="date" id="mRegFecha" required class="form-input">
+              </div>
+            </div>
+
+            <div class="form-grid-3" style="margin-top: 14px; gap: 14px;">
+              <div>
+                <label class="form-label">Proyecto / Referencia</label>
+                <input type="text" id="mRegProyecto" placeholder="Ej: PRY-2026-154" class="form-input">
+              </div>
+              <div>
+                <label class="form-label">Número de Expediente</label>
+                <input type="text" id="mRegExpediente" placeholder="Ej: EXP-2026-003874" class="form-input">
+              </div>
+              <div>
+                <label class="form-label">Área de Origen *</label>
+                <select id="mRegArea" required class="form-select">
+                  <option value="Recursos Humanos" selected>👥 Recursos Humanos (RRHH)</option>
+                  <option value="Gestión Pedagógica">📚 Gestión Pedagógica (AGP)</option>
+                  <option value="Gestión Institucional">🏛️ Gestión Institucional (AGI)</option>
+                  <option value="Administración y Finanzas">💼 Adm. y Finanzas (AGA)</option>
+                  <option value="Asesoría Jurídica">⚖️ Asesoría Jurídica</option>
+                  <option value="Infraestructura">🏗️ Infraestructura</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2" style="margin-top: 14px; gap: 14px;">
+              <div>
+                <label class="form-label">Estado Inicial del Trámite *</label>
+                <select id="mRegEstado" required class="form-select">
+                  <option value="Registrado" selected>📝 Registrado (Recibido autógrafo)</option>
+                  <option value="Pendiente de notificación">⏳ Pendiente de notificación</option>
+                  <option value="Notificado">✅ Notificado (Con cargo)</option>
+                  <option value="Observado">⚠️ Observado</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Observaciones Generales</label>
+                <input type="text" id="mRegObservaciones" placeholder="Notas internas o aclaratorias..." class="form-input">
+              </div>
+            </div>
+
+            <div style="margin-top: 14px;">
+              <label class="form-label">Asunto / Resumen Oficial del Acto Resolutivo *</label>
+              <textarea id="mRegAsunto" rows="2" placeholder="Ej: APROBAR CONTRATO DOCENTE EN EDUCACIÓN SECUNDARIA..." required class="form-textarea" style="resize: vertical;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 2: ADMINISTRADO / BENEFICIARIO -->
+        <div class="modal-form-card">
+          <div class="modal-form-card-head">
+            <h4 class="modal-form-card-title">
+              <span class="badge-num">2</span>
+              Administrado / Interesado / Beneficiario
+            </h4>
+            <button type="button" onclick="buscarPersonaDniModal()" class="btn btn-outline-blue btn--xs" style="gap: 4px;">
+              <svg style="width: 12px; height: 12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Autocompletar por DNI
+            </button>
+          </div>
+          <div class="modal-form-card-body">
+            <div class="form-grid-3" style="gap: 14px;">
+              <div>
+                <label class="form-label">DNI / Documento de Identidad</label>
+                <div style="display: flex; gap: 6px;">
+                  <input type="text" id="mRegDni" placeholder="Ej: 42891044" maxlength="12" class="form-input" onblur="buscarPersonaDniModal()" onkeydown="if(event.key==='Enter'){event.preventDefault();buscarPersonaDniModal();}">
+                  <button type="button" onclick="buscarPersonaDniModal()" class="btn btn-light btn--xs" title="Buscar">🔍</button>
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Nombres Completos *</label>
+                <input type="text" id="mRegNombres" placeholder="Nombres" required class="form-input" oninput="actualizarDestinatarioNotifModal()">
+              </div>
+              <div>
+                <label class="form-label">Apellidos Completos *</label>
+                <input type="text" id="mRegApellidos" placeholder="Apellidos" required class="form-input" oninput="actualizarDestinatarioNotifModal()">
+              </div>
+            </div>
+
+            <div class="form-grid-3" style="margin-top: 14px; gap: 14px;">
+              <div>
+                <label class="form-label">Tipo de Persona</label>
+                <select id="mRegTipoPersona" class="form-select">
+                  <option value="Docente" selected>Docente</option>
+                  <option value="Administrativo">Administrativo</option>
+                  <option value="Directivo">Directivo</option>
+                  <option value="Auxiliar de Educación">Auxiliar de Educación</option>
+                  <option value="Institución Educativa">Institución Educativa</option>
+                  <option value="Cesante">Cesante</option>
+                  <option value="Ciudadano">Ciudadano</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Teléfono / WhatsApp</label>
+                <input type="text" id="mRegTelefono" placeholder="Ej: 987654321" class="form-input">
+              </div>
+              <div>
+                <label class="form-label">Correo Electrónico</label>
+                <input type="email" id="mRegCorreo" placeholder="docente@ugel08.gob.pe" class="form-input">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 3: DOCUMENTO DIGITAL PDF -->
+        <div class="modal-form-card">
+          <div class="modal-form-card-head">
+            <h4 class="modal-form-card-title">
+              <span class="badge-num">3</span>
+              Documento Digital (Asociación de PDF Escaneado)
+            </h4>
+            <span class="badge badge-blue" style="font-size: 10px;">Alta Resolución</span>
+          </div>
+          <div class="modal-form-card-body">
+            <div style="background: #f8fafc; border: 1.5px dashed #cbd5e1; border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 44px; height: 44px; border-radius: 10px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;">
+                  PDF
+                </div>
+                <div>
+                  <label style="font-size: 13px; font-weight: 700; color: var(--slate-900); display: flex; align-items: center; gap: 8px; cursor: pointer; margin: 0;">
+                    <input type="checkbox" id="mRegTienePdf" checked style="width: 17px; height: 17px; cursor: pointer; accent-color: var(--blue);">
+                    Asociar Documento Digital PDF Autenticado
+                  </label>
+                  <p style="font-size: 11px; color: var(--slate-500); margin: 3px 0 0 0;">
+                    Archivo: <strong id="mPdfNombreSimulado" style="color: var(--blue);">RD-3874-2026.pdf</strong> • Digitalizado con sello institucional
+                  </p>
+                </div>
+              </div>
+              <div class="flex-center gap-2">
+                <input type="file" id="mPdfFileInput" accept="application/pdf" style="display: none;" onchange="handleModalPdfSelected(this)">
+                <button type="button" onclick="document.getElementById('mPdfFileInput').click()" class="btn btn-dark btn--sm">
+                  📁 Cargar / Cambiar PDF
+                </button>
+                <button type="button" onclick="previsualizarPdfModal()" class="btn btn-light btn--sm">
+                  👁 Previsualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 4: GESTIÓN DE NOTIFICACIÓN OFICIAL -->
+        <div class="modal-form-card">
+          <div class="modal-form-card-head">
+            <h4 class="modal-form-card-title">
+              <span class="badge-num">4</span>
+              Gestión de Notificación Oficial
+            </h4>
+            <span style="font-size: 11px; color: var(--slate-500);">Diligenciamiento con el administrado</span>
+          </div>
+          <div class="modal-form-card-body">
+            <div class="form-grid-3" style="gap: 14px;">
+              <div>
+                <label class="form-label">Canal / Medio de Notificación</label>
+                <select id="mRegTipoNotif" class="form-select">
+                  <option value="Correo Electrónico" selected>📧 Correo Electrónico Institucional</option>
+                  <option value="Presencial en Ventanilla">🏛️ Presencial en Ventanilla</option>
+                  <option value="Domiciliaria">📬 Notificación Domiciliaria / Cédula</option>
+                  <option value="Oficio / Institucional">🏫 Oficio a Institución Educativa</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Fecha Programada / Ejecutada</label>
+                <input type="date" id="mRegFechaNotif" class="form-input">
+              </div>
+              <div>
+                <label class="form-label">Estado de la Notificación</label>
+                <select id="mRegEstadoNotif" class="form-select">
+                  <option value="Pendiente" selected>⏳ Pendiente de diligencia</option>
+                  <option value="Notificado con éxito">✅ Notificado con acuse</option>
+                  <option value="Observado / No habido">⚠️ Observado / No habido</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-2" style="margin-top: 14px; gap: 14px;">
+              <div>
+                <label class="form-label">Destinatario de la Notificación</label>
+                <input type="text" id="mRegDestinatarioNotif" placeholder="Nombre completo o I.E. destino" class="form-input">
+              </div>
+              <div>
+                <label class="form-label">N° de Acuse / Cargo / Cédula</label>
+                <input type="text" id="mRegAcuseNotif" placeholder="Ej: ACU-2026-00481" class="form-input">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 5: FINALIZACIÓN Y REMISIÓN A ARCHIVO -->
+        <div style="background: linear-gradient(to right, #eff6ff, #f0fdf4); border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 18px;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="width: 32px; height: 32px; border-radius: 8px; background: var(--blue-600); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">
+              5
+            </div>
+            <div>
+              <h4 style="font-family: var(--font-display); font-size: 13.5px; font-weight: 800; color: #1e3a8a; margin: 0 0 4px;">
+                BLOQUE 5 — FINALIZACIÓN Y REMISIÓN A ARCHIVO CENTRAL
+              </h4>
+              <p style="font-size: 12px; color: var(--slate-600); margin: 0 0 12px; line-height: 1.5;">
+                Al guardar, la resolución queda en la bandeja de la Oficina de Resoluciones. Si la diligencia administrativa y notificación ya concluyó, puede marcar la casilla para remitir de inmediato el expediente físico a Archivo Central (Marcos).
+              </p>
+              <label style="font-size: 13px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="mRegRemitirArchivoInmediato" style="width: 18px; height: 18px; accent-color: var(--blue); cursor: pointer;">
+                Remitir formalmente el expediente autógrafo al Archivo Central (Marcos) tras guardar
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer de Acciones del Modal -->
+      <div class="modal-resolucion-footer">
+        <button type="button" onclick="closeModalResolucion()" class="btn btn-light btn--md">
+          Cancelar
+        </button>
+        <div class="flex-center gap-2">
+          <button type="button" onclick="limpiarFormModalResolucion()" class="btn btn-ghost btn--md" title="Limpiar formulario">
+            Limpiar
+          </button>
+          <button type="submit" class="btn btn-primary btn--md" id="btnModalSubmit" style="box-shadow: 0 4px 14px rgba(37,99,235,0.35); font-weight: 700;">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span id="btnModalSubmitText">GUARDAR RESOLUCIÓN</span>
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
 <div id="toastContainer"></div>
 
 <!-- Capa de Datos y Servicios -->
@@ -395,10 +694,10 @@
     const topbarActions = document.getElementById("topbarActions");
     if (topbarActions && window.authService.hasPermission("resoluciones.crear")) {
       topbarActions.innerHTML = `
-        <a href="registrar-resolucion.html" class="btn btn-primary btn--rounded">
+        <button type="button" onclick="openModalResolucion()" class="btn btn-primary btn--rounded" style="box-shadow: 0 4px 14px rgba(37,99,235,0.35);">
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           Nueva Resolución
-        </a>
+        </button>
       `;
     }
 
@@ -423,6 +722,14 @@
       const csVal = document.getElementById("csValDoc");
       if (csVal) csVal.innerHTML = `<span>📕 Con PDF digitalizado</span>`;
       renderSidebar("documentos");
+    }
+
+    // Parámetro para abrir modal de creación o edición directamente
+    if (urlParams.get("nueva") === "1" || urlParams.get("action") === "nueva") {
+      openModalResolucion();
+      renderSidebar("registrar-rd");
+    } else if (urlParams.get("editar")) {
+      openModalResolucion(urlParams.get("editar"));
     }
 
     applyFilters();
@@ -589,9 +896,9 @@
               👁 Ver
             </a>
             ${window.authService.hasPermission("resoluciones.editar") ? `
-              <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar resolución">
+              <button type="button" onclick="openModalResolucion(${r.id})" class="btn btn-light btn--xs" title="Editar resolución en panel">
                 ✏
-              </a>
+              </button>
             ` : ''}
             ${window.authService.hasPermission("resoluciones.remitir") && r.estado !== 'Pendiente de archivo' && r.estado !== 'Archivado' ? `
               <button onclick="remitirDesdeLista(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;" title="Remitir física y formalmente a Archivo">
@@ -705,6 +1012,266 @@
       applyFilters();
     } else {
       showToast("No se pudo eliminar la resolución.", "error");
+    }
+  }
+
+  /* ============================================================
+     CONTROLADOR DEL MODAL DE RESOLUCIÓN (NUEVA / EDICIÓN)
+     ============================================================ */
+  let modalEditingId = null;
+
+  function openModalResolucion(id = null) {
+    modalEditingId = id ? Number(id) : null;
+    const modal = document.getElementById("modalResolucion");
+    const titleEl = document.getElementById("modalResolucionTitle");
+    const tagEl = document.getElementById("modalResolucionTag");
+    const submitBtnText = document.getElementById("btnModalSubmitText");
+
+    if (modalEditingId) {
+      // Modo Edición
+      const rd = window.resolutionService.getById(modalEditingId);
+      if (!rd) {
+        showToast("No se encontró la resolución seleccionada.", "error");
+        return;
+      }
+      titleEl.innerText = `Editar Resolución: ${rd.numero_rd}`;
+      tagEl.innerText = `ID #${rd.id} • Modificación`;
+      submitBtnText.innerText = "ACTUALIZAR RESOLUCIÓN";
+
+      // Cargar datos en los inputs del modal
+      document.getElementById("mRegNumero").value = rd.numero_rd;
+      document.getElementById("mRegAnio").value = rd.anio;
+      document.getElementById("mRegFecha").value = rd.fecha_emision;
+      document.getElementById("mRegProyecto").value = rd.numero_proyecto || "";
+      document.getElementById("mRegExpediente").value = rd.expediente || "";
+      document.getElementById("mRegArea").value = rd.area_origen || "Recursos Humanos";
+      document.getElementById("mRegEstado").value = rd.estado || "Registrado";
+      document.getElementById("mRegAsunto").value = rd.asunto || "";
+      document.getElementById("mRegObservaciones").value = rd.observaciones || "";
+
+      if (rd.persona) {
+        document.getElementById("mRegDni").value = rd.persona.dni || "";
+        document.getElementById("mRegNombres").value = rd.persona.nombres || "";
+        document.getElementById("mRegApellidos").value = rd.persona.apellidos || "";
+        document.getElementById("mRegTipoPersona").value = rd.persona.tipo_persona || "Docente";
+        document.getElementById("mRegTelefono").value = rd.persona.telefono || "";
+        document.getElementById("mRegCorreo").value = rd.persona.correo || "";
+        document.getElementById("mRegDestinatarioNotif").value = `${rd.persona.nombres} ${rd.persona.apellidos}`.trim();
+      } else {
+        document.getElementById("mRegDni").value = "";
+        document.getElementById("mRegNombres").value = "";
+        document.getElementById("mRegApellidos").value = "";
+        document.getElementById("mRegTipoPersona").value = "Docente";
+        document.getElementById("mRegTelefono").value = "";
+        document.getElementById("mRegCorreo").value = "";
+        document.getElementById("mRegDestinatarioNotif").value = "";
+      }
+
+      if (rd.notificacion) {
+        document.getElementById("mRegTipoNotif").value = rd.notificacion.tipo_notificacion || "Correo Electrónico";
+        document.getElementById("mRegFechaNotif").value = rd.notificacion.fecha_notificacion || "";
+        document.getElementById("mRegEstadoNotif").value = rd.notificacion.estado_notificacion || "Pendiente";
+        document.getElementById("mRegAcuseNotif").value = rd.notificacion.documento_cargo || "";
+      } else {
+        document.getElementById("mRegTipoNotif").value = "Correo Electrónico";
+        document.getElementById("mRegFechaNotif").value = rd.fecha_emision || "";
+        document.getElementById("mRegEstadoNotif").value = "Pendiente";
+        document.getElementById("mRegAcuseNotif").value = "";
+      }
+
+      document.getElementById("mRegTienePdf").checked = Boolean(rd.tiene_documento);
+      document.getElementById("mPdfNombreSimulado").innerText = `${rd.numero_rd}.pdf`;
+      document.getElementById("mRegRemitirArchivoInmediato").checked = false;
+
+    } else {
+      // Modo Registro Nuevo
+      titleEl.innerText = "Registrar Nueva Resolución Directoral";
+      tagEl.innerText = "Oficina de Resoluciones • María Angélica";
+      submitBtnText.innerText = "GUARDAR RESOLUCIÓN";
+
+      document.getElementById("formModalResolucion").reset();
+
+      const today = new Date().toISOString().split("T")[0];
+      const currentYear = new Date().getFullYear();
+
+      // Generar correlativo sugerido dinámicamente
+      const nextNum = window.resolutionService.generateNextRdNumber ? window.resolutionService.generateNextRdNumber(currentYear) : `RD-${String(Math.floor(Math.random()*9000)+1000)}-${currentYear}`;
+      
+      document.getElementById("mRegNumero").value = nextNum;
+      document.getElementById("mRegAnio").value = currentYear;
+      document.getElementById("mRegFecha").value = today;
+      document.getElementById("mRegFechaNotif").value = today;
+      document.getElementById("mRegArea").value = "Recursos Humanos";
+      document.getElementById("mRegEstado").value = "Registrado";
+      document.getElementById("mRegTipoPersona").value = "Docente";
+      document.getElementById("mRegTipoNotif").value = "Correo Electrónico";
+      document.getElementById("mRegEstadoNotif").value = "Pendiente";
+      document.getElementById("mRegTienePdf").checked = true;
+      document.getElementById("mPdfNombreSimulado").innerText = `${nextNum}.pdf`;
+      document.getElementById("mRegRemitirArchivoInmediato").checked = false;
+    }
+
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => {
+      document.getElementById("mRegNumero").focus();
+    }, 150);
+  }
+
+  function closeModalResolucion() {
+    const modal = document.getElementById("modalResolucion");
+    if (modal) {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+      modalEditingId = null;
+    }
+  }
+
+  function handleBackdropClick(e) {
+    if (e.target && e.target.id === "modalResolucion") {
+      closeModalResolucion();
+    }
+  }
+
+  // Cerrar con la tecla Esc
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const modal = document.getElementById("modalResolucion");
+      if (modal && modal.classList.contains("open")) {
+        closeModalResolucion();
+      }
+    }
+  });
+
+  function limpiarFormModalResolucion() {
+    if (confirm("¿Desea limpiar los campos del formulario?")) {
+      document.getElementById("formModalResolucion").reset();
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("mRegFecha").value = today;
+      document.getElementById("mRegFechaNotif").value = today;
+      document.getElementById("mRegAnio").value = new Date().getFullYear();
+    }
+  }
+
+  function actualizarNombrePdfAutomatico() {
+    const num = document.getElementById("mRegNumero").value.trim() || "RD-NUEVA-2026";
+    const clean = num.replace(/[^\w-]/g, '_');
+    document.getElementById("mPdfNombreSimulado").innerText = `${clean}.pdf`;
+  }
+
+  function actualizarDestinatarioNotifModal() {
+    const nom = document.getElementById("mRegNombres").value.trim();
+    const ape = document.getElementById("mRegApellidos").value.trim();
+    const dest = `${nom} ${ape}`.trim();
+    const destField = document.getElementById("mRegDestinatarioNotif");
+    if (destField && (!destField.value || destField.dataset.autofilled === "true")) {
+      destField.value = dest;
+      destField.dataset.autofilled = "true";
+    }
+  }
+
+  function buscarPersonaDniModal() {
+    const dni = document.getElementById("mRegDni").value.trim();
+    if (!dni || dni.length < 8) return;
+
+    if (!window.personService) return;
+    const persona = window.personService.findByDni(dni);
+    if (persona) {
+      document.getElementById("mRegNombres").value = persona.nombres || "";
+      document.getElementById("mRegApellidos").value = persona.apellidos || "";
+      if (persona.telefono) document.getElementById("mRegTelefono").value = persona.telefono;
+      if (persona.correo) document.getElementById("mRegCorreo").value = persona.correo;
+      if (persona.tipo_persona) document.getElementById("mRegTipoPersona").value = persona.tipo_persona;
+      
+      const destField = document.getElementById("mRegDestinatarioNotif");
+      destField.value = `${persona.nombres} ${persona.apellidos}`.trim();
+      destField.dataset.autofilled = "true";
+
+      showToast(`Administrado encontrado: ${persona.nombres} ${persona.apellidos}`, "info");
+    }
+  }
+
+  function handleModalPdfSelected(input) {
+    if (input.files && input.files[0]) {
+      const f = input.files[0];
+      document.getElementById("mPdfNombreSimulado").innerText = f.name;
+      document.getElementById("mRegTienePdf").checked = true;
+      showToast(`Archivo "${f.name}" asociado exitosamente`, "success");
+    }
+  }
+
+  function previsualizarPdfModal() {
+    const num = document.getElementById("mRegNumero").value.trim() || "RD-DEMO-2026";
+    if (typeof openPdfViewerModal === "function") {
+      openPdfViewerModal(num, 14, "3.8 MB");
+    } else {
+      showToast("Visualizador de PDF disponible", "info");
+    }
+  }
+
+  function handleSaveModalResolucion(e) {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById("btnModalSubmit");
+    submitBtn.disabled = true;
+
+    const remitirInmediato = document.getElementById("mRegRemitirArchivoInmediato").checked;
+    const estadoFinal = remitirInmediato ? "Pendiente de archivo" : document.getElementById("mRegEstado").value;
+
+    const formData = {
+      numero_rd: document.getElementById("mRegNumero").value.trim(),
+      anio: document.getElementById("mRegAnio").value,
+      fecha_emision: document.getElementById("mRegFecha").value,
+      numero_proyecto: document.getElementById("mRegProyecto").value.trim(),
+      expediente: document.getElementById("mRegExpediente").value.trim(),
+      area_origen: document.getElementById("mRegArea").value,
+      estado: estadoFinal,
+      asunto: document.getElementById("mRegAsunto").value.trim(),
+      observaciones: document.getElementById("mRegObservaciones").value.trim(),
+
+      // Administrado
+      dni: document.getElementById("mRegDni").value.trim(),
+      nombres: document.getElementById("mRegNombres").value.trim(),
+      apellidos: document.getElementById("mRegApellidos").value.trim(),
+      tipo_persona: document.getElementById("mRegTipoPersona").value,
+      telefono: document.getElementById("mRegTelefono").value.trim(),
+      correo: document.getElementById("mRegCorreo").value.trim(),
+
+      // Notificación
+      tipo_notificacion: document.getElementById("mRegTipoNotif").value,
+      fecha_notificacion: document.getElementById("mRegFechaNotif").value,
+      estado_notificacion: document.getElementById("mRegEstadoNotif").value,
+      destinatario_notificacion: document.getElementById("mRegDestinatarioNotif").value.trim(),
+      documento_cargo: document.getElementById("mRegAcuseNotif").value.trim(),
+
+      tiene_pdf: document.getElementById("mRegTienePdf").checked
+    };
+
+    try {
+      let savedRd;
+      if (modalEditingId) {
+        savedRd = window.resolutionService.update(modalEditingId, formData);
+        showToast(`Resolución ${savedRd.numero_rd} actualizada exitosamente.`, "success");
+      } else {
+        savedRd = window.resolutionService.create(formData);
+        showToast(`Resolución ${savedRd.numero_rd} registrada exitosamente.`, "success");
+      }
+
+      if (remitirInmediato && savedRd && savedRd.id) {
+        window.resolutionService.remitirAArchivo(savedRd.id, "Remisión inmediata desde panel modal.");
+        showToast("Expediente remitido formalmente al Archivo Central.", "info");
+      }
+
+      // Cerrar modal de inmediato sin recargar página (Zero Lag)
+      closeModalResolucion();
+
+      // Refrescar tabla en memoria inmediatamente
+      applyFilters();
+
+    } catch (err) {
+      showToast(err.message || "Ocurrió un error al guardar la resolución.", "error");
+    } finally {
+      submitBtn.disabled = false;
     }
   }
 </script>

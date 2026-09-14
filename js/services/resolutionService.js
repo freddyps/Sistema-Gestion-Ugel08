@@ -723,7 +723,7 @@ const authService = {
             url: "resoluciones.html", 
             icon: "document",
             subitems: [
-              { key: "registrar-rd", label: "Registrar Resolución", url: "registrar-resolucion.html", icon: "plus" },
+              { key: "registrar-rd", label: "Registrar Resolución", url: "resoluciones.html?nueva=1", icon: "plus" },
               { key: "resoluciones-lista", label: "Búsqueda y Gestión RD", url: "resoluciones.html", icon: "document" },
               { key: "documentos", label: "Documentos Digitales", url: "resoluciones.html?doc=DISPONIBLE", icon: "file-text" },
               { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" },
