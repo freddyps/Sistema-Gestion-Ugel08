@@ -724,8 +724,7 @@ const authService = {
             subitems: [
               { key: "resoluciones-lista", label: "Búsqueda y Gestión RD", url: "resoluciones.html", icon: "document" },
               { key: "documentos", label: "Documentos Digitales", url: "resoluciones.html?doc=DISPONIBLE", icon: "file-text" },
-              { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" },
-              { key: "historial", label: "Historial de Emisiones", url: "auditoria.html?filtro=resoluciones", icon: "clock" }
+              { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" }
             ]
           }
         ]
@@ -747,8 +746,7 @@ const authService = {
             { key: "recibidas", label: "Resoluciones Recibidas", url: "recepcion-archivo.html", icon: "inbox" },
             { key: "resoluciones-lista", label: "Consulta de Resoluciones", url: "resoluciones.html", icon: "document" },
             { key: "ubicacion", label: "Ubicación Física (Cajas)", url: "ubicacion.html", icon: "archive" },
-            { key: "localizar", label: "Buscar / Localizar", url: "ubicacion.html?modo=localizar", icon: "search" },
-            { key: "historial", label: "Historial de Custodia", url: "auditoria.html?filtro=archivo", icon: "clock" }
+            { key: "localizar", label: "Buscar / Localizar", url: "ubicacion.html?modo=localizar", icon: "search" }
           ]
         }
       ]
