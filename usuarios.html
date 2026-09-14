@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  <!-- Sidebar Oficial dinámico -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Administración de Cuentas de Usuario</h2>
+          <p class="topbar-subtitle">Control de accesos por roles institucionales y perfiles operativos</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button onclick="abrirModalNuevoUsuario()" class="btn btn-primary btn--rounded">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Nuevo Usuario
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Informative Box -->
+      <div class="card card--p" style="margin-bottom: 24px; border-left: 4px solid var(--blue); background: #f8fafc;">
+        <div class="flex-center gap-3">
+          <div style="font-size: 28px;">👥</div>
+          <div>
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--slate-800);">
+              Gestión de Credenciales y Perfiles de la UGEL 08
+            </h4>
+            <p style="margin: 0; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
+              Cada cuenta define estrictamente el menú visible, las operaciones de negocio y la trazabilidad de los actos administrativos en el sistema.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Usuarios -->
+      <div class="card table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Nombre y Apellidos</th>
+                <th>Rol / Perfil Asignado</th>
+                <th>Cargo Institucional</th>
+                <th>Área de Dependencia</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="usuariosTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal Nuevo Usuario -->
+<div class="modal-backdrop" id="modalNuevoUsuario" style="display: none;">
+  <div class="modal-container" style="max-width: 550px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Registrar Nueva Cuenta de Usuario</h3>
+      <button class="modal-close-btn" onclick="cerrarModalNuevoUsuario()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="formNuevoUsuario" onsubmit="guardarUsuario(event)">
+        <div class="form-grid-2" style="margin-bottom: 14px;">
+          <div class="form-group">
+            <label class="form-label">Nombre de Usuario (Login) *</label>
+            <input type="text" id="usrUsername" class="form-control" required placeholder="ej: jquispe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rol Funcional *</label>
+            <select id="usrRol" class="form-control" required>
+              <option value="maria">Oficina de Resoluciones (María Angélica)</option>
+              <option value="marcos">Archivo Central (Marcos)</option>
+              <option value="consulta">Personal Autorizado / Consulta</option>
+              <option value="admin">Administrador del Sistema</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-label">Nombres y Apellidos Completos *</label>
+          <input type="text" id="usrNombre" class="form-control" required placeholder="ej: Juan Quispe Sánchez">
+        </div>
+
+        <div class="form-grid-2" style="margin-bottom: 14px;">
+          <div class="form-group">
+            <label class="form-label">Cargo Institucional *</label>
+            <input type="text" id="usrCargo" class="form-control" required placeholder="ej: Especialista en Trámite">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Área / Dependencia *</label>
+            <input type="text" id="usrArea" class="form-control" required placeholder="ej: Gestión Pedagógica">
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding-bottom: 0;">
+          <button type="button" class="btn btn-light btn--sm" onclick="cerrarModalNuevoUsuario()">Cancelar</button>
+          <button type="submit" class="btn btn-primary btn--sm">Guardar Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("usuarios");
+    renderUsuarios();
+  });
+
+  function renderUsuarios() {
+    const list = window.db.getTable("usuarios") || [];
+    const tbody = document.getElementById("usuariosTableBody");
+
+    tbody.innerHTML = list.map(u => `
+      <tr>
+        <td class="td-code">${u.username}</td>
+        <td class="td-name">${u.nombre}</td>
+        <td>
+          <span class="badge" style="background: #e0e7ff; color: #3730a3; font-weight: 600;">
+            ${u.rol.toUpperCase()}
+          </span>
+        </td>
+        <td style="font-size: 11px; color: var(--slate-600);">${u.cargo}</td>
+        <td style="font-size: 11px; color: var(--slate-700); font-weight: 500;">${u.area}</td>
+        <td>
+          <span class="badge" style="${u.activo ? 'background: #d1fae5; color: #047857;' : 'background: #fee2e2; color: #b91c1c;'}">
+            ${u.activo ? 'Activo' : 'Inactivo'}
+          </span>
+        </td>
+        <td style="text-align: right;">
+          <div class="flex-center gap-1" style="justify-content: flex-end;">
+            <button onclick="toggleEstadoUsuario('${u.username}')" class="btn btn-light btn--xs" title="Cambiar estado">
+              ${u.activo ? '🔒 Suspender' : '🔓 Activar'}
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function abrirModalNuevoUsuario() {
+    document.getElementById("formNuevoUsuario").reset();
+    document.getElementById("modalNuevoUsuario").style.display = "flex";
+  }
+
+  function cerrarModalNuevoUsuario() {
+    document.getElementById("modalNuevoUsuario").style.display = "none";
+  }
+
+  function guardarUsuario(e) {
+    e.preventDefault();
+    const username = document.getElementById("usrUsername").value.trim().toLowerCase();
+    const rol = document.getElementById("usrRol").value;
+    const nombre = document.getElementById("usrNombre").value.trim();
+    const cargo = document.getElementById("usrCargo").value.trim();
+    const area = document.getElementById("usrArea").value.trim();
+
+    const usuarios = window.db.getTable("usuarios") || [];
+    if (usuarios.some(u => u.username === username)) {
+      showToast("Ese nombre de usuario ya existe", "error");
+      return;
+    }
+
+    const nuevo = {
+      username,
+      nombre,
+      rol,
+      cargo,
+      area,
+      activo: true
+    };
+
+    window.db.insert("usuarios", nuevo);
+    showToast(`Usuario ${username} creado exitosamente`, "success");
+    cerrarModalNuevoUsuario();
+    renderUsuarios();
+  }
+
+  function toggleEstadoUsuario(username) {
+    if (username === 'admin') {
+      showToast("No se puede desactivar la cuenta de Administrador principal", "error");
+      return;
+    }
+    const usuarios = window.db.getTable("usuarios") || [];
+    const idx = usuarios.findIndex(u => u.username === username);
+    if (idx !== -1) {
+      usuarios[idx].activo = !usuarios[idx].activo;
+      window.db.setTable("usuarios", usuarios);
+      showToast(`Estado de ${username} actualizado`, "success");
+      renderUsuarios();
+    }
+  }
+</script>
+
+</body>
+</html>

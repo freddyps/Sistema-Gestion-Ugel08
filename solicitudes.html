@@ -4,83 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bandeja de Solicitudes - UGEL 08 Cañete</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased app-layout">
+<body class="page-app">
 
-  <!-- Sidebar Unificado -->
+<div class="app-wrapper">
+  <!-- Sidebar Unificado Oficial -->
   <aside class="sidebar" id="mainSidebar"></aside>
 
   <!-- Main Content Wrapper -->
   <main class="main-content">
     
-    <!-- Topbar -->
+    <!-- Topbar Institucional -->
     <header class="topbar">
       <div class="topbar-left">
         <div>
           <h2 class="topbar-title">Bandeja de Solicitudes de Copias y Resoluciones</h2>
-          <p class="topbar-subtitle">Gestión de trámites, localización física de cajas y entrega de copias autenticadas</p>
+          <p class="topbar-subtitle">Gestión institucional de requerimientos ciudadanos y localización en custodia</p>
         </div>
-        <span class="badge badge-amber" style="font-weight: 700;">
-          3 Solicitudes Activas
+        <span class="badge badge-amber" id="solicitudesBadgeCount" style="font-weight: 700;">
+          Cargando...
         </span>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="documentos.html" class="px-4 py-2 bg-[#0A2540] hover:bg-slate-900 text-white rounded-lg text-xs font-bold transition flex items-center gap-2">
-          <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-          Visor de Documentos
+      <div class="topbar-right">
+        <a href="entregas.html" class="btn btn-dark btn--rounded">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Entregas y Cargos
         </a>
       </div>
     </header>
 
     <!-- Page Body -->
-    <div class="p-8 flex-1 flex flex-col gap-6">
+    <div class="page-body">
       
       <!-- Filters and Summary Card -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-3 flex-wrap">
-          <button class="px-4 py-2 bg-[#0A2540] text-white rounded-xl text-xs font-bold shadow">
-            Todas (6)
-          </button>
-          <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
-            Pendientes (3)
-          </button>
-          <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
-            Documento Localizado (1)
-          </button>
-          <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold">
-            Atendidas (2)
-          </button>
-        </div>
+      <div class="filter-card" style="padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+          <!-- Filtros de Estado con botones estilizados -->
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;" id="filterStateButtons">
+            <button type="button" class="btn btn-primary btn--sm" data-estado="TODOS" onclick="aplicarFiltroEstado('TODOS', this)">
+              Todas las Solicitudes (<span id="countTodos">0</span>)
+            </button>
+            <button type="button" class="btn btn-light btn--sm" data-estado="PENDIENTE" onclick="aplicarFiltroEstado('PENDIENTE', this)">
+              Pendientes (<span id="countPendientes">0</span>)
+            </button>
+            <button type="button" class="btn btn-light btn--sm" data-estado="DOCUMENTO LOCALIZADO" onclick="aplicarFiltroEstado('DOCUMENTO LOCALIZADO', this)">
+              Documento Localizado (<span id="countLocalizadas">0</span>)
+            </button>
+            <button type="button" class="btn btn-light btn--sm" data-estado="ATENDIDA" onclick="aplicarFiltroEstado('ATENDIDA', this)">
+              Atendidas (<span id="countAtendidas">0</span>)
+            </button>
+          </div>
 
-        <div class="relative w-full md:w-72">
-          <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input type="text" placeholder="Filtrar por código o solicitante..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:bg-white transition">
+          <!-- Búsqueda Rápida Institucional -->
+          <div class="input-wrapper" style="min-width: 280px; max-width: 360px; width: 100%;">
+            <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="solicitudSearchInput" placeholder="Buscar por código, administrado o RD..." 
+                   class="search-pill" oninput="ejecutarBusqueda()">
+          </div>
         </div>
       </div>
 
       <!-- Requests List Table -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase tracking-wider">
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
               <tr>
-                <th class="p-3.5">Código Requerimiento</th>
-                <th class="p-3.5">Fecha</th>
-                <th class="p-3.5">Solicitante</th>
-                <th class="p-3.5">Tipo</th>
-                <th class="p-3.5">R.D. Solicitada</th>
-                <th class="p-3.5">Año</th>
-                <th class="p-3.5">Ubicación de Custodia</th>
-                <th class="p-3.5">Estado</th>
-                <th class="p-3.5">Acciones</th>
+                <th>Código Trámite</th>
+                <th>Fecha</th>
+                <th>Solicitante / Administrado</th>
+                <th>Tipo Requerimiento</th>
+                <th>R.D. Solicitada</th>
+                <th>Ubicación de Custodia</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Acciones</th>
               </tr>
             </thead>
-            <tbody id="solicitudesTableBody" class="divide-y divide-slate-100">
-              <!-- Rendered via JS -->
+            <tbody id="solicitudesTableBody">
+              <!-- Renderizado dinámicamente mediante la Capa de Servicios -->
             </tbody>
           </table>
         </div>
@@ -90,49 +94,123 @@
   </main>
 </div>
 
-<script src="js/mockData.js"></script>
-<script src="js/services/apiClient.js"></script>
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pdfViewer.js"></script>
+
 <script>
+  let estadoSeleccionado = "TODOS";
+
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof renderSidebar === 'function') {
       renderSidebar('solicitudes');
     }
-    const list = ResolutionStore.getSolicitudes();
-    const tbody = document.getElementById('solicitudesTableBody');
-
-    tbody.innerHTML = list.map(s => `
-      <tr class="hover:bg-blue-50/50 transition">
-        <td class="p-3.5 font-bold text-blue-600 font-mono text-sm">${s.codigo}</td>
-        <td class="p-3.5 text-slate-600">${s.fecha}</td>
-        <td class="p-3.5 font-semibold text-slate-900">${s.solicitante}</td>
-        <td class="p-3.5 text-slate-500">${s.tipo}</td>
-        <td class="p-3.5 font-bold text-[#0A2540]">${s.rdSolicitada}</td>
-        <td class="p-3.5"><span class="bg-slate-100 px-2 py-0.5 rounded font-bold text-slate-700">${s.anio}</span></td>
-        <td class="p-3.5">
-          <span class="bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded font-bold text-xs">
-            📦 ${s.ubicacionFisica.caja}
-          </span>
-        </td>
-        <td class="p-3.5">
-          <span class="badge badge-${s.estado.toLowerCase().replace(/\s+/g, '-')}">
-            ${s.estado}
-          </span>
-        </td>
-        <td class="p-3.5">
-          <div class="flex items-center gap-2">
-            <a href="detalle-solicitud.html?id=${s.codigo}" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs shadow transition">
-              Atender Pedido
-            </a>
-            <button onclick="openPdfViewer('${s.rdSolicitada}.pdf', 18, '4.8 MB', '${s.rdSolicitada}')" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-red-400 rounded-lg font-bold text-xs border border-slate-700 transition" title="Ver Documento PDF">
-              PDF
-            </button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
+    actualizarBandeja();
   });
+
+  function actualizarBandeja() {
+    const stats = window.requestService.getStats();
+    
+    // Contadores en botones
+    document.getElementById('countTodos').innerText = stats.total;
+    document.getElementById('countPendientes').innerText = stats.pendientes;
+    document.getElementById('countLocalizadas').innerText = stats.localizadas;
+    document.getElementById('countAtendidas').innerText = stats.atendidas;
+
+    document.getElementById('solicitudesBadgeCount').innerText = `${stats.pendientes + stats.localizadas} Requerimientos Activos`;
+
+    ejecutarBusqueda();
+  }
+
+  function aplicarFiltroEstado(estado, btn) {
+    estadoSeleccionado = estado;
+    
+    // Actualizar estilos activos de botones
+    const btns = document.querySelectorAll('#filterStateButtons button');
+    btns.forEach(b => {
+      b.className = 'btn btn-light btn--sm';
+    });
+    btn.className = 'btn btn-primary btn--sm';
+
+    ejecutarBusqueda();
+  }
+
+  function ejecutarBusqueda() {
+    const query = document.getElementById('solicitudSearchInput').value.trim();
+    const list = window.requestService.filter({
+      estado: estadoSeleccionado,
+      query: query
+    });
+
+    renderTabla(list);
+  }
+
+  function renderTabla(items) {
+    const tbody = document.getElementById('solicitudesTableBody');
+    if (!items.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center" style="padding: 40px; color: var(--slate-400);">
+            No se encontraron solicitudes que coincidan con el criterio de búsqueda.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = items.map(s => {
+      const caja = s.ubicacion_resumen ? s.ubicacion_resumen.caja : "Caja 001";
+      const estadoClass = s.estado ? `badge-${s.estado.toLowerCase().replace(/\s+/g, '-')}` : 'badge-pendiente';
+
+      return `
+        <tr>
+          <td class="td-code">${s.codigo}</td>
+          <td class="td-muted" style="white-space: nowrap;">${s.fecha}</td>
+          <td class="td-name">
+            ${s.solicitante}
+            ${s.dni ? `<br><span style="font-size: 11px; color: var(--slate-400);">DNI/Doc: ${s.dni}</span>` : ''}
+          </td>
+          <td class="td-muted">${s.tipo || 'Copia de resolución'}</td>
+          <td class="td-primary" style="white-space: nowrap;">${s.rd_solicitada || s.rdSolicitada || 'R.D. Institucional'}</td>
+          <td>
+            <span class="badge-caja">
+              📦 ${caja}
+            </span>
+          </td>
+          <td>
+            <span class="badge ${estadoClass}">
+              ${s.estado}
+            </span>
+          </td>
+          <td style="text-align: right;">
+            <div style="display: inline-flex; align-items: center; gap: 8px;">
+              <a href="detalle-solicitud.html?id=${s.codigo}" class="btn btn-primary btn--xs">
+                Atender Trámite
+              </a>
+              <button type="button" onclick="verPdfDemo('${s.rd_solicitada || s.codigo}')" class="btn btn-dark btn--xs" title="Ver Documento">
+                📄 PDF
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function verPdfDemo(titulo) {
+    if (typeof openPdfViewerModal === 'function') {
+      openPdfViewerModal(titulo, 16, '4.2 MB');
+    } else if (typeof openPdfViewer === 'function') {
+      openPdfViewer(titulo + '.pdf', 16, '4.2 MB', titulo);
+    } else {
+      showToast('Visualizando documento digital...', 'info');
+    }
+  }
 </script>
 </body>
 </html>

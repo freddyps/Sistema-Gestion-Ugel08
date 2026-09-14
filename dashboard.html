@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Principal - UGEL 08 Cañete</title>
+  <title>Panel de Inicio Institucional - UGEL 08 Cañete</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
 <body class="page-app">
 
 <div class="app-wrapper">
   
-  <!-- Sidebar Oficial (6 módulos) -->
+  <!-- Sidebar Oficial Adaptable por Rol -->
   <aside class="sidebar" id="mainSidebar"></aside>
 
   <!-- Main Content Wrapper -->
@@ -21,12 +21,12 @@
     <header class="topbar">
       <div class="topbar-left">
         <div>
-          <h2 class="topbar-title">Panel de Control General</h2>
-          <p class="topbar-subtitle">Sistema de Gestión, Consulta y Localización de Resoluciones Directorales</p>
+          <h2 class="topbar-title" id="dashTopTitle">Panel de Control General</h2>
+          <p class="topbar-subtitle" id="dashTopSubtitle">Sistema de Gestión, Consulta y Localización de Resoluciones Directorales</p>
         </div>
-        <span class="dot-badge dot-badge--blue">
+        <span class="dot-badge dot-badge--blue" id="dashRoleBadge">
           <span class="dot"></span>
-          Sede Principal Cañete
+          UGEL 08 Cañete
         </span>
       </div>
 
@@ -39,179 +39,62 @@
       </div>
     </header>
 
-    <!-- Page Body -->
+    <!-- Page Body Dinámico según Rol -->
     <div class="page-body">
       
-      <!-- Welcome Hero Banner -->
-      <div class="hero-banner animate-fade-in">
+      <!-- Banner Institucional de Bienvenida específico al Rol -->
+      <div class="hero-banner animate-fade-in" id="heroBanner">
         <div>
-          <span class="hero-badge">Módulo de Resoluciones Directorales • UGEL 08</span>
-          <h2 class="hero-title">Sistema de Gestión, Consulta y Localización</h2>
-          <p class="hero-desc">
-            Localice en segundos expedientes en cajas físicas, acceda a los documentos PDF oficiales asociados, consulte el estado de notificación y mantenga la trazabilidad de cada resolución.
+          <span class="hero-badge" id="heroBadge">Módulo Oficial • UGEL 08</span>
+          <h2 class="hero-title" id="heroTitle">Bienvenido al Sistema Institucional</h2>
+          <p class="hero-desc" id="heroDesc">
+            Acceda a las funciones correspondientes a su perfil y responsabilidad administrativa.
           </p>
         </div>
 
-        <div class="hero-actions">
-          <a href="resoluciones.html" class="btn btn-primary btn--lg btn--rounded">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            Buscar Resolución
-          </a>
-          <a href="registrar-resolucion.html" class="btn btn-white-ghost btn--lg btn--rounded">
-            + Nueva RD
-          </a>
+        <div class="hero-actions" id="heroActions">
+          <!-- Rendered dynamically -->
         </div>
       </div>
 
-      <!-- KPI Metrics Grid (Calculado dinámicamente) -->
-      <div class="kpi-grid">
-        
-        <div class="kpi-card" data-accent="primary">
-          <div class="kpi-body">
-            <span class="kpi-label">Total Resoluciones</span>
-            <span class="kpi-value" id="statTotal">0</span>
-            <p class="kpi-sub">Registradas en el sistema</p>
-          </div>
-          <div class="kpi-icon kpi-icon--primary">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-          </div>
-        </div>
-
-        <div class="kpi-card" data-accent="emerald">
-          <div class="kpi-body">
-            <span class="kpi-label">Con Documento PDF</span>
-            <span class="kpi-value" id="statConPdf" style="color: var(--emerald-700);">0</span>
-            <p class="kpi-sub" id="statConPdfSub">Digitalizadas y disponibles</p>
-          </div>
-          <div class="kpi-icon kpi-icon--emerald">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-          </div>
-        </div>
-
-        <div class="kpi-card" data-accent="amber">
-          <div class="kpi-body">
-            <span class="kpi-label">Pendientes de Notificar</span>
-            <span class="kpi-value" id="statPendientes" style="color: var(--amber-600);">0</span>
-            <p class="kpi-sub">En trámite de entrega</p>
-          </div>
-          <div class="kpi-icon kpi-icon--amber">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          </div>
-        </div>
-
-        <div class="kpi-card" data-accent="purple">
-          <div class="kpi-body">
-            <span class="kpi-label">Archivadas Físicamente</span>
-            <span class="kpi-value" id="statArchivadas" style="color: var(--purple-600);">0</span>
-            <p class="kpi-sub">Con caja y estante asignados</p>
-          </div>
-          <div class="kpi-icon kpi-icon--purple">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-          </div>
-        </div>
-
+      <!-- KPI Metrics Grid (Específico al Rol Activo) -->
+      <div class="kpi-grid" id="dashKpiGrid">
+        <!-- Rendered dynamically -->
       </div>
 
-      <!-- Quick Demo Highlight Card ("¿Dónde está?") -->
-      <div class="card card--p" style="border-left: 5px solid var(--blue); background: linear-gradient(to right, #ffffff, #f0f7ff);">
-        <div class="flex-between">
-          <div class="flex-center gap-3">
-            <div style="font-size: 28px;">📍</div>
-            <div>
-              <span class="badge badge-blue">Resolución Real del Archivo UGEL 08</span>
-              <h3 class="card-title card-title--lg" style="margin-top: 4px;">Resolución Directoral RD-3874-2026</h3>
-              <p class="text-xs" style="color: var(--slate-600); margin: 2px 0 0;">
-                Administrado: <strong>YARANGA GUTIERREZ LUIS ALBERTO</strong> • Asunto: Proceso Administrativo Disciplinario • Expediente: EXP-2026-003874
-              </p>
-            </div>
-          </div>
-          <div class="flex-center gap-2">
-            <a href="detalle-resolucion.html?id=1" class="btn btn-primary btn--sm btn--rounded">
-              📍 Ver "¿Dónde está?" y Ficha Completa
-            </a>
-            <button onclick="openPdfViewerModal('RD-3874-2026', 8, '2.4 MB')" class="btn btn-ghost btn--sm btn--rounded">
-              📄 Ver PDF
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Modules Access -->
-      <div class="card card--p">
+      <!-- Quick Operations Section -->
+      <div class="card card--p" id="dashQuickOpsSection">
         <div class="card-header">
           <h3 class="card-title">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
-            Acceso Rápido a Operaciones
+            Operaciones Principales de su Función
           </h3>
         </div>
 
-        <div class="module-grid">
-          
-          <a href="resoluciones.html" class="module-card border-blue">
-            <div class="module-icon module-icon--blue">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            </div>
-            <h4 class="module-title">Consultar Resoluciones</h4>
-            <p class="module-desc">Búsqueda rápida por número, DNI, administrado o asunto.</p>
-            <span class="module-cta module-cta--blue">Abrir buscador &rarr;</span>
-          </a>
-
-          <a href="registrar-resolucion.html" class="module-card border-blue">
-            <div class="module-icon module-icon--primary">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            </div>
-            <h4 class="module-title">Registrar Nueva RD</h4>
-            <p class="module-desc">Ingresar nueva resolución, asociar PDF y registrar ubicación física.</p>
-            <span class="module-cta module-cta--blue">Nuevo registro &rarr;</span>
-          </a>
-
-          <a href="ubicacion.html" class="module-card border-purple">
-            <div class="module-icon module-icon--purple">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-            </div>
-            <h4 class="module-title">Archivo y Ubicación Física</h4>
-            <p class="module-desc">Localizador rápido por caja, estante y rango de folios físicos.</p>
-            <span class="module-cta module-cta--purple">Localizador &rarr;</span>
-          </a>
-
-          <a href="documentos.html" class="module-card border-emerald">
-            <div class="module-icon module-icon--emerald">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-            </div>
-            <h4 class="module-title">Documentos Digitales</h4>
-            <p class="module-desc">Visor integrado de archivos PDF con navegación de folios.</p>
-            <span class="module-cta module-cta--emerald">Abrir visor &rarr;</span>
-          </a>
-
+        <div class="module-grid" id="dashQuickOpsGrid">
+          <!-- Rendered dynamically according to role -->
         </div>
       </div>
 
-      <!-- Recent Resolutions Table -->
-      <div class="card card--p">
+      <!-- Recent Records Table / Activity -->
+      <div class="card card--p" id="dashTableSection">
         <div class="card-header">
-          <h3 class="card-title">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            Últimas Resoluciones Directorales Registradas
-          </h3>
-          <a href="resoluciones.html" class="text-xs" style="color: var(--blue); font-weight: 700;">Ver todas las resoluciones &rarr;</a>
+          <div>
+            <h3 class="card-title" id="dashTableTitle">Actividad Reciente del Módulo</h3>
+            <p class="text-xs" style="color: var(--slate-400); margin: 2px 0 0;" id="dashTableSubtitle">Últimos registros procesados</p>
+          </div>
+          <a href="resoluciones.html" id="dashTableLink" class="btn btn-outline-blue btn--xs btn--rounded">
+            Ver Listado Completo &rarr;
+          </a>
         </div>
 
         <div class="table-wrapper">
           <table class="data-table">
-            <thead>
-              <tr>
-                <th>N° RD</th>
-                <th>Año</th>
-                <th>Administrado</th>
-                <th>Asunto</th>
-                <th>Estado</th>
-                <th>Ubicación Física</th>
-                <th>Documento</th>
-                <th>Acciones</th>
-              </tr>
+            <thead id="dashTableHead">
+              <!-- Rendered dynamically -->
             </thead>
             <tbody id="dashTableBody">
-              <!-- Renderizado dinámico desde resolutionService -->
+              <!-- Rendered dynamically -->
             </tbody>
           </table>
         </div>
@@ -228,40 +111,422 @@
 <script src="js/services/db.js"></script>
 <script src="js/services/resolutionService.js"></script>
 <script src="js/app.js"></script>
+<script src="js/pdfViewer.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     renderSidebar("dashboard");
-    loadDashboardData();
+    loadRoleDashboard();
   });
 
-  function loadDashboardData() {
-    const stats = window.resolutionService.getStats();
-    
-    document.getElementById("statTotal").innerText = stats.total.toLocaleString();
-    document.getElementById("statConPdf").innerText = stats.conPdf.toLocaleString();
-    document.getElementById("statConPdfSub").innerText = `${Math.round((stats.conPdf / stats.total) * 100)}% del acervo digitalizado`;
-    document.getElementById("statPendientes").innerText = stats.pendientes.toLocaleString();
-    document.getElementById("statArchivadas").innerText = stats.archivadas.toLocaleString();
+  function loadRoleDashboard() {
+    const user = window.authService ? window.authService.getCurrentUser() : { rol: "Administrador" };
+    const rol = user.rol.toLowerCase();
 
-    // Cargar las 6 resoluciones más recientes
-    const all = window.resolutionService.getAll();
-    const recent = all.slice(0, 6);
-
-    const tbody = document.getElementById("dashTableBody");
-    if (!recent.length) {
-      tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 32px; color: var(--slate-400);">No hay resoluciones registradas.</td></tr>`;
+    // 1. MARÍA ANGÉLICA — OFICINA DE RESOLUCIONES
+    if (rol.includes("resoluciones") || user.usuario === "maria") {
+      setupMariaDashboard(user);
       return;
     }
 
-    tbody.innerHTML = recent.map(r => `
+    // 2. MARCOS — ARCHIVO CENTRAL
+    if (rol.includes("archivo") || user.usuario === "marcos") {
+      setupMarcosDashboard(user);
+      return;
+    }
+
+    // 3. PERSONAL AUTORIZADO (CONSULTA)
+    if (rol.includes("personal") || rol.includes("consulta") || user.usuario === "consulta") {
+      setupConsultaDashboard(user);
+      return;
+    }
+
+    // 4. ADMINISTRADOR
+    setupAdminDashboard(user);
+  }
+
+  // --- DASHBOARD MARÍA ANGÉLICA ---
+  function setupMariaDashboard(user) {
+    document.getElementById("dashTopTitle").innerText = "Oficina de Resoluciones — Inicio";
+    document.getElementById("dashTopSubtitle").innerText = "Gestión administrativa de Resoluciones autógrafas firmadas por Dirección y notificaciones";
+    document.getElementById("dashRoleBadge").innerHTML = `<span class="dot" style="background: var(--blue);"></span> ${user.nombre}`;
+
+    document.getElementById("heroBadge").innerText = "Oficina de Resoluciones • Gestión Autógrafa";
+    document.getElementById("heroTitle").innerText = "Gestión y Notificación de Resoluciones Directorales";
+    document.getElementById("heroDesc").innerText = "Registre las resoluciones autógrafas firmadas por el Director, asocie el archivo digital autenticado, controle las notificaciones y remita formalmente los expedientes al Archivo Central.";
+    
+    document.getElementById("heroActions").innerHTML = `
+      <a href="registrar-resolucion.html" class="btn btn-primary btn--lg btn--rounded">
+        + Registrar Resolución
+      </a>
+      <a href="resoluciones.html" class="btn btn-white-ghost btn--lg btn--rounded">
+        Bandeja de Resoluciones
+      </a>
+    `;
+
+    const all = window.resolutionService.getAll();
+    const total = all.length;
+    const pendNotif = all.filter(r => r.estado === "Pendiente de notificación" || r.estado === "Registrado").length;
+    const notificadas = all.filter(r => r.estado === "Notificado" || r.fecha_notificacion).length;
+    const pendRemision = all.filter(r => r.estado !== "Pendiente de archivo" && r.estado !== "Recibida en archivo" && r.estado !== "Archivado").length;
+
+    document.getElementById("dashKpiGrid").innerHTML = `
+      <div class="kpi-card" data-accent="primary">
+        <div class="kpi-body">
+          <span class="kpi-label">Resoluciones Registradas</span>
+          <span class="kpi-value">${total.toLocaleString()}</span>
+          <p class="kpi-sub">Total de actos resolutivos</p>
+        </div>
+        <div class="kpi-icon kpi-icon--primary">📄</div>
+      </div>
+      <div class="kpi-card" data-accent="amber">
+        <div class="kpi-body">
+          <span class="kpi-label">Pendientes de Notificación</span>
+          <span class="kpi-value" style="color: var(--amber-600);">${pendNotif.toLocaleString()}</span>
+          <p class="kpi-sub">Trámites por diligenciar</p>
+        </div>
+        <div class="kpi-icon kpi-icon--amber">🔔</div>
+      </div>
+      <div class="kpi-card" data-accent="emerald">
+        <div class="kpi-body">
+          <span class="kpi-label">Notificadas</span>
+          <span class="kpi-value" style="color: var(--emerald-600);">${notificadas.toLocaleString()}</span>
+          <p class="kpi-sub">Con acuse de recibo</p>
+        </div>
+        <div class="kpi-icon kpi-icon--emerald">✅</div>
+      </div>
+      <div class="kpi-card" data-accent="purple">
+        <div class="kpi-body">
+          <span class="kpi-label">Pendientes de Remisión</span>
+          <span class="kpi-value" style="color: var(--purple-600);">${pendRemision.toLocaleString()}</span>
+          <p class="kpi-sub">Por remitir a Archivo Central</p>
+        </div>
+        <div class="kpi-icon kpi-icon--purple">📦</div>
+      </div>
+    `;
+
+    document.getElementById("dashQuickOpsGrid").innerHTML = `
+      <a href="registrar-resolucion.html" class="module-card border-blue">
+        <div class="module-icon module-icon--primary">➕</div>
+        <h4 class="module-title">Registrar Resolución</h4>
+        <p class="module-desc">Ingrese RD autógrafa, administado, expediente, PDF y datos de notificación.</p>
+        <span class="module-cta module-cta--blue">Nuevo Registro &rarr;</span>
+      </a>
+      <a href="resoluciones.html?estado=Pendiente+de+notificacion" class="module-card border-blue">
+        <div class="module-icon module-icon--amber">🔔</div>
+        <h4 class="module-title">Gestionar Notificaciones</h4>
+        <p class="module-desc">Diligencie notificaciones presenciales, correo electrónico y acuses.</p>
+        <span class="module-cta module-cta--blue">Ver Notificaciones &rarr;</span>
+      </a>
+      <a href="resoluciones.html" class="module-card border-blue">
+        <div class="module-icon module-icon--blue">🔍</div>
+        <h4 class="module-title">Consultar Resoluciones</h4>
+        <p class="module-desc">Búsqueda rápida y remisión formal de expedientes a Archivo Central.</p>
+        <span class="module-cta module-cta--blue">Consultar Catálogo &rarr;</span>
+      </a>
+      <a href="auditoria.html?filtro=resoluciones" class="module-card border-blue">
+        <div class="module-icon module-icon--purple">📜</div>
+        <h4 class="module-title">Historial de Operaciones</h4>
+        <p class="module-desc">Trazabilidad cronológica de altas, modificaciones y remisiones.</p>
+        <span class="module-cta module-cta--blue">Ver Bitácora &rarr;</span>
+      </a>
+    `;
+
+    renderRecentResolutionsTable(all.slice(0, 6), true);
+  }
+
+  // --- DASHBOARD MARCOS (ARCHIVO) ---
+  function setupMarcosDashboard(user) {
+    document.getElementById("dashTopTitle").innerText = "Archivo Central — Marcos";
+    document.getElementById("dashTopSubtitle").innerText = "Recepción física de documentos autógrafos, organización en estantes/cajas y localización inmediata";
+    document.getElementById("dashRoleBadge").innerHTML = `<span class="dot" style="background: var(--amber-500);"></span> ${user.nombre}`;
+
+    document.getElementById("heroBadge").innerText = "Área de Archivo Central • Custodia Documental";
+    document.getElementById("heroTitle").innerText = "Recepción, Ubicación Física y Localización";
+    document.getElementById("heroDesc").innerText = "Confirme la recepción física de resoluciones remitidas por la Oficina de Resoluciones, asigne su estante, archivador y caja, y localice cualquier expediente en segundos.";
+    
+    document.getElementById("heroActions").innerHTML = `
+      <a href="recepcion-archivo.html" class="btn btn-primary btn--lg btn--rounded">
+        📥 Resoluciones Recibidas
+      </a>
+      <a href="ubicacion.html" class="btn btn-white-ghost btn--lg btn--rounded">
+        📦 Localizar en Cajas
+      </a>
+    `;
+
+    const all = window.resolutionService.getAll();
+    const pendRecepcion = all.filter(r => r.estado === "Pendiente de archivo").length;
+    const recibidas = all.filter(r => r.estado === "Recibida en archivo").length;
+    const archivadas = all.filter(r => r.estado === "Archivado" || r.tiene_ubicacion).length;
+    const pendUbicacion = all.filter(r => !r.tiene_ubicacion).length;
+
+    document.getElementById("dashKpiGrid").innerHTML = `
+      <div class="kpi-card" data-accent="amber">
+        <div class="kpi-body">
+          <span class="kpi-label">Pendientes de Recepción</span>
+          <span class="kpi-value" style="color: var(--amber-600);">${pendRecepcion}</span>
+          <p class="kpi-sub">Remitidas por Resoluciones</p>
+        </div>
+        <div class="kpi-icon kpi-icon--amber">📥</div>
+      </div>
+      <div class="kpi-card" data-accent="primary">
+        <div class="kpi-body">
+          <span class="kpi-label">Recibidas en Archivo</span>
+          <span class="kpi-value">${recibidas}</span>
+          <p class="kpi-sub">Con acuse de custodia física</p>
+        </div>
+        <div class="kpi-icon kpi-icon--primary">📦</div>
+      </div>
+      <div class="kpi-card" data-accent="purple">
+        <div class="kpi-body">
+          <span class="kpi-label">Pendientes de Ubicación</span>
+          <span class="kpi-value" style="color: var(--purple-600);">${pendUbicacion}</span>
+          <p class="kpi-sub">Por asignar caja y estante</p>
+        </div>
+        <div class="kpi-icon kpi-icon--purple">🏷️</div>
+      </div>
+      <div class="kpi-card" data-accent="emerald">
+        <div class="kpi-body">
+          <span class="kpi-label">Archivadas / Localizables</span>
+          <span class="kpi-value" style="color: var(--emerald-600);">${archivadas}</span>
+          <p class="kpi-sub">En custodia oficial lista</p>
+        </div>
+        <div class="kpi-icon kpi-icon--emerald">✅</div>
+      </div>
+    `;
+
+    document.getElementById("dashQuickOpsGrid").innerHTML = `
+      <a href="recepcion-archivo.html" class="module-card border-blue">
+        <div class="module-icon module-icon--amber">📥</div>
+        <h4 class="module-title">Resoluciones Recibidas</h4>
+        <p class="module-desc">Verifique y confirme la recepción física de RD enviadas por María Angélica.</p>
+        <span class="module-cta module-cta--blue">Bandeja de Recepción &rarr;</span>
+      </a>
+      <a href="ubicacion.html" class="module-card border-blue">
+        <div class="module-icon module-icon--primary">📦</div>
+        <h4 class="module-title">Registrar Ubicación Física</h4>
+        <p class="module-desc">Asigne sede, ambiente, estante, archivador, caja y correlativo a cada expediente.</p>
+        <span class="module-cta module-cta--blue">Gestionar Ubicación &rarr;</span>
+      </a>
+      <a href="ubicacion.html?modo=localizar" class="module-card border-blue">
+        <div class="module-icon module-icon--blue">📍</div>
+        <h4 class="module-title">Buscar / Localizar</h4>
+        <p class="module-desc">Localice la caja y folios exactos de cualquier resolución en segundos.</p>
+        <span class="module-cta module-cta--blue">Abrir Localizador &rarr;</span>
+      </a>
+      <a href="auditoria.html?filtro=archivo" class="module-card border-blue">
+        <div class="module-icon module-icon--purple">📜</div>
+        <h4 class="module-title">Historial de Archivo</h4>
+        <p class="module-desc">Consulte la bitácora de ingresos, reubicaciones y préstamos.</p>
+        <span class="module-cta module-cta--blue">Ver Historial &rarr;</span>
+      </a>
+    `;
+
+    renderRecentResolutionsTable(all.slice(0, 6), false, true);
+  }
+
+
+
+  // --- DASHBOARD PERSONAL AUTORIZADO (CONSULTA) ---
+  function setupConsultaDashboard(user) {
+    document.getElementById("dashTopTitle").innerText = "Personal Autorizado — Consulta Institucional";
+    document.getElementById("dashTopSubtitle").innerText = "Módulo de búsqueda, verificación de autenticidad y localización de resoluciones";
+    document.getElementById("dashRoleBadge").innerHTML = `<span class="dot" style="background: var(--purple-500);"></span> ${user.nombre}`;
+
+    document.getElementById("heroBadge").innerText = "Acceso de Consulta Oficial • Solo Lectura";
+    document.getElementById("heroTitle").innerText = "Consulta y Localización de Resoluciones";
+    document.getElementById("heroDesc").innerText = "Realice búsquedas directas por número de resolución, DNI, administrado o asunto, visualice los documentos PDF oficiales y verifique la ubicación física en archivo.";
+    
+    document.getElementById("heroActions").innerHTML = `
+      <a href="consulta.html" class="btn btn-primary btn--lg btn--rounded">
+        🔍 Consultar Resoluciones
+      </a>
+      <a href="consulta.html?tab=documentos" class="btn btn-white-ghost btn--lg btn--rounded">
+        📄 Ver Documentos
+      </a>
+    `;
+
+    const all = window.resolutionService.getAll();
+    document.getElementById("dashKpiGrid").innerHTML = `
+      <div class="kpi-card" data-accent="primary">
+        <div class="kpi-body">
+          <span class="kpi-label">Resoluciones Disponibles</span>
+          <span class="kpi-value">${all.length.toLocaleString()}</span>
+          <p class="kpi-sub">Acervo histórico y actual</p>
+        </div>
+        <div class="kpi-icon kpi-icon--primary">📚</div>
+      </div>
+      <div class="kpi-card" data-accent="emerald">
+        <div class="kpi-body">
+          <span class="kpi-label">Documentos con PDF</span>
+          <span class="kpi-value" style="color: var(--emerald-600);">${all.filter(r => r.tiene_documento).length}</span>
+          <p class="kpi-sub">Digitalizados para lectura</p>
+        </div>
+        <div class="kpi-icon kpi-icon--emerald">📄</div>
+      </div>
+      <div class="kpi-card" data-accent="amber">
+        <div class="kpi-body">
+          <span class="kpi-label">Ubicadas en Archivo</span>
+          <span class="kpi-value" style="color: var(--amber-600);">${all.filter(r => r.tiene_ubicacion).length}</span>
+          <p class="kpi-sub">Con caja y estante verificados</p>
+        </div>
+        <div class="kpi-icon kpi-icon--amber">📦</div>
+      </div>
+      <div class="kpi-card" data-accent="purple">
+        <div class="kpi-body">
+          <span class="kpi-label">Áreas de Emisión</span>
+          <span class="kpi-value" style="color: var(--purple-600);">6</span>
+          <p class="kpi-sub">RRHH, Pedagógica, etc.</p>
+        </div>
+        <div class="kpi-icon kpi-icon--purple">🏛️</div>
+      </div>
+    `;
+
+    document.getElementById("dashQuickOpsGrid").innerHTML = `
+      <a href="consulta.html" class="module-card border-blue">
+        <div class="module-icon module-icon--blue">🔍</div>
+        <h4 class="module-title">Consultar Resoluciones</h4>
+        <p class="module-desc">Búsqueda rápida y reactiva por cualquier criterio institucional.</p>
+        <span class="module-cta module-cta--blue">Abrir Buscador &rarr;</span>
+      </a>
+      <a href="consulta.html?tab=documentos" class="module-card border-blue">
+        <div class="module-icon module-icon--primary">📄</div>
+        <h4 class="module-title">Consultar Documentos Digitales</h4>
+        <p class="module-desc">Visualice resoluciones digitalizadas en alta calidad.</p>
+        <span class="module-cta module-cta--blue">Ver Documentos &rarr;</span>
+      </a>
+      <a href="consulta.html?tab=ubicacion" class="module-card border-blue">
+        <div class="module-icon module-icon--amber">📦</div>
+        <h4 class="module-title">Consultar Ubicación Física</h4>
+        <p class="module-desc">Consulte la caja, estante y sede donde reposa el legajo original.</p>
+        <span class="module-cta module-cta--blue">Ver Ubicación &rarr;</span>
+      </a>
+    `;
+
+    renderRecentResolutionsTable(all.slice(0, 6), false, false, true);
+  }
+
+  // --- DASHBOARD ADMINISTRADOR ---
+  function setupAdminDashboard(user) {
+    document.getElementById("dashTopTitle").innerText = "Panel de Control General — Administrador";
+    document.getElementById("dashTopSubtitle").innerText = "Configuración institucional, administración de usuarios, roles, catálogos y auditoría";
+    document.getElementById("dashRoleBadge").innerHTML = `<span class="dot" style="background: var(--blue);"></span> Administrador`;
+
+    document.getElementById("heroBadge").innerText = "Administración del Sistema • UGEL 08";
+    document.getElementById("heroTitle").innerText = "Gestión Centralizada y Supervisión Integral";
+    document.getElementById("heroDesc").innerText = "Administre los usuarios y permisos del sistema, supervise los catálogos institucionales, verifique la bitácora de auditoría y consulte estadísticas consolidadas.";
+    
+    document.getElementById("heroActions").innerHTML = `
+      <a href="usuarios.html" class="btn btn-primary btn--lg btn--rounded">
+        👥 Gestionar Usuarios
+      </a>
+      <a href="roles-permisos.html" class="btn btn-white-ghost btn--lg btn--rounded">
+        🛡️ Roles y Permisos
+      </a>
+    `;
+
+    const all = window.resolutionService.getAll();
+    const stats = window.resolutionService.getStats();
+    const usersCount = window.db.getTable("usuarios").length;
+    const resolucionesList = window.db.getTable("resoluciones");
+    const pendientesArchivo = resolucionesList.filter(r => r.estado === 'Pendiente de archivo').length;
+
+    document.getElementById("dashKpiGrid").innerHTML = `
+      <div class="kpi-card" data-accent="primary">
+        <div class="kpi-body">
+          <span class="kpi-label">Total Resoluciones</span>
+          <span class="kpi-value">${stats.total.toLocaleString()}</span>
+          <p class="kpi-sub">En base de datos</p>
+        </div>
+        <div class="kpi-icon kpi-icon--primary">📚</div>
+      </div>
+      <div class="kpi-card" data-accent="emerald">
+        <div class="kpi-body">
+          <span class="kpi-label">Usuarios Activos</span>
+          <span class="kpi-value" style="color: var(--emerald-600);">${usersCount}</span>
+          <p class="kpi-sub">En 4 perfiles oficiales</p>
+        </div>
+        <div class="kpi-icon kpi-icon--emerald">👥</div>
+      </div>
+      <div class="kpi-card" data-accent="amber">
+        <div class="kpi-body">
+          <span class="kpi-label">Pendientes de Archivo</span>
+          <span class="kpi-value" style="color: var(--amber-600);">${pendientesArchivo}</span>
+          <p class="kpi-sub">Remitidas para custodia</p>
+        </div>
+        <div class="kpi-icon kpi-icon--amber">⏳</div>
+      </div>
+      <div class="kpi-card" data-accent="purple">
+        <div class="kpi-body">
+          <span class="kpi-label">Archivadas Físicamente</span>
+          <span class="kpi-value" style="color: var(--purple-600);">${stats.archivadas.toLocaleString()}</span>
+          <p class="kpi-sub">Con custodia asignada</p>
+        </div>
+        <div class="kpi-icon kpi-icon--purple">📦</div>
+      </div>
+    `;
+
+    document.getElementById("dashQuickOpsGrid").innerHTML = `
+      <a href="usuarios.html" class="module-card border-blue">
+        <div class="module-icon module-icon--primary">👥</div>
+        <h4 class="module-title">Usuarios del Sistema</h4>
+        <p class="module-desc">Alta, edición, activación/desactivación y asignación de roles.</p>
+        <span class="module-cta module-cta--blue">Gestionar Usuarios &rarr;</span>
+      </a>
+      <a href="roles-permisos.html" class="module-card border-blue">
+        <div class="module-icon module-icon--purple">🛡️</div>
+        <h4 class="module-title">Roles y Permisos</h4>
+        <p class="module-desc">Configuración granular de permisos por funciones institucionales.</p>
+        <span class="module-cta module-cta--blue">Administrar Roles &rarr;</span>
+      </a>
+      <a href="configuracion.html" class="module-card border-blue">
+        <div class="module-icon module-icon--blue">⚙️</div>
+        <h4 class="module-title">Catálogos del Sistema</h4>
+        <p class="module-desc">Gestión de áreas, estados, tipos de notificación y sedes de archivo.</p>
+        <span class="module-cta module-cta--blue">Configurar Catálogos &rarr;</span>
+      </a>
+      <a href="auditoria.html" class="module-card border-blue">
+        <div class="module-icon module-icon--amber">📜</div>
+        <h4 class="module-title">Auditoría e Historial</h4>
+        <p class="module-desc">Trazabilidad completa de acciones, usuarios, fechas y cambios de estado.</p>
+        <span class="module-cta module-cta--blue">Ver Auditoría &rarr;</span>
+      </a>
+    `;
+
+    renderRecentResolutionsTable(all.slice(0, 6), true, true);
+  }
+
+  // Renderizado dinámico de tabla de resoluciones
+  function renderRecentResolutionsTable(items, allowEdit = false, isArchivo = false, isReadonly = false) {
+    document.getElementById("dashTableTitle").innerText = "Resoluciones Directorales Recientes";
+    document.getElementById("dashTableSubtitle").innerText = "Últimos expedientes registrados en el sistema";
+    document.getElementById("dashTableLink").href = "resoluciones.html";
+
+    document.getElementById("dashTableHead").innerHTML = `
+      <tr>
+        <th>N° Resolución</th>
+        <th>Administrado</th>
+        <th>Asunto</th>
+        <th>Estado</th>
+        <th>Ubicación Física</th>
+        <th>PDF</th>
+        <th style="text-align: right;">Acciones</th>
+      </tr>
+    `;
+
+    const tbody = document.getElementById("dashTableBody");
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center" style="padding: 32px; color: var(--slate-400);">No hay resoluciones registradas.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = items.map(r => `
       <tr>
         <td class="td-code">${r.numero_rd}</td>
-        <td><span class="badge badge-slate">${r.anio}</span></td>
         <td class="td-name">
           ${r.administrado_nombre}
           ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
         </td>
-        <td class="td-muted" style="max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${r.asunto}">
+        <td class="td-muted" style="max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${r.asunto}">
           ${r.asunto}
         </td>
         <td>${renderBadgeEstado(r.estado)}</td>
@@ -269,7 +534,7 @@
           ${r.tiene_ubicacion ? `
             <span class="badge-caja">📦 ${r.ubicacion_caja}</span>
           ` : `
-            <span style="font-size: 11px; color: var(--slate-400); font-style: italic;">Pendiente</span>
+            <span style="font-size: 11px; color: var(--slate-400); font-style: italic;">Sin asignar</span>
           `}
         </td>
         <td>
@@ -281,19 +546,28 @@
             <span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>
           `}
         </td>
-        <td>
-          <div class="flex-center gap-2">
+        <td style="text-align: right;">
+          <div style="display: inline-flex; align-items: center; gap: 6px;">
             <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
               👁 Ver
             </a>
-            <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar">
-              ✏
-            </a>
+            ${allowEdit ? `
+              <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar">
+                ✏
+              </a>
+            ` : ''}
+            ${isArchivo && !r.tiene_ubicacion ? `
+              <a href="ubicacion.html?rd=${r.id}" class="btn btn-dark btn--xs" title="Asignar Ubicación">
+                📦 Ubicar
+              </a>
+            ` : ''}
           </div>
         </td>
       </tr>
     `).join('');
   }
+
+
 
   function executeQuickSearch() {
     const q = document.getElementById("globalSearchInput").value.trim();

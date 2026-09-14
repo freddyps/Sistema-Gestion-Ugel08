@@ -1,240 +1,251 @@
-/* ==========================================================================
-   UGEL 08 CAÑETE - DIGITAL DELIVERY WORKFLOW HANDLER
-   Módulo de Preparación, Generación de Enlace Seguro y Distribución
-   ========================================================================== */
+/**
+ * CONTROLADOR DE VISTA INSTITUCIONAL: DETALLE DE SOLICITUD Y FLUJO DE ENTREGA
+ * Capa de Presentación -> Consume requestService y deliveryService
+ */
 
-let selectedDocList = [];
-let currentSolicitudData = null;
-let lastGeneratedEntrega = null;
+let currentSolicitud = null;
+let selectedDocs = [];
+let ultimaEntrega = null;
 
-function initSolicitudDetail(solicitudCodigo) {
-  const data = ResolutionStore.getSolicitudByCodigo(solicitudCodigo);
-  currentSolicitudData = data;
-
-  // Render information fields
-  document.getElementById('solCodigoTitle').innerText = data.codigo;
-  document.getElementById('solSolicitante').innerText = data.solicitante;
-  document.getElementById('solDni').innerText = data.dni;
-  document.getElementById('solFecha').innerText = data.fecha;
-  document.getElementById('solMotivo').innerText = data.motivo;
-  document.getElementById('solRd').innerText = data.rdSolicitada;
-  document.getElementById('solAnio').innerText = data.rdAnio;
-
-  const badge = document.getElementById('solEstadoBadge');
-  badge.innerText = data.estado;
-  badge.className = `badge badge-${data.estado.toLowerCase().replace(/\s+/g, '-')}`;
-
-  // Physical Location Card
-  document.getElementById('solLocLocal').innerText = data.ubicacionFisica.local;
-  document.getElementById('solLocAmbiente').innerText = data.ubicacionFisica.ambiente;
-  document.getElementById('solLocEstante').innerText = data.ubicacionFisica.estante;
-  document.getElementById('solLocCaja').innerText = data.ubicacionFisica.caja;
-  document.getElementById('solLocRango').innerText = data.ubicacionFisica.rango;
-
-  // Render Documents List
-  renderDocumentsList(data.documentosDisponibles);
-}
-
-function renderDocumentsList(docs) {
-  const container = document.getElementById('docsContainer');
-  if (!container) return;
-
-  container.innerHTML = docs.map((doc, idx) => `
-    <div class="doc-item-card ${doc.defaultSelected ? 'selected' : ''}" id="card-${doc.id}">
-      <input type="checkbox" class="doc-checkbox" id="chk-${doc.id}" 
-             ${doc.defaultSelected ? 'checked' : ''} 
-             onchange="onDocSelectionChange('${doc.id}')">
-      
-      <div class="doc-icon-box">
-        PDF
-      </div>
-
-      <div class="doc-info">
-        <span class="doc-title">${doc.nombre}</span>
-        <div class="doc-meta">
-          <span>📄 <strong>${doc.paginas} páginas</strong></span>
-          <span>•</span>
-          <span>💾 ${doc.tamano}</span>
-          <span>•</span>
-          <span>📅 ${doc.fecha}</span>
-          <span>•</span>
-          <span class="badge" style="background: var(--slate-100); color: var(--slate-700); font-size: 0.7rem;">${doc.tipo}</span>
-        </div>
-      </div>
-
-      <button class="btn btn-secondary btn-sm" onclick="openPdfViewer('${doc.nombre}', ${doc.paginas}, '${doc.tamano}', '${currentSolicitudData.rdSolicitada}')">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-        Ver Documento
-      </button>
-    </div>
-  `).join('');
-
-  recalculateSelectionTotals();
-}
-
-function onDocSelectionChange(docId) {
-  const chk = document.getElementById(`chk-${docId}`);
-  const card = document.getElementById(`card-${docId}`);
-  if (chk && card) {
-    if (chk.checked) {
-      card.classList.add('selected');
-    } else {
-      card.classList.remove('selected');
-    }
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof renderSidebar === 'function') {
+    renderSidebar('solicitudes');
   }
-  recalculateSelectionTotals();
-}
 
-function selectAllDocs(select = true) {
-  if (!currentSolicitudData) return;
-  currentSolicitudData.documentosDisponibles.forEach(doc => {
-    const chk = document.getElementById(`chk-${doc.id}`);
-    const card = document.getElementById(`card-${doc.id}`);
-    if (chk && card) {
-      chk.checked = select;
-      if (select) card.classList.add('selected');
-      else card.classList.remove('selected');
-    }
-  });
-  recalculateSelectionTotals();
-}
+  // Obtener código de la URL
+  const params = new URLSearchParams(window.location.search);
+  const codigo = params.get('id') || 'SOL-2026-000125';
 
-function recalculateSelectionTotals() {
-  if (!currentSolicitudData) return;
+  cargarDetalleSolicitud(codigo);
+});
 
-  selectedDocList = currentSolicitudData.documentosDisponibles.filter(doc => {
-    const chk = document.getElementById(`chk-${doc.id}`);
-    return chk && chk.checked;
-  });
+function cargarDetalleSolicitud(codigo) {
+  currentSolicitud = window.requestService.getByCodigo(codigo);
 
-  const totalDocs = selectedDocList.length;
-  let totalPags = 0;
-  let totalMB = 0;
-
-  selectedDocList.forEach(doc => {
-    totalPags += doc.paginas;
-    const mbVal = parseFloat(doc.tamano);
-    if (doc.tamano.includes('KB')) {
-      totalMB += mbVal / 1024;
-    } else {
-      totalMB += mbVal;
-    }
-  });
-
-  const mbFormatted = totalMB >= 1 ? `${totalMB.toFixed(1)} MB` : `${Math.round(totalMB * 1024)} KB`;
-
-  document.getElementById('prepTotalDocs').innerText = totalDocs;
-  document.getElementById('prepTotalPags').innerText = totalPags;
-  document.getElementById('prepTotalPeso').innerText = mbFormatted;
-
-  const generateBtn = document.getElementById('btnGenerarEntrega');
-  if (generateBtn) {
-    generateBtn.disabled = totalDocs === 0;
-    generateBtn.style.opacity = totalDocs === 0 ? '0.5' : '1';
-  }
-}
-
-function openConfirmarEntregaModal() {
-  if (selectedDocList.length === 0) {
-    showToast('Seleccione al menos un documento para generar la entrega.', 'info');
+  if (!currentSolicitud) {
+    showToast(`Solicitud ${codigo} no encontrada.`, 'error');
+    setTimeout(() => { window.location.href = 'solicitudes.html'; }, 1500);
     return;
   }
 
-  let totalPags = selectedDocList.reduce((acc, d) => acc + d.paginas, 0);
+  // Llenar datos de cabecera y expediente
+  document.getElementById('topbarTitle').innerText = `Atención de Solicitud: ${currentSolicitud.codigo}`;
+  document.getElementById('solCode').innerText = currentSolicitud.codigo;
+  document.getElementById('solFecha').innerText = `Fecha: ${currentSolicitud.fecha}`;
+  document.getElementById('solApplicant').innerText = currentSolicitud.solicitante;
+  document.getElementById('solDni').innerText = `DNI/Doc: ${currentSolicitud.dni || 'No especificado'}`;
+  document.getElementById('solRdNumber').innerText = currentSolicitud.rd_solicitada || 'RD Institucional';
+  document.getElementById('solRdYear').innerText = `Año: ${currentSolicitud.rd_anio || '2004'}`;
+  document.getElementById('solReason').innerText = currentSolicitud.motivo || 'Requerimiento de copias fedateadas para fines administrativos.';
 
-  document.getElementById('confirmSolCodigo').innerText = currentSolicitudData.codigo;
-  document.getElementById('confirmSolicitante').innerText = currentSolicitudData.solicitante;
-  document.getElementById('confirmDocsCount').innerText = `${selectedDocList.length} documento(s)`;
-  document.getElementById('confirmPagsCount').innerText = `${totalPags} páginas`;
+  // Estado con badge
+  const estadoBadge = document.getElementById('solStatusBadge');
+  estadoBadge.innerText = currentSolicitud.estado;
+  estadoBadge.className = `badge badge-${currentSolicitud.estado.toLowerCase().replace(/\s+/g, '-')}`;
 
-  openModal('confirmarEntregaModal');
-}
-
-function generarEntregaConfirmada() {
-  closeModal('confirmarEntregaModal');
-
-  // Random / incremental code
-  const codeNum = Math.floor(Math.random() * 900000) + 100000;
-  const codigoEntrega = `ENT-2026-${codeNum}`;
-
-  let totalPags = selectedDocList.reduce((acc, d) => acc + d.paginas, 0);
-  let totalMB = 0;
-  selectedDocList.forEach(d => {
-    const mb = parseFloat(d.tamano);
-    totalMB += d.tamano.includes('KB') ? mb / 1024 : mb;
-  });
-  const pesoFormatted = totalMB >= 1 ? `${totalMB.toFixed(1)} MB` : `${Math.round(totalMB * 1024)} KB`;
-
-  const nuevaEntrega = {
-    codigo: codigoEntrega,
-    solicitudCodigo: currentSolicitudData.codigo,
-    solicitante: currentSolicitudData.solicitante,
-    resolucion: currentSolicitudData.rdSolicitada,
-    documentos: selectedDocList.map(d => ({ nombre: d.nombre, paginas: d.paginas, tamano: d.tamano })),
-    totalDocumentos: selectedDocList.length,
-    totalPaginas: totalPags,
-    totalPeso: pesoFormatted,
-    fechaCreacion: "02/09/2026",
-    fechaVencimiento: "09/09/2026",
-    medio: "Enlace Seguro / Canal UGEL",
-    estado: "DISPONIBLE",
-    accesos: 0,
-    enlace: `https://sistema-ugelsimulacion.gob.pe/documentos/${codigoEntrega}`
+  // Ubicación física de custodia
+  const ubi = currentSolicitud.ubicacion_resumen || {
+    local: "Archivo Central (Sede Principal)",
+    ambiente: "Ambiente N° 1 - Legajos Docentes",
+    estante: "Estante A",
+    caja: "Caja 001",
+    rango: "RD-0001 a RD-0100"
   };
 
-  ResolutionStore.saveEntrega(nuevaEntrega);
-  ResolutionStore.updateSolicitudEstado(currentSolicitudData.codigo, "DOCUMENTO PREPARADO");
-  lastGeneratedEntrega = nuevaEntrega;
+  document.getElementById('locLocal').innerText = ubi.local;
+  document.getElementById('locAmbiente').innerText = `${ubi.ambiente} • ${ubi.estante}`;
+  document.getElementById('locCaja').innerText = ubi.caja;
+  document.getElementById('locRango').innerText = ubi.rango;
 
-  // Populate generated modal
-  document.getElementById('genCodigoEntrega').innerText = codigoEntrega;
-  document.getElementById('genEnlaceInput').value = `https://sistema-ugelsimulacion.gob.pe/documentos/${codigoEntrega}`;
-  document.getElementById('genTotalDocs').innerText = `${selectedDocList.length} archivos`;
-  document.getElementById('genTotalPags').innerText = `${totalPags} páginas`;
+  // Renderizar documentos
+  const docs = currentSolicitud.documentos_disponibles || currentSolicitud.documentosDisponibles || [];
+  renderizarDocumentos(docs);
+}
 
-  openModal('entregaGeneradaModal');
-  showToast('Entrega digital generada exitosamente.', 'success');
+function renderizarDocumentos(docs) {
+  const container = document.getElementById('docSelectionList');
+  if (!container) return;
+
+  selectedDocs = docs.filter(d => d.defaultSelected !== false);
+
+  container.innerHTML = docs.map((doc, idx) => {
+    const isChecked = selectedDocs.some(d => d.id === doc.id);
+    return `
+      <div class="doc-item" id="docRow-${doc.id}" style="cursor: pointer;" onclick="toggleDocCheck('${doc.id}', event)">
+        <div class="doc-item-left">
+          <input type="checkbox" id="chkDoc-${doc.id}" class="form-checkbox" 
+                 ${isChecked ? 'checked' : ''} onclick="event.stopPropagation(); actualizarSeleccionDoc('${doc.id}');"
+                 style="width: 18px; height: 18px; accent-color: var(--blue); cursor: pointer;">
+          <div class="doc-icon">PDF</div>
+          <div>
+            <p class="doc-name">${doc.nombre}</p>
+            <p class="doc-meta">
+              <span class="doc-meta-type">${doc.tipo}</span> • 
+              <span>${doc.paginas} páginas</span> • 
+              <span>${doc.tamano}</span> • 
+              <span>${doc.fecha}</span>
+            </p>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-dark btn--xs" onclick="event.stopPropagation(); abrirVisorDocumento('${doc.nombre}', ${doc.paginas}, '${doc.tamano}')">
+            👁 Ver PDF
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  actualizarTotalesSeleccion();
+}
+
+function toggleDocCheck(id, event) {
+  const chk = document.getElementById(`chkDoc-${id}`);
+  if (chk) {
+    chk.checked = !chk.checked;
+    actualizarSeleccionDoc(id);
+  }
+}
+
+function actualizarSeleccionDoc(id) {
+  const docs = currentSolicitud.documentos_disponibles || currentSolicitud.documentosDisponibles || [];
+  const doc = docs.find(d => d.id === id);
+  const chk = document.getElementById(`chkDoc-${id}`);
+
+  if (chk && chk.checked) {
+    if (!selectedDocs.some(d => d.id === id)) {
+      selectedDocs.push(doc);
+    }
+  } else {
+    selectedDocs = selectedDocs.filter(d => d.id !== id);
+  }
+
+  actualizarTotalesSeleccion();
+}
+
+function toggleSelectAllDocs(marcar) {
+  const docs = currentSolicitud.documentos_disponibles || currentSolicitud.documentosDisponibles || [];
+  docs.forEach(d => {
+    const chk = document.getElementById(`chkDoc-${d.id}`);
+    if (chk) chk.checked = marcar;
+  });
+
+  selectedDocs = marcar ? [...docs] : [];
+  actualizarTotalesSeleccion();
+}
+
+function actualizarTotalesSeleccion() {
+  const totalCount = selectedDocs.length;
+  let totalFolios = 0;
+  let totalMB = 0;
+
+  selectedDocs.forEach(d => {
+    totalFolios += Number(d.paginas) || 1;
+    const mb = parseFloat(d.tamano) || 1;
+    if (String(d.tamano).includes('KB')) {
+      totalMB += mb / 1024;
+    } else {
+      totalMB += mb;
+    }
+  });
+
+  const pesoTxt = totalMB >= 1 ? `${totalMB.toFixed(1)} MB` : `${Math.round(totalMB * 1024)} KB`;
+
+  document.getElementById('summaryDocCount').innerText = `${totalCount} seleccionado(s)`;
+  document.getElementById('summaryPageCount').innerText = `${totalFolios} páginas`;
+  document.getElementById('summarySize').innerText = pesoTxt;
+
+  const btnGen = document.getElementById('btnGenerarEntrega');
+  if (btnGen) {
+    btnGen.disabled = totalCount === 0;
+    btnGen.style.opacity = totalCount === 0 ? '0.5' : '1';
+  }
+}
+
+function abrirVisorDocumento(nombre, paginas, tamano) {
+  if (typeof openPdfViewerModal === 'function') {
+    openPdfViewerModal(nombre, paginas, tamano);
+  } else if (typeof openPdfViewer === 'function') {
+    openPdfViewer(nombre, paginas, tamano, currentSolicitud.rd_solicitada || 'RD');
+  } else {
+    showToast(`Abriendo ${nombre}...`, 'info');
+  }
+}
+
+// Modal de Confirmación
+function abrirModalConfirmacionEntrega() {
+  if (selectedDocs.length === 0) {
+    showToast('Seleccione al menos un documento para generar la entrega.', 'warning');
+    return;
+  }
+
+  let totalFolios = selectedDocs.reduce((acc, d) => acc + (Number(d.paginas) || 1), 0);
+
+  document.getElementById('modalConfApplicant').innerText = currentSolicitud.solicitante;
+  document.getElementById('modalConfDocs').innerText = `${selectedDocs.length} archivo(s)`;
+  document.getElementById('modalConfPages').innerText = `${totalFolios} folios`;
+
+  document.getElementById('modalConfirmarEntrega').classList.add('active');
+}
+
+function cerrarModalConfirmacion() {
+  document.getElementById('modalConfirmarEntrega').classList.remove('active');
+}
+
+// Ejecutar Generación mediante deliveryService
+function ejecutarGeneracionEntrega() {
+  cerrarModalConfirmacion();
+
+  try {
+    const nueva = window.deliveryService.createDelivery({
+      solicitudCodigo: currentSolicitud.codigo,
+      solicitante: currentSolicitud.solicitante,
+      resolucion: currentSolicitud.rd_solicitada,
+      documentos: selectedDocs,
+      vigenciaDias: 7,
+      medio: "Enlace Seguro / WhatsApp"
+    });
+
+    ultimaEntrega = nueva;
+
+    // Actualizar vista del detalle
+    currentSolicitud.estado = "ATENDIDA";
+    const badge = document.getElementById('solStatusBadge');
+    badge.innerText = "ATENDIDA";
+    badge.className = "badge badge-atendida";
+
+    // Mostrar modal de éxito
+    document.getElementById('genCodEntrega').innerText = nueva.codigo;
+    document.getElementById('genLinkInput').value = nueva.enlace;
+    document.getElementById('modalEntregaExitosa').classList.add('active');
+
+    showToast(`Entrega ${nueva.codigo} generada exitosamente.`, 'success');
+  } catch (error) {
+    showToast(error.message || 'Error al generar la entrega.', 'error');
+  }
+}
+
+function cerrarModalExito() {
+  document.getElementById('modalEntregaExitosa').classList.remove('active');
 }
 
 function copiarEnlaceGenerado() {
-  const input = document.getElementById('genEnlaceInput');
+  const input = document.getElementById('genLinkInput');
   if (input) {
     input.select();
     navigator.clipboard.writeText(input.value).then(() => {
-      showToast('¡Enlace seguro copiado al portapapeles!', 'success');
-    }).catch(() => {
-      showToast('Enlace seleccionado para copiar.', 'info');
+      showToast('Enlace copiado al portapapeles.', 'success');
     });
   }
 }
 
-function abrirPortalCiudadanoGenerado() {
-  if (lastGeneratedEntrega) {
-    window.open(`consulta-ciudadano.html?codigo=${encodeURIComponent(lastGeneratedEntrega.codigo)}`, '_blank');
-  } else {
-    window.open('consulta-ciudadano.html', '_blank');
-  }
+function simularWhatsApp() {
+  if (!ultimaEntrega) return;
+  showToast(`Simulando envío a WhatsApp de ${ultimaEntrega.solicitante}...`, 'success');
 }
 
-function regenerarEnlace() {
-  showToast('Generando nuevo token de acceso seguro...', 'info');
-  setTimeout(() => {
-    generarEntregaConfirmada();
-  }, 400);
-}
-
-function compartirMedio(canal) {
-  if (!lastGeneratedEntrega) return;
-  
-  if (canal === 'whatsapp') {
-    showToast(`Simulando envío a WhatsApp de ${lastGeneratedEntrega.solicitante} con el enlace de descarga...`, 'success');
-  } else if (canal === 'email') {
-    showToast(`Simulando envío de notificación oficial por correo institucional...`, 'success');
-  } else if (canal === 'codigo') {
-    showToast(`Código ${lastGeneratedEntrega.codigo} listo para entregar en ventanilla al ciudadano.`, 'info');
-  } else if (canal === 'constancia') {
-    window.print();
-  } else if (canal === 'paquete') {
-    showToast(`Descargando paquete comprimido .ZIP con los ${lastGeneratedEntrega.totalDocumentos} documentos...`, 'success');
-  }
+function simularCorreo() {
+  if (!ultimaEntrega) return;
+  showToast(`Simulando envío de notificación oficial por correo institucional...`, 'success');
 }

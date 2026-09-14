@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recepción de Resoluciones en Archivo - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  <!-- Sidebar Oficial dinámico -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Bandeja de Recepción Física en Archivo Central</h2>
+          <p class="topbar-subtitle">Responsable del Archivo: Marcos | Control de resoluciones remitidas para custodia definitiva</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <span class="badge" style="background: #fef3c7; color: #92400e; font-weight: 700; padding: 6px 14px; border-radius: 9999px; border: 1px solid #fde68a;">
+          📥 Recepción de Acervo Documentario
+        </span>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Alert Explicativo del Procedimiento -->
+      <div class="card card--p" style="margin-bottom: 24px; border-left: 4px solid var(--blue); background: #f8fafc;">
+        <div class="flex-center gap-3">
+          <div style="font-size: 28px;">📦</div>
+          <div>
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--slate-800);">
+              Flujo Oficial de Custodia Física en Archivo
+            </h4>
+            <p style="margin: 0; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
+              Aquí se listan las <strong>Resoluciones Directorales autógrafas</strong> que han sido remitidas formalmente por la Oficina de Resoluciones (María Angélica). Como custodio de Archivo (Marcos), debes:
+              <strong>1.</strong> Cotejar físicamente el documento con su foliación y firmas.
+              <strong>2.</strong> Confirmar la recepción física.
+              <strong>3.</strong> Asignar inmediatamente la ubicación física (caja, estante, archivador y rango).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div class="stats-grid stats-grid--3" style="margin-bottom: 24px;">
+        <div class="stat-card" style="border-top: 3px solid #f59e0b;">
+          <div class="stat-icon" style="background: #fef3c7; color: #b45309;">⏳</div>
+          <div class="stat-content">
+            <h3 class="stat-value" id="kpiPendientes">0</h3>
+            <p class="stat-label">Pendientes de Recepción Física</p>
+          </div>
+        </div>
+        <div class="stat-card" style="border-top: 3px solid #3b82f6;">
+          <div class="stat-icon" style="background: #dbeafe; color: #1d4ed8;">📥</div>
+          <div class="stat-content">
+            <h3 class="stat-value" id="kpiRecibidasSinUbicar">0</h3>
+            <p class="stat-label">Recibidas (Sin Ubicación Asignada)</p>
+          </div>
+        </div>
+        <div class="stat-card" style="border-top: 3px solid #10b981;">
+          <div class="stat-icon" style="background: #d1fae5; color: #047857;">✅</div>
+          <div class="stat-content">
+            <h3 class="stat-value" id="kpiCustodiadas">0</h3>
+            <p class="stat-label">En Custodia Archivística Definitiva</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter / Switch Tabs -->
+      <div class="card card--p" style="padding: 14px 20px; margin-bottom: 16px;">
+        <div class="flex-center justify-between" style="flex-wrap: wrap; gap: 12px;">
+          <div class="flex-center gap-2">
+            <button onclick="setBandejaTab('pendientes')" id="tabPendientes" class="btn btn-primary btn--sm">
+              ⏳ Pendientes por Recepcionar
+            </button>
+            <button onclick="setBandejaTab('recibidas')" id="tabRecibidas" class="btn btn-light btn--sm">
+              📥 Recibidas por Ubicar
+            </button>
+            <button onclick="setBandejaTab('historial')" id="tabHistorial" class="btn btn-light btn--sm">
+              📁 Historial en Custodia
+            </button>
+          </div>
+          <div style="min-width: 260px;">
+            <input type="text" id="filtroTexto" placeholder="Buscar por N° RD, administrado o asunto..." class="form-control" style="font-size: 12px; padding: 6px 12px;" oninput="renderBandeja()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Bandeja -->
+      <div class="card table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>N° Resolución</th>
+                <th>Fecha Emisión</th>
+                <th>Administrado</th>
+                <th>Asunto</th>
+                <th>Área Origen</th>
+                <th>PDF</th>
+                <th>Estado Archivo</th>
+                <th>Ubicación Física</th>
+                <th style="text-align: right;">Acciones de Archivo</th>
+              </tr>
+            </thead>
+            <tbody id="bandejaTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal para Confirmar Recepción Física -->
+<div class="modal-backdrop" id="modalRecepcion" style="display: none;">
+  <div class="modal-container" style="max-width: 500px;">
+    <div class="modal-header">
+      <h3 class="modal-title">Confirmar Recepción Física en Archivo</h3>
+      <button class="modal-close-btn" onclick="cerrarModalRecepcion()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 16px;">
+        Vas a confirmar que el documento autógrafo físico original de la 
+        <strong id="modalRdNumero" style="color: var(--blue);"></strong> 
+        ha ingresado físicamente a la custodia del Archivo Central de la UGEL 08.
+      </p>
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label class="form-label">Estado Físico del Documento al Recibir</label>
+        <select id="modalCondicionDoc" class="form-control">
+          <option value="Óptimo / Completo con firmas originales">Óptimo / Completo con firmas originales</option>
+          <option value="Con desgaste / Deterioro leve">Con desgaste / Deterioro leve</option>
+          <option value="Foliado incompleto (Observación)">Foliado incompleto (Observación)</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label class="form-label">Observaciones / Anotaciones de Recepción</label>
+        <textarea id="modalObsRecepcion" class="form-control" rows="3" placeholder="Ej: Recibido en original autógrafo con 3 folios y cargo de notificación adjunto."></textarea>
+      </div>
+
+      <div style="background: #f1f5f9; padding: 12px; border-radius: 8px; font-size: 11px; color: var(--slate-600);">
+        ℹ️ Esta acción quedará registrada en la auditoría del sistema a nombre de <strong>Marcos (Responsable de Archivo)</strong> con fecha y hora exacta.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-light btn--sm" onclick="cerrarModalRecepcion()">Cancelar</button>
+      <button class="btn btn-primary btn--sm" onclick="confirmarRecepcion()">
+        📥 Confirmar Recepción
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  let activeTab = 'pendientes';
+  let targetRdId = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("recibidas");
+    actualizarKpis();
+    renderBandeja();
+  });
+
+  function actualizarKpis() {
+    const list = window.db.getTable("resoluciones");
+    const pendientes = list.filter(r => r.estado === 'Pendiente de archivo').length;
+    const recibidasSinUbicar = list.filter(r => r.estado === 'Recibida en archivo' && !r.tiene_ubicacion).length;
+    const custodiadas = list.filter(r => r.tiene_ubicacion).length;
+
+    document.getElementById("kpiPendientes").innerText = pendientes;
+    document.getElementById("kpiRecibidasSinUbicar").innerText = recibidasSinUbicar;
+    document.getElementById("kpiCustodiadas").innerText = custodiadas;
+  }
+
+  function setBandejaTab(tab) {
+    activeTab = tab;
+    document.getElementById("tabPendientes").className = tab === 'pendientes' ? 'btn btn-primary btn--sm' : 'btn btn-light btn--sm';
+    document.getElementById("tabRecibidas").className = tab === 'recibidas' ? 'btn btn-primary btn--sm' : 'btn btn-light btn--sm';
+    document.getElementById("tabHistorial").className = tab === 'historial' ? 'btn btn-primary btn--sm' : 'btn btn-light btn--sm';
+    renderBandeja();
+  }
+
+  function renderBandeja() {
+    const tbody = document.getElementById("bandejaTableBody");
+    const query = (document.getElementById("filtroTexto").value || "").toLowerCase().trim();
+    let items = window.db.getTable("resoluciones");
+
+    if (activeTab === 'pendientes') {
+      items = items.filter(r => r.estado === 'Pendiente de archivo');
+    } else if (activeTab === 'recibidas') {
+      items = items.filter(r => r.estado === 'Recibida en archivo' && !r.tiene_ubicacion);
+    } else if (activeTab === 'historial') {
+      items = items.filter(r => r.tiene_ubicacion || r.estado === 'Archivado');
+    }
+
+    if (query) {
+      items = items.filter(r => 
+        (r.numero_rd && r.numero_rd.toLowerCase().includes(query)) ||
+        (r.administrado_nombre && r.administrado_nombre.toLowerCase().includes(query)) ||
+        (r.asunto && r.asunto.toLowerCase().includes(query))
+      );
+    }
+
+    if (!items.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" class="text-center" style="padding: 40px;">
+            <div style="font-size: 32px; margin-bottom: 6px;">📂</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-700); margin: 0;">No hay resoluciones en esta bandeja</h4>
+            <p style="font-size: 11px; color: var(--slate-500); margin-top: 4px;">Todo el acervo remitido se encuentra debidamente procesado.</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = items.map(r => `
+      <tr>
+        <td class="td-code">${r.numero_rd}</td>
+        <td style="white-space: nowrap; color: var(--slate-600); font-size: 11px;">${r.fecha_emision}</td>
+        <td class="td-name">
+          ${r.administrado_nombre}
+          ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
+        </td>
+        <td style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; color: var(--slate-600);" title="${r.asunto}">
+          ${r.asunto}
+        </td>
+        <td style="font-size: 11px; color: var(--slate-700);">${r.area_origen}</td>
+        <td>
+          ${r.tiene_documento ? `
+            <button onclick="openPdfViewerModal('${r.numero_rd}', ${r.documento?.numero_paginas || 1}, '${r.documento?.tamanio || '1.2 MB'}')" class="badge-pdf-dark">
+              📄 PDF
+            </button>
+          ` : '<span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>'}
+        </td>
+        <td>${renderBadgeEstado(r.estado)}</td>
+        <td>
+          ${r.tiene_ubicacion ? `
+            <a href="ubicacion.html?caja=${encodeURIComponent(r.ubicacion_caja)}" class="badge-caja">
+              📦 ${r.ubicacion_caja}
+            </a>
+          ` : '<span style="font-size: 10px; color: #b45309; background: #fef3c7; padding: 2px 6px; border-radius: 4px;">Por ubicar</span>'}
+        </td>
+        <td style="text-align: right;">
+          <div class="flex-center gap-1" style="justify-content: flex-end;">
+            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Ver detalle">
+              👁 Ficha
+            </a>
+            ${r.estado === 'Pendiente de archivo' ? `
+              <button onclick="abrirModalRecepcion(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700;">
+                📥 Confirmar Recepción
+              </button>
+            ` : ''}
+            ${(r.estado === 'Recibida en archivo' || r.estado === 'Archivado') && !r.tiene_ubicacion ? `
+              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="btn btn--xs" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; font-weight: 700;">
+                📍 Registrar Ubicación
+              </a>
+            ` : ''}
+            ${r.tiene_ubicacion ? `
+              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="btn btn-light btn--xs" title="Modificar ubicación física">
+                📍 Mover
+              </a>
+            ` : ''}
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function abrirModalRecepcion(id, num) {
+    targetRdId = id;
+    document.getElementById("modalRdNumero").innerText = num;
+    document.getElementById("modalObsRecepcion").value = "";
+    document.getElementById("modalRecepcion").style.display = "flex";
+  }
+
+  function cerrarModalRecepcion() {
+    document.getElementById("modalRecepcion").style.display = "none";
+    targetRdId = null;
+  }
+
+  function confirmarRecepcion() {
+    if (!targetRdId) return;
+    const condicion = document.getElementById("modalCondicionDoc").value;
+    const obs = document.getElementById("modalObsRecepcion").value.trim();
+    const obsTotal = `Condición física: ${condicion}. ${obs}`;
+
+    const res = window.resolutionService.recibirEnArchivo(targetRdId, obsTotal);
+    if (res.success) {
+      showToast("Recepción física confirmada exitosamente en Archivo", "success");
+      cerrarModalRecepcion();
+      actualizarKpis();
+      renderBandeja();
+    } else {
+      showToast(res.message || "Error al registrar recepción", "error");
+    }
+  }
+</script>
+
+</body>
+</html>

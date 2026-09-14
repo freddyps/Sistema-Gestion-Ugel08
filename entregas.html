@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Historial de Entregas Digitales - UGEL 08 Cañete</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased app-layout">
+<body class="page-app">
 
+<div class="app-wrapper">
   <!-- Sidebar Unificado -->
   <aside class="sidebar" id="mainSidebar"></aside>
 
@@ -24,51 +24,59 @@
           <p class="topbar-subtitle">Seguimiento de enlaces seguros, códigos de verificación y accesos ciudadanos</p>
         </div>
         <span class="badge badge-blue" style="font-weight: 700;">
-          Trazabilidad Segura
+          Trazabilidad Institucional
         </span>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="consulta-ciudadano.html" target="_blank" class="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          Abrir Portal del Ciudadano
-        </a>
+      <div class="topbar-right">
+        <button type="button" onclick="abrirModalNuevaEntrega()" class="btn btn-primary btn--rounded">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Nueva Entrega
+        </button>
       </div>
     </header>
 
     <!-- Page Body -->
-    <div class="p-8 flex-1 flex flex-col gap-6">
+    <div class="page-body">
       
       <!-- Table Card -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-100 pb-4 mb-5">
-          <h3 class="font-bold text-base text-[#0A2540] font-['Outfit']">
-            Registro de Enlaces y Códigos de Entrega
-          </h3>
-          <div class="relative w-full md:w-80">
-            <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" placeholder="Buscar por código de entrega o solicitante..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs focus:bg-white focus:outline-none focus:border-blue-500">
+      <div class="card" style="padding: 24px;">
+        
+        <!-- Header con Título y Barra de Búsqueda -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--slate-100);">
+          <div>
+            <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--primary); margin: 0;">
+              Registro de Enlaces y Códigos de Entrega
+            </h3>
+            <p class="td-muted" style="font-size: 12px; margin: 4px 0 0;">Control de constancias de retiro y enlaces seguros para administrados</p>
+          </div>
+
+          <!-- Barra de Búsqueda Institucional -->
+          <div class="input-wrapper" style="min-width: 280px; max-width: 360px; width: 100%;">
+            <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="busquedaEntregaInput" placeholder="Buscar por código, administrado o RD..." 
+                   class="search-pill" oninput="filtrarEntregas()">
           </div>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200 uppercase tracking-wider">
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
               <tr>
-                <th class="p-3.5">Código Entrega</th>
-                <th class="p-3.5">Solicitante</th>
-                <th class="p-3.5">Resolución</th>
-                <th class="p-3.5">Documentos</th>
-                <th class="p-3.5">Fecha Generación</th>
-                <th class="p-3.5">Vencimiento</th>
-                <th class="p-3.5">Accesos</th>
-                <th class="p-3.5">Medio</th>
-                <th class="p-3.5">Estado</th>
-                <th class="p-3.5">Acciones</th>
+                <th>Código Entrega</th>
+                <th>Solicitante / Administrado</th>
+                <th>Resolución</th>
+                <th>Documentos</th>
+                <th>Fecha Emisión</th>
+                <th>Vencimiento</th>
+                <th>Accesos</th>
+                <th>Medio</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Acciones</th>
               </tr>
             </thead>
-            <tbody id="entregasTableBody" class="divide-y divide-slate-100">
-              <!-- Rendered via JS -->
+            <tbody id="entregasTableBody">
+              <!-- Renderizado dinámicamente mediante deliveryService -->
             </tbody>
           </table>
         </div>
@@ -78,47 +86,184 @@
   </main>
 </div>
 
-<script src="js/mockData.js"></script>
-<script src="js/services/apiClient.js"></script>
+<!-- Modal Registrar Nueva Entrega Directa -->
+<div id="modalNuevaEntrega" class="modal-overlay">
+  <div class="modal-box modal-box--md">
+    <div class="modal-header">
+      <h3 class="modal-title">
+        <svg style="width: 20px; height: 20px; color: var(--blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Registrar Nueva Entrega Institucional
+      </h3>
+      <button type="button" onclick="cerrarModalNuevaEntrega()" class="modal-close">✕</button>
+    </div>
+    <form onsubmit="guardarNuevaEntrega(event)" class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+      <div>
+        <label class="form-label">Nombre del Solicitante / Administrado</label>
+        <input type="text" id="nuevaSolicitante" required placeholder="Ej: Prof. Juan Pérez Ramos" class="form-input">
+      </div>
+      <div class="grid-2col">
+        <div>
+          <label class="form-label">N° Resolución Relacionada</label>
+          <input type="text" id="nuevaResolucion" required placeholder="Ej: RD-0001-2004" class="form-input">
+        </div>
+        <div>
+          <label class="form-label">Canal / Medio de Entrega</label>
+          <select id="nuevaMedio" class="form-select">
+            <option value="Enlace Seguro / WhatsApp">Enlace Seguro / WhatsApp</option>
+            <option value="Correo Institucional">Correo Institucional</option>
+            <option value="Entrega en Ventanilla">Entrega en Ventanilla (Presencial)</option>
+            <option value="Oficio Institucional">Oficio Institucional</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2col">
+        <div>
+          <label class="form-label">N° de Folios / Páginas</label>
+          <input type="number" id="nuevaPaginas" value="12" min="1" class="form-input">
+        </div>
+        <div>
+          <label class="form-label">Vigencia Institucional (Días)</label>
+          <input type="number" id="nuevaVigencia" value="7" min="1" class="form-input">
+        </div>
+      </div>
+      <div class="modal-footer" style="padding: 0; margin-top: 8px;">
+        <button type="button" onclick="cerrarModalNuevaEntrega()" class="btn btn-light">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Generar y Guardar Entrega</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
 <script src="js/app.js"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof renderSidebar === 'function') {
       renderSidebar('entregas');
     }
-    const list = ResolutionStore.getEntregas();
-    const tbody = document.getElementById('entregasTableBody');
+    actualizarTablaEntregas();
+  });
 
-    tbody.innerHTML = list.map(e => `
-      <tr class="hover:bg-blue-50/50 transition">
-        <td class="p-3.5 font-bold text-blue-600 font-mono text-sm">${e.codigoEntrega}</td>
-        <td class="p-3.5 font-semibold text-slate-900">${e.solicitante}</td>
-        <td class="p-3.5 font-bold text-[#0A2540]">${e.rdMatriz}</td>
-        <td class="p-3.5"><span class="bg-blue-50 text-blue-800 border border-blue-200 px-2 py-0.5 rounded font-bold">${e.documentosCount} docs (${e.totalPaginas} pág)</span></td>
-        <td class="p-3.5 text-slate-600">${e.fechaGeneracion}</td>
-        <td class="p-3.5 text-slate-600">${e.vencimiento}</td>
-        <td class="p-3.5">
-          <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-bold">${e.accesosRegistrados} accesos</span>
-        </td>
-        <td class="p-3.5 text-slate-600 font-medium">${e.medioCompartido}</td>
-        <td class="p-3.5">
-          <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 px-2.5 py-1 rounded-full font-bold text-[10px]">
-            ${e.estado}
+  function actualizarTablaEntregas(items = null) {
+    const list = items || window.deliveryService.getAll();
+    renderTablaEntregas(list);
+  }
+
+  function renderTablaEntregas(items) {
+    const tbody = document.getElementById('entregasTableBody');
+    if (!items.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="10" class="text-center" style="padding: 40px; color: var(--slate-400);">
+            No se encontraron entregas que coincidan con la búsqueda.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = items.map(e => `
+      <tr>
+        <td class="td-code">${e.codigo}</td>
+        <td class="td-name">${e.solicitante}</td>
+        <td class="td-primary">${e.resolucion}</td>
+        <td>
+          <span class="badge badge-blue">
+            ${e.total_documentos || 1} doc (${e.total_paginas || 12} pág)
           </span>
         </td>
-        <td class="p-3.5">
-          <div class="flex items-center gap-2">
-            <button onclick="navigator.clipboard.writeText('${e.enlaceSeguro}'); showToast('Enlace copiado al portapapeles', 'success');" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold text-xs border border-slate-300 transition" title="Copiar Enlace">
-              Copiar Enlace
+        <td class="td-muted">${e.fecha_creacion || '02/09/2026'}</td>
+        <td class="td-muted">${e.fecha_vencimiento || '09/09/2026'}</td>
+        <td>
+          <span style="font-weight: 700; color: var(--slate-700); font-size: 11px;">
+            ${e.accesos || 0} accesos
+          </span>
+        </td>
+        <td class="td-muted">${e.medio || 'Enlace Seguro'}</td>
+        <td>
+          <span class="badge badge-vigente">
+            ${e.estado || 'DISPONIBLE'}
+          </span>
+        </td>
+        <td style="text-align: right;">
+          <div style="display: inline-flex; align-items: center; gap: 6px;">
+            <button type="button" onclick="copiarEnlace('${e.enlace}')" class="btn btn-light btn--xs" title="Copiar Enlace">
+              🔗 Copiar
             </button>
-            <a href="consulta-ciudadano.html?codigo=${e.codigoEntrega}" target="_blank" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded font-bold text-xs shadow transition">
-              Abrir
-            </a>
+            <button type="button" onclick="simularAccesoCiudadano('${e.codigo}')" class="btn btn-primary btn--xs" title="Probar Acceso">
+              👁 Probar
+            </button>
           </div>
         </td>
       </tr>
     `).join('');
-  });
+  }
+
+  function filtrarEntregas() {
+    const query = document.getElementById('busquedaEntregaInput').value.trim();
+    const filtrados = window.deliveryService.search(query);
+    renderTablaEntregas(filtrados);
+  }
+
+  function copiarEnlace(url) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url);
+      showToast('Enlace seguro copiado al portapapeles', 'success');
+    } else {
+      showToast('Enlace listo: ' + url, 'info');
+    }
+  }
+
+  function simularAccesoCiudadano(codigo) {
+    window.deliveryService.registerAccess(codigo);
+    showToast(`Registrado acceso institucional al enlace ${codigo}`, 'success');
+    filtrarEntregas();
+  }
+
+  function abrirModalNuevaEntrega() {
+    document.getElementById('modalNuevaEntrega').classList.add('active');
+  }
+
+  function cerrarModalNuevaEntrega() {
+    document.getElementById('modalNuevaEntrega').classList.remove('active');
+  }
+
+  function guardarNuevaEntrega(e) {
+    e.preventDefault();
+    const solicitante = document.getElementById('nuevaSolicitante').value.trim();
+    const resolucion = document.getElementById('nuevaResolucion').value.trim();
+    const medio = document.getElementById('nuevaMedio').value;
+    const paginas = parseInt(document.getElementById('nuevaPaginas').value, 10) || 8;
+    const vigenciaDias = parseInt(document.getElementById('nuevaVigencia').value, 10) || 7;
+
+    try {
+      const nueva = window.deliveryService.createDelivery({
+        solicitudCodigo: "TRAMITE-DIRECTO",
+        solicitante,
+        resolucion,
+        documentos: [{
+          nombre: `${resolucion}.pdf`,
+          paginas: paginas,
+          tamano: "3.2 MB"
+        }],
+        vigenciaDias,
+        medio
+      });
+
+      cerrarModalNuevaEntrega();
+      actualizarTablaEntregas();
+      showToast(`Entrega ${nueva.codigo} registrada con éxito.`, 'success');
+      e.target.reset();
+    } catch (err) {
+      showToast(err.message || 'Error al guardar entrega', 'error');
+    }
+  }
 </script>
 </body>
 </html>

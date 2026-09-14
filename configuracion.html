@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configuración Institucional - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  <!-- Sidebar Oficial dinámico -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Configuración de Catálogos Institucionales</h2>
+          <p class="topbar-subtitle">Parámetros del sistema, dependencias orgánicas, sedes de archivo y estados</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button onclick="guardarConfiguracion()" class="btn btn-primary btn--rounded">
+          💾 Guardar Parámetros
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Informative Box -->
+      <div class="card card--p" style="margin-bottom: 24px; border-left: 4px solid var(--blue); background: #f8fafc;">
+        <div class="flex-center gap-3">
+          <div style="font-size: 28px;">⚙️</div>
+          <div>
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--slate-800);">
+              Catálogos Maestros de UGEL N.° 08 - Cañete
+            </h4>
+            <p style="margin: 0; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
+              Personalice los valores institucionales que alimentan los selectores de registro, filtros y clasificaciones archivísticas.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid-2" style="gap: 20px;">
+        <!-- Card Parámetros Generales -->
+        <div class="card card--p">
+          <h3 class="card-title" style="font-size: 14px; margin-bottom: 16px;">🏢 Datos de la Entidad</h3>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Nombre de la Entidad</label>
+            <input type="text" id="cfgEntidad" class="form-control" value="Unidad de Gestión Educativa Local N.° 08 - Cañete">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Jurisdicción / Sede Central</label>
+            <input type="text" id="cfgJurisdiccion" class="form-control" value="San Vicente de Cañete, Lima Provincias">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Responsable de Oficina de Resoluciones</label>
+            <input type="text" id="cfgRespResoluciones" class="form-control" value="María Angélica">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Responsable del Archivo Central</label>
+            <input type="text" id="cfgRespArchivo" class="form-control" value="Marcos">
+          </div>
+        </div>
+
+        <!-- Card Parámetros de Archivo -->
+        <div class="card card--p">
+          <h3 class="card-title" style="font-size: 14px; margin-bottom: 16px;">📦 Sedes y Repositorios Físicos</h3>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Sedes Habilitadas para Custodia</label>
+            <textarea id="cfgSedes" class="form-control" rows="3">Sede Central UGEL 08 (San Vicente)
+Almacén Documentario Anexo (Imperial)
+Archivo Histórico Pasivo</textarea>
+            <span style="font-size: 10px; color: var(--slate-500);">Una sede por línea</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label">Tipos de Notificación Institucional</label>
+            <textarea id="cfgNotificaciones" class="form-control" rows="3">Personal (Presencial en ventanilla)
+Domiciliaria (Notificador)
+Correo Electrónico (Casilla electrónica)
+Publicación Mural Oficial</textarea>
+            <span style="font-size: 10px; color: var(--slate-500);">Un tipo por línea</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("catalogos");
+    cargarConfiguracion();
+  });
+
+  function cargarConfiguracion() {
+    const cfg = JSON.parse(localStorage.getItem("ug_config") || "{}");
+    if (cfg.entidad) document.getElementById("cfgEntidad").value = cfg.entidad;
+    if (cfg.jurisdiccion) document.getElementById("cfgJurisdiccion").value = cfg.jurisdiccion;
+    if (cfg.respResoluciones) document.getElementById("cfgRespResoluciones").value = cfg.respResoluciones;
+    if (cfg.respArchivo) document.getElementById("cfgRespArchivo").value = cfg.respArchivo;
+    if (cfg.sedes) document.getElementById("cfgSedes").value = cfg.sedes;
+    if (cfg.notificaciones) document.getElementById("cfgNotificaciones").value = cfg.notificaciones;
+  }
+
+  function guardarConfiguracion() {
+    const cfg = {
+      entidad: document.getElementById("cfgEntidad").value.trim(),
+      jurisdiccion: document.getElementById("cfgJurisdiccion").value.trim(),
+      respResoluciones: document.getElementById("cfgRespResoluciones").value.trim(),
+      respArchivo: document.getElementById("cfgRespArchivo").value.trim(),
+      sedes: document.getElementById("cfgSedes").value.trim(),
+      notificaciones: document.getElementById("cfgNotificaciones").value.trim()
+    };
+    localStorage.setItem("ug_config", JSON.stringify(cfg));
+    showToast("Parámetros institucionales guardados exitosamente", "success");
+  }
+</script>
+
+</body>
+</html>

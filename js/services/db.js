@@ -14,7 +14,26 @@ const db = {
         this._initStorage();
         return JSON.parse(localStorage.getItem(DB_KEY));
       }
-      return JSON.parse(data);
+      const parsed = JSON.parse(data);
+      // Auto-migración si faltan colecciones agregadas recientemente en SEED_DATA
+      if (typeof window.SEED_DATA !== "undefined") {
+        let modified = false;
+        // Asegurar que usuarios contenga los nuevos 5 perfiles
+        if (!parsed.usuarios || parsed.usuarios.length < 5) {
+          parsed.usuarios = [...window.SEED_DATA.usuarios];
+          modified = true;
+        }
+        for (const col of ["solicitudes", "entregas", "roles"]) {
+          if (!parsed[col] && window.SEED_DATA[col]) {
+            parsed[col] = [...window.SEED_DATA[col]];
+            modified = true;
+          }
+        }
+        if (modified) {
+          this._setStorage(parsed);
+        }
+      }
+      return parsed;
     } catch (e) {
       console.warn("Error leyendo localStorage, reestableciendo datos semilla", e);
       this._initStorage();

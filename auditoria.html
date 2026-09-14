@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auditoría y Trazabilidad - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  <!-- Sidebar Oficial dinámico -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Historial y Auditoría de Operaciones</h2>
+          <p class="topbar-subtitle">Registro cronológico inmutable de actos administrativos y cambios de estado</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button onclick="limpiarFiltrosAuditoria()" class="btn btn-light btn--sm">
+          Restablecer Filtros
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Informative Box -->
+      <div class="card card--p" style="margin-bottom: 24px; border-left: 4px solid var(--blue); background: #f8fafc;">
+        <div class="flex-center gap-3">
+          <div style="font-size: 28px;">🛡️</div>
+          <div>
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--slate-800);">
+              Trazabilidad Jurídica y Administrativa de la UGEL 08
+            </h4>
+            <p style="margin: 0; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
+              Cada emisión, remisión a archivo, confirmación de recepción física, cambio de ubicación y notificación genera un asiento de auditoría con usuario, rol, fecha, hora y detalles del acto.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros de Auditoría -->
+      <div class="card card--p" style="margin-bottom: 20px;">
+        <div class="form-grid-3" style="gap: 16px;">
+          <div class="form-group">
+            <label class="form-label">Buscar en historial</label>
+            <input type="text" id="filtroAuditoriaTexto" class="form-control" placeholder="Buscar por usuario, acción o RD..." oninput="renderAuditoria()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Filtrar por Acción</label>
+            <select id="filtroAuditoriaAccion" class="form-control" onchange="renderAuditoria()">
+              <option value="">Todas las acciones</option>
+              <option value="CREACION">Creación / Registro de RD</option>
+              <option value="REMITIR_ARCHIVO">Remisión a Archivo</option>
+              <option value="RECEPCION_ARCHIVO">Recepción Física en Archivo</option>
+              <option value="UBICACION_FISICA">Asignación de Ubicación</option>
+              <option value="NOTIFICACION">Gestión de Notificación</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Filtrar por Usuario</label>
+            <select id="filtroAuditoriaUsuario" class="form-control" onchange="renderAuditoria()">
+              <option value="">Todos los usuarios</option>
+              <option value="maria">maria (Of. Resoluciones)</option>
+              <option value="marcos">marcos (Archivo Central)</option>
+              <option value="admin">admin (Administrador)</option>
+              <option value="consulta">consulta (Personal)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla de Auditoría -->
+      <div class="card table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha y Hora</th>
+                <th>Usuario</th>
+                <th>Acción Realizada</th>
+                <th>Entidad / N° RD</th>
+                <th>Detalle del Acto Administrativo</th>
+                <th>IP / Origen</th>
+              </tr>
+            </thead>
+            <tbody id="auditoriaTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("auditoria");
+    renderAuditoria();
+  });
+
+  function renderAuditoria() {
+    const list = window.db.getTable("historial") || [];
+    const query = (document.getElementById("filtroAuditoriaTexto").value || "").toLowerCase().trim();
+    const accion = document.getElementById("filtroAuditoriaAccion").value;
+    const usuario = document.getElementById("filtroAuditoriaUsuario").value;
+
+    let items = [...list].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    if (accion) {
+      items = items.filter(h => h.accion === accion);
+    }
+    if (usuario) {
+      items = items.filter(h => (h.usuario || "").toLowerCase() === usuario.toLowerCase());
+    }
+    if (query) {
+      items = items.filter(h => 
+        (h.accion && h.accion.toLowerCase().includes(query)) ||
+        (h.usuario && h.usuario.toLowerCase().includes(query)) ||
+        (h.detalles && h.detalles.toLowerCase().includes(query)) ||
+        (h.numero_rd && h.numero_rd.toLowerCase().includes(query))
+      );
+    }
+
+    const tbody = document.getElementById("auditoriaTableBody");
+    if (!items.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center" style="padding: 40px;">
+            <div style="font-size: 32px; margin-bottom: 6px;">📜</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-700); margin: 0;">No se encontraron registros de auditoría</h4>
+            <p style="font-size: 11px; color: var(--slate-500); margin-top: 4px;">Ajuste los filtros o registre nuevas operaciones.</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = items.map(h => `
+      <tr>
+        <td style="font-family: monospace; font-size: 11px; white-space: nowrap; color: var(--slate-600);">
+          ${h.timestamp ? new Date(h.timestamp).toLocaleString('es-PE') : '-'}
+        </td>
+        <td>
+          <span class="badge" style="background: #e0e7ff; color: #3730a3; font-weight: 700;">
+            👤 ${h.usuario || 'Sistema'}
+          </span>
+        </td>
+        <td>
+          <span class="badge" style="${getBadgeEstiloAccion(h.accion)}">
+            ${h.accion}
+          </span>
+        </td>
+        <td class="td-code">${h.numero_rd || ('ID: ' + h.resolucion_id)}</td>
+        <td style="font-size: 11px; color: var(--slate-700); max-width: 350px;">${h.detalles || '-'}</td>
+        <td style="font-family: monospace; font-size: 10px; color: var(--slate-400);">192.168.1.104 (UGEL-NET)</td>
+      </tr>
+    `).join('');
+  }
+
+  function getBadgeEstiloAccion(accion) {
+    if (accion === 'CREACION') return 'background: #dbeafe; color: #1d4ed8;';
+    if (accion === 'REMITIR_ARCHIVO') return 'background: #e0e7ff; color: #3730a3;';
+    if (accion === 'RECEPCION_ARCHIVO') return 'background: #fef3c7; color: #92400e;';
+    if (accion === 'UBICACION_FISICA') return 'background: #d1fae5; color: #047857;';
+    if (accion === 'NOTIFICACION') return 'background: #fce7f3; color: #9d174d;';
+    return 'background: #f1f5f9; color: #475569;';
+  }
+
+  function limpiarFiltrosAuditoria() {
+    document.getElementById("filtroAuditoriaTexto").value = "";
+    document.getElementById("filtroAuditoriaAccion").value = "";
+    document.getElementById("filtroAuditoriaUsuario").value = "";
+    renderAuditoria();
+  }
+</script>
+
+</body>
+</html>

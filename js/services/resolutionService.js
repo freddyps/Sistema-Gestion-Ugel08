@@ -494,6 +494,68 @@ const resolutionService = {
     return this.getById(id);
   },
 
+  // Flujo María Angélica: Remitir Resolución a Archivo
+  remitirAArchivo(id, observacion = "") {
+    const res = this.getById(id);
+    if (!res) throw new Error("Resolución no encontrada.");
+
+    const currentUser = window.authService ? window.authService.getCurrentUser().nombre : "María Angélica Sánchez";
+    const estadoAnterior = res.estado;
+    const nuevoEstado = "Pendiente de archivo";
+    const now = new Date();
+    const fechaHora = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+
+    window.db.update("resoluciones", id, {
+      estado: nuevoEstado,
+      remitido_a_archivo: true,
+      fecha_remision_archivo: fechaHora,
+      remitido_por: currentUser,
+      observacion_remision: observacion
+    });
+
+    historyService.logAction({
+      resolucion_id: id,
+      accion: "Remisión a Archivo",
+      descripcion: `Resolución ${res.numero_rd} remitida formalmente al área de Archivo Central por ${currentUser}. ${observacion}`,
+      usuario: currentUser,
+      estado_anterior: estadoAnterior,
+      estado_nuevo: nuevoEstado
+    });
+
+    return this.getById(id);
+  },
+
+  // Flujo Marcos: Confirmar recepción física en Archivo
+  recibirEnArchivo(id, observacion = "") {
+    const res = this.getById(id);
+    if (!res) throw new Error("Resolución no encontrada.");
+
+    const currentUser = window.authService ? window.authService.getCurrentUser().nombre : "Marcos Huamán (Archivo)";
+    const estadoAnterior = res.estado;
+    const nuevoEstado = "Recibida en archivo";
+    const now = new Date();
+    const fechaHora = `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+
+    window.db.update("resoluciones", id, {
+      estado: nuevoEstado,
+      recibido_en_archivo: true,
+      fecha_recepcion_archivo: fechaHora,
+      recibido_por: currentUser,
+      observacion_recepcion: observacion
+    });
+
+    historyService.logAction({
+      resolucion_id: id,
+      accion: "Recepción Física en Archivo",
+      descripcion: `Documento autógrafo de Resolución ${res.numero_rd} recibido físicamente en Archivo por ${currentUser}. ${observacion}`,
+      usuario: currentUser,
+      estado_anterior: estadoAnterior,
+      estado_nuevo: nuevoEstado
+    });
+
+    return this.getById(id);
+  },
+
   delete(id, currentUser = "Administrador") {
     const current = this.getById(id);
     if (!current) return false;
@@ -581,6 +643,324 @@ const authService = {
 
   logout() {
     localStorage.removeItem(this.SESSION_KEY);
+  },
+
+  // Validación granular de permisos por rol
+  hasPermission(permission) {
+    const user = this.getCurrentUser();
+    if (!user) return false;
+
+    // Administrador posee permiso universal
+    if (user.rol === "Administrador" || user.usuario === "admin") return true;
+
+    const roles = window.db.getTable("roles");
+    const userRole = roles.find(r => r.nombre.toLowerCase().includes(user.rol.toLowerCase()) || r.codigo.toLowerCase() === user.usuario.toLowerCase());
+
+    if (!userRole) return false;
+    if (userRole.permisos.includes("*")) return true;
+
+    return userRole.permisos.includes(permission);
+  },
+
+  // Obtener definición de navegación exclusiva para el usuario logueado
+  getMenuForCurrentUser() {
+    const user = this.getCurrentUser();
+    const rol = (user && user.rol) ? user.rol.toLowerCase() : "administrador";
+
+    // 1. ADMINISTRADOR
+    if (rol.includes("administrador") || (user && user.usuario === "admin")) {
+      return {
+        roleKey: "admin",
+        roleTitle: "Administrador del Sistema",
+        items: [
+          { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
+          { 
+            key: "resoluciones", 
+            label: "Resoluciones", 
+            url: "resoluciones.html", 
+            icon: "document",
+            subitems: [
+              { key: "resoluciones-lista", label: "Gestión de Resoluciones", url: "resoluciones.html", icon: "document" },
+              { key: "registrar-rd", label: "Registrar Resolución", url: "registrar-resolucion.html", icon: "plus" },
+              { key: "notificaciones", label: "Notificaciones", url: "notificaciones.html", icon: "bell" },
+              { key: "archivo", label: "Archivo Físico", url: "ubicacion.html", icon: "archive" },
+              { key: "usuarios", label: "Usuarios del Sistema", url: "usuarios.html", icon: "users" },
+              { key: "roles", label: "Roles y Permisos", url: "roles-permisos.html", icon: "shield" },
+              { key: "catalogos", label: "Catálogos / Config.", url: "configuracion.html", icon: "cog" },
+              { key: "reportes", label: "Reportes Estadísticos", url: "reportes.html", icon: "chart" },
+              { key: "auditoria", label: "Auditoría / Historial", url: "auditoria.html", icon: "clock" }
+            ]
+          }
+        ]
+      };
+    }
+
+    // 2. MARÍA ANGÉLICA — OFICINA DE RESOLUCIONES
+    if (rol.includes("resoluciones") || (user && user.usuario === "maria")) {
+      return {
+        roleKey: "maria",
+        roleTitle: "Oficina de Resoluciones — María Angélica",
+        items: [
+          { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
+          { 
+            key: "resoluciones", 
+            label: "Resoluciones", 
+            url: "resoluciones.html", 
+            icon: "document",
+            subitems: [
+              { key: "registrar-rd", label: "Registrar Resolución", url: "registrar-resolucion.html", icon: "plus" },
+              { key: "resoluciones-lista", label: "Búsqueda y Gestión RD", url: "resoluciones.html", icon: "document" },
+              { key: "documentos", label: "Documentos Digitales", url: "resoluciones.html?doc=DISPONIBLE", icon: "file-text" },
+              { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" },
+              { key: "consultas", label: "Consultas", url: "consulta.html", icon: "search" },
+              { key: "historial", label: "Historial de Emisiones", url: "auditoria.html?filtro=resoluciones", icon: "clock" }
+            ]
+          }
+        ]
+      };
+    }
+
+    // 3. MARCOS — ARCHIVO
+    if (rol.includes("archivo") || (user && user.usuario === "marcos")) {
+      return {
+        roleKey: "marcos",
+        roleTitle: "Archivo Central — Marcos",
+        items: [
+          { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
+          { 
+            key: "resoluciones", 
+            label: "Resoluciones", 
+            url: "resoluciones.html", 
+            icon: "document",
+            subitems: [
+              { key: "recibidas", label: "Resoluciones Recibidas", url: "recepcion-archivo.html", icon: "inbox" },
+              { key: "resoluciones-lista", label: "Consulta de Resoluciones", url: "resoluciones.html", icon: "document" },
+              { key: "ubicacion", label: "Ubicación Física (Cajas)", url: "ubicacion.html", icon: "archive" },
+              { key: "localizar", label: "Buscar / Localizar", url: "ubicacion.html?modo=localizar", icon: "search" },
+              { key: "historial", label: "Historial de Custodia", url: "auditoria.html?filtro=archivo", icon: "clock" }
+            ]
+          }
+        ]
+      };
+    }
+
+    // 4. PERSONAL AUTORIZADO (CONSULTA)
+    return {
+      roleKey: "consulta",
+      roleTitle: "Personal Autorizado",
+      items: [
+        { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
+        { 
+          key: "resoluciones", 
+          label: "Resoluciones", 
+          url: "consulta.html", 
+          icon: "document",
+          subitems: [
+            { key: "consultar-rd", label: "Consultar Resoluciones", url: "consulta.html", icon: "search" },
+            { key: "resoluciones-lista", label: "Catálogo General RD", url: "resoluciones.html", icon: "document" },
+            { key: "consultar-ubi", label: "Consultar Ubicación", url: "ubicacion.html", icon: "archive" }
+          ]
+        }
+      ]
+    };
+  }
+};
+
+// 9. SERVICIO DE SOLICITUDES DE COPIAS Y ANTECEDENTES (Lógica de Negocio)
+const requestService = {
+  getAll() {
+    return window.db.getTable("solicitudes");
+  },
+
+  getByCodigo(codigo) {
+    if (!codigo) return null;
+    const list = this.getAll();
+    const cleanCod = String(codigo).trim().toLowerCase();
+    return list.find(s => s.codigo.toLowerCase() === cleanCod || s.codigo.toLowerCase().includes(cleanCod)) || null;
+  },
+
+  getById(id) {
+    return window.db.getById("solicitudes", id);
+  },
+
+  // Reglas de negocio institucionales para cambio de estado
+  updateEstado(codigo, nuevoEstado, observacion = "") {
+    const solicitud = this.getByCodigo(codigo);
+    if (!solicitud) {
+      throw new Error(`Solicitud con código ${codigo} no encontrada.`);
+    }
+
+    const estadoAnterior = solicitud.estado;
+    const validStates = ["PENDIENTE", "DOCUMENTO LOCALIZADO", "DOCUMENTO PREPARADO", "ATENDIDA", "OBSERVADA"];
+    const estadoUpper = nuevoEstado.toUpperCase();
+
+    if (!validStates.includes(estadoUpper)) {
+      throw new Error(`Estado ${nuevoEstado} no es válido en el flujo de solicitudes.`);
+    }
+
+    const updated = window.db.update("solicitudes", solicitud.id, {
+      estado: estadoUpper,
+      observacion_estado: observacion || solicitud.observacion_estado || ""
+    });
+
+    // Auditoría en historial institucional si existe resolución asociada
+    if (solicitud.rd_solicitada && window.historyService) {
+      const res = window.resolutionService ? window.resolutionService.findByNumero(solicitud.rd_solicitada) : null;
+      if (res) {
+        window.historyService.logAction({
+          resolucion_id: res.id,
+          accion: "Atención de Solicitud",
+          descripcion: `Solicitud ${codigo} pasó de ${estadoAnterior} a ${estadoUpper}. ${observacion}`,
+          usuario: window.authService ? window.authService.getCurrentUser().nombre : "Personal UGEL 08",
+          estado_anterior: estadoAnterior,
+          estado_nuevo: estadoUpper
+        });
+      }
+    }
+
+    return updated;
+  },
+
+  filter(filters = {}) {
+    let list = this.getAll();
+
+    if (filters.estado && filters.estado !== "TODOS") {
+      list = list.filter(s => s.estado.toUpperCase() === filters.estado.toUpperCase());
+    }
+
+    if (filters.query && filters.query.trim()) {
+      const q = filters.query.toLowerCase().trim();
+      list = list.filter(s =>
+        s.codigo.toLowerCase().includes(q) ||
+        (s.solicitante && s.solicitante.toLowerCase().includes(q)) ||
+        (s.dni && s.dni.includes(q)) ||
+        (s.rd_solicitada && s.rd_solicitada.toLowerCase().includes(q)) ||
+        (s.tipo && s.tipo.toLowerCase().includes(q))
+      );
+    }
+
+    return list;
+  },
+
+  getStats() {
+    const list = this.getAll();
+    return {
+      total: list.length,
+      pendientes: list.filter(s => s.estado === "PENDIENTE").length,
+      localizadas: list.filter(s => s.estado === "DOCUMENTO LOCALIZADO").length,
+      atendidas: list.filter(s => s.estado === "ATENDIDA").length,
+      preparadas: list.filter(s => s.estado === "DOCUMENTO PREPARADO").length
+    };
+  }
+};
+
+// 10. SERVICIO DE ENTREGAS DIGITALES Y CARGOS (Lógica de Negocio)
+const deliveryService = {
+  getAll() {
+    return window.db.getTable("entregas");
+  },
+
+  getByCodigo(codigo) {
+    if (!codigo) return null;
+    const list = this.getAll();
+    const cleanCod = String(codigo).trim().toLowerCase();
+    return list.find(e => e.codigo.toLowerCase() === cleanCod || e.codigo.toLowerCase().includes(cleanCod)) || null;
+  },
+
+  // Generación formal de entrega digital aplicando reglas de negocio
+  createDelivery({ solicitudCodigo, solicitante, resolucion, documentos, vigenciaDias = 7, medio = "Enlace Seguro / WhatsApp" }) {
+    if (!solicitante || !resolucion) {
+      throw new Error("El solicitante y la resolución son obligatorios para generar una entrega institucional.");
+    }
+
+    const docs = Array.isArray(documentos) ? documentos : [];
+    if (docs.length === 0) {
+      throw new Error("Debe incluir al menos un documento digital autorizado en la entrega.");
+    }
+
+    // Cálculo de folios y peso digital
+    let totalPags = 0;
+    let totalMB = 0;
+
+    docs.forEach(d => {
+      totalPags += Number(d.paginas) || 1;
+      const mbVal = parseFloat(d.tamano) || 1;
+      if (String(d.tamano).includes('KB')) {
+        totalMB += mbVal / 1024;
+      } else {
+        totalMB += mbVal;
+      }
+    });
+
+    const pesoFormatted = totalMB >= 1 ? `${totalMB.toFixed(1)} MB` : `${Math.round(totalMB * 1024)} KB`;
+
+    // Fechas institucionales con vigencia
+    const hoy = new Date();
+    const venc = new Date();
+    venc.setDate(hoy.getDate() + Number(vigenciaDias));
+
+    const pad = n => String(n).padStart(2, '0');
+    const fHoy = `${pad(hoy.getDate())}/${pad(hoy.getMonth() + 1)}/${hoy.getFullYear()}`;
+    const fVenc = `${pad(venc.getDate())}/${pad(venc.getMonth() + 1)}/${venc.getFullYear()}`;
+
+    // Generar código institucional seguro ENT-2026-XXXXXX
+    const randomSuffix = Math.floor(Math.random() * 900000) + 100000;
+    const nuevoCodigo = `ENT-${hoy.getFullYear()}-${randomSuffix}`;
+    const enlaceSeguro = `https://sistema-demo-ugel.gob.pe/documentos/${nuevoCodigo}`;
+
+    const nuevaEntrega = window.db.insert("entregas", {
+      codigo: nuevoCodigo,
+      solicitud_codigo: solicitudCodigo || "TRAMITE-DIRECTO",
+      solicitante,
+      resolucion,
+      documentos: docs.map(d => ({
+        nombre: d.nombre,
+        paginas: d.paginas,
+        tamano: d.tamano
+      })),
+      total_documentos: docs.length,
+      total_paginas: totalPags,
+      total_peso: pesoFormatted,
+      fecha_creacion: fHoy,
+      fecha_vencimiento: fVenc,
+      medio,
+      estado: "DISPONIBLE",
+      accesos: 0,
+      enlace: enlaceSeguro
+    });
+
+    // Si provenía de una solicitud formal, actualizar su estado en el flujo institucional
+    if (solicitudCodigo && solicitudCodigo !== "TRAMITE-DIRECTO") {
+      try {
+        requestService.updateEstado(solicitudCodigo, "ATENDIDA", `Entrega digital generada con código ${nuevoCodigo}`);
+      } catch (e) {
+        console.warn("No se pudo actualizar estado de solicitud vinculada", e);
+      }
+    }
+
+    return nuevaEntrega;
+  },
+
+  registerAccess(codigo) {
+    const entrega = this.getByCodigo(codigo);
+    if (!entrega) return null;
+    const currentAccesos = Number(entrega.accesos) || 0;
+    return window.db.update("entregas", entrega.id, {
+      accesos: currentAccesos + 1,
+      ultimo_acceso: new Date().toISOString()
+    });
+  },
+
+  search(query) {
+    const list = this.getAll();
+    if (!query) return list;
+    const q = query.toLowerCase().trim();
+    return list.filter(e =>
+      e.codigo.toLowerCase().includes(q) ||
+      (e.solicitante && e.solicitante.toLowerCase().includes(q)) ||
+      (e.resolucion && e.resolucion.toLowerCase().includes(q)) ||
+      (e.medio && e.medio.toLowerCase().includes(q))
+    );
   }
 };
 
@@ -594,4 +974,6 @@ if (typeof window !== "undefined") {
   window.antecedentService = antecedentService;
   window.resolutionService = resolutionService;
   window.authService = authService;
+  window.requestService = requestService;
+  window.deliveryService = deliveryService;
 }

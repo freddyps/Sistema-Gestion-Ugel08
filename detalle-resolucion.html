@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle de Resolución Directoral - UGEL 08 Cañete</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
   <style>
     /* Estilos específicos de trazabilidad y ficha */
     .timeline {
@@ -82,9 +82,12 @@
 
       <div class="topbar-right">
         <a href="resoluciones.html" class="btn btn-light btn--rounded">
-          &larr; Volver al Buscador
+          &larr; Volver al Listado
         </a>
-        <a id="btnEditLink" href="registrar-resolucion.html" class="btn btn-ghost btn--rounded">
+        <button id="btnRemitirArchivoTop" onclick="ejecutarRemisionArchivo()" class="btn btn-primary btn--rounded" style="display: none; background: #0A2540;">
+          📦 Remitir a Archivo
+        </button>
+        <a id="btnEditLink" href="registrar-resolucion.html" class="btn btn-ghost btn--rounded" style="display: none;">
           ✏ Editar RD
         </a>
         <button id="btnTopVerPdf" class="btn btn-primary btn--rounded">
@@ -422,8 +425,19 @@
     // Cabecera y Topbar
     document.getElementById("topbarRdTitle").innerText = `Ficha: ${rd.numero_rd}`;
     document.getElementById("rdHeaderTitle").innerText = rd.numero_rd;
-    document.getElementById("rdStatusBadge").innerHTML = renderBadgeEstado(rd.estado);
-    document.getElementById("btnEditLink").href = `registrar-resolucion.html?id=${rd.id}`;
+    // Control de permisos según el Rol Oficial
+    const canEdit = window.authService ? window.authService.hasPermission("resoluciones.editar") : false;
+    const canRemitir = window.authService ? window.authService.hasPermission("resoluciones.remitir") : false;
+    const isMarcos = window.authService && window.authService.getCurrentUser().usuario === "marcos";
+
+    if (canEdit) {
+      document.getElementById("btnEditLink").style.display = "inline-flex";
+      document.getElementById("btnEditLink").href = `registrar-resolucion.html?id=${rd.id}`;
+    }
+
+    if (canRemitir && rd.estado !== "Pendiente de archivo" && rd.estado !== "Recibida en archivo" && rd.estado !== "Archivado") {
+      document.getElementById("btnRemitirArchivoTop").style.display = "inline-flex";
+    }
 
     // Datos Principales
     document.getElementById("rdNum").innerText = rd.numero_rd;
@@ -539,6 +553,21 @@
           <div class="timeline-user">Registrado por: <strong>${h.usuario}</strong> ${h.estado_nuevo ? `• Estado: <span style="color: var(--blue); font-weight: 700;">${h.estado_nuevo}</span>` : ''}</div>
         </div>
       `).join('');
+    }
+  }
+
+  function ejecutarRemisionArchivo() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id") || 1;
+
+    try {
+      window.resolutionService.remitirAArchivo(id, "Remisión formal desde ficha de detalle.");
+      showToast("Resolución remitida formalmente a Archivo Central.", "success");
+      setTimeout(() => {
+        location.reload();
+      }, 900);
+    } catch (e) {
+      showToast(e.message || "Error al remitir", "error");
     }
   }
 </script>

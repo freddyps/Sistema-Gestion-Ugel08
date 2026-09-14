@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reportes e Indicadores - UGEL 08 Cañete</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
 <body class="page-app">
 
@@ -40,53 +40,158 @@
     <div class="page-body">
       
       <!-- Filtros del Reporte -->
-      <div class="card card--p">
-        <div class="card-header">
-          <h3 class="card-title">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-            Parámetros del Reporte
-          </h3>
-          <button onclick="resetReportFilters()" class="text-xs" style="color: var(--slate-500); font-weight: 700; background: none; border: none; cursor: pointer;">
+      <div class="card card--p filter-card">
+        <div class="card-header" style="margin-bottom: 18px;">
+          <div class="flex-center gap-3">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--blue-50); display: flex; align-items: center; justify-content: center; color: var(--blue);">
+              <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <div>
+              <h3 class="card-title" style="font-size: 15px; margin: 0;">Parámetros de Reportes Estadísticos</h3>
+              <p style="font-size: 11px; color: var(--slate-400); margin: 2px 0 0 0;">Segmentación analítica por año, gerencia y estado de custodia</p>
+            </div>
+          </div>
+          <button onclick="resetReportFilters()" class="filter-reset-btn">
+            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             Restablecer Filtros
           </button>
         </div>
 
-        <div class="form-grid-3">
-          <div>
-            <label class="form-label">Año</label>
-            <select id="repAnioSelect" class="form-select" onchange="calculateReportMetrics()">
-              <option value="">-- Todos los años (2020–2026) --</option>
-              <option value="2026">2026</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2020">2020</option>
-            </select>
+        <div class="form-grid-3" style="gap: 18px;">
+          <!-- 1. Año Calendario -->
+          <div class="filter-field-wrapper">
+            <label class="filter-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              Año de Emisión
+            </label>
+            <input type="hidden" id="repAnioSelect" value="">
+            <div class="custom-select-wrap" id="csWrapRepAnio">
+              <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapRepAnio')">
+                <div class="custom-select-value" id="csValRepAnio">
+                  <span class="opt-icon">📅</span>
+                  <span>Todos los años (2020–2026)</span>
+                </div>
+                <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+              <div class="custom-select-dropdown">
+                <div class="custom-select-option selected" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '', '📅 Todos los años (2020–2026)', this)">
+                  <span><span class="opt-icon">📅</span> Todos los años (2020–2026)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '2026', '⭐ 2026 (Gestión en curso)', this)">
+                  <span><span class="opt-icon">⭐</span> 2026 (Gestión en curso)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '2025', '📁 2025', this)">
+                  <span><span class="opt-icon">📁</span> 2025</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '2024', '📁 2024', this)">
+                  <span><span class="opt-icon">📁</span> 2024</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '2023', '📁 2023', this)">
+                  <span><span class="opt-icon">📁</span> 2023</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '2022', '📁 2022', this)">
+                  <span><span class="opt-icon">📁</span> 2022</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepAnio', 'repAnioSelect', 'csValRepAnio', '2020', '📁 2020', this)">
+                  <span><span class="opt-icon">📁</span> 2020</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label class="form-label">Área de Origen</label>
-            <select id="repAreaSelect" class="form-select" onchange="calculateReportMetrics()">
-              <option value="">-- Todas las áreas --</option>
-              <option value="Recursos Humanos">Recursos Humanos</option>
-              <option value="Gestión Pedagógica">Gestión Pedagógica</option>
-              <option value="Gestión Institucional">Gestión Institucional</option>
-              <option value="Administración y Finanzas">Administración y Finanzas</option>
-              <option value="Asesoría Jurídica">Asesoría Jurídica</option>
-              <option value="Infraestructura">Infraestructura</option>
-            </select>
+          <!-- 2. Área de Origen -->
+          <div class="filter-field-wrapper">
+            <label class="filter-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              Área de Origen
+            </label>
+            <input type="hidden" id="repAreaSelect" value="">
+            <div class="custom-select-wrap" id="csWrapRepArea">
+              <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapRepArea')">
+                <div class="custom-select-value" id="csValRepArea">
+                  <span class="opt-icon">🏢</span>
+                  <span>Todas las dependencias</span>
+                </div>
+                <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+              <div class="custom-select-dropdown">
+                <div class="custom-select-option selected" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', '', '🏢 Todas las dependencias', this)">
+                  <span><span class="opt-icon">🏢</span> Todas las dependencias</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', 'Recursos Humanos', '👥 Recursos Humanos (RRHH)', this)">
+                  <span><span class="opt-icon">👥</span> Recursos Humanos (RRHH)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', 'Gestión Pedagógica', '🎓 Gestión Pedagógica (AGP)', this)">
+                  <span><span class="opt-icon">🎓</span> Gestión Pedagógica (AGP)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', 'Gestión Institucional', '🏛️ Gestión Institucional (AGI)', this)">
+                  <span><span class="opt-icon">🏛️</span> Gestión Institucional (AGI)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', 'Administración y Finanzas', '💼 Administración y Finanzas (AGA)', this)">
+                  <span><span class="opt-icon">💼</span> Administración y Finanzas (AGA)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', 'Asesoría Jurídica', '⚖️ Asesoría Jurídica', this)">
+                  <span><span class="opt-icon">⚖️</span> Asesoría Jurídica</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepArea', 'repAreaSelect', 'csValRepArea', 'Infraestructura', '🏗️ Infraestructura', this)">
+                  <span><span class="opt-icon">🏗️</span> Infraestructura</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <label class="form-label">Estado de Resolución</label>
-            <select id="repEstadoSelect" class="form-select" onchange="calculateReportMetrics()">
-              <option value="">-- Todos los estados --</option>
-              <option value="Archivado">Archivado</option>
-              <option value="Notificado">Notificado</option>
-              <option value="Pendiente de notificación">Pendiente de notificación</option>
-              <option value="Observado">Observado</option>
-            </select>
+          <!-- 3. Estado de Resolución -->
+          <div class="filter-field-wrapper">
+            <label class="filter-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Estado de Resolución
+            </label>
+            <input type="hidden" id="repEstadoSelect" value="">
+            <div class="custom-select-wrap" id="csWrapRepEstado">
+              <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapRepEstado')">
+                <div class="custom-select-value" id="csValRepEstado">
+                  <span class="opt-icon">📊</span>
+                  <span>Todos los estados</span>
+                </div>
+                <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+              <div class="custom-select-dropdown">
+                <div class="custom-select-option selected" onclick="selectCustomOption('csWrapRepEstado', 'repEstadoSelect', 'csValRepEstado', '', '📊 Todos los estados', this)">
+                  <span><span class="opt-icon">📊</span> Todos los estados</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepEstado', 'repEstadoSelect', 'csValRepEstado', 'Archivado', '📦 Archivado (Custodia física)', this)">
+                  <span><span class="opt-icon">📦</span> Archivado (Custodia física)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepEstado', 'repEstadoSelect', 'csValRepEstado', 'Notificado', '✅ Notificado (Con cargo)', this)">
+                  <span><span class="opt-icon">✅</span> Notificado (Con cargo)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepEstado', 'repEstadoSelect', 'csValRepEstado', 'Pendiente de notificación', '⏳ Pendiente de notificación', this)">
+                  <span><span class="opt-icon">⏳</span> Pendiente de notificación</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapRepEstado', 'repEstadoSelect', 'csValRepEstado', 'Observado', '⚠️ Observado', this)">
+                  <span><span class="opt-icon">⚠️</span> Observado</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -188,18 +293,17 @@
         </div>
 
         <div class="table-wrapper">
-          <table class="data-table data-table--sm">
+          <table class="data-table data-table--sm" style="min-width: 960px;">
             <thead>
               <tr>
-                <th>N° RD</th>
-                <th>Año</th>
-                <th>Fecha</th>
-                <th>Administrado</th>
-                <th>Área</th>
-                <th>Ubicación Física</th>
-                <th>Estado</th>
-                <th>Documento</th>
-                <th style="text-align: right;">Acción</th>
+                <th style="width: 130px;">N° RD</th>
+                <th style="width: 105px;">Fecha</th>
+                <th>Administrado / Interesado</th>
+                <th style="width: 170px;">Área</th>
+                <th style="width: 130px;">Ubicación Física</th>
+                <th style="width: 120px;">Estado</th>
+                <th style="width: 110px;">Documento</th>
+                <th style="width: 90px; text-align: right;">Acción</th>
               </tr>
             </thead>
             <tbody id="repTableBody">
@@ -304,17 +408,16 @@
     document.getElementById("repTableCount").innerText = `${list.length} registros`;
 
     if (!list.length) {
-      tbody.innerHTML = `<tr><td colspan="9" class="text-center" style="padding: 24px; color: var(--slate-400);">No se encontraron resoluciones con los parámetros seleccionados.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 24px; color: var(--slate-400);">No se encontraron resoluciones con los parámetros seleccionados.</td></tr>`;
       return;
     }
 
     tbody.innerHTML = list.map(r => `
       <tr>
         <td class="td-code">${r.numero_rd}</td>
-        <td><span class="badge badge-slate">${r.anio}</span></td>
-        <td style="color: var(--slate-600);">${r.fecha_emision}</td>
+        <td style="color: var(--slate-600); white-space: nowrap;">${r.fecha_emision}</td>
         <td class="td-name">${r.administrado_nombre}</td>
-        <td>${r.area_origen}</td>
+        <td style="color: var(--slate-700);">${r.area_origen}</td>
         <td>
           ${r.tiene_ubicacion ? `<span class="badge-caja">📦 ${r.ubicacion_caja}</span>` : `<span style="color: var(--slate-400); font-size: 11px;">Pendiente</span>`}
         </td>
@@ -322,7 +425,7 @@
         <td>
           ${r.tiene_documento ? `<span class="badge badge-blue">PDF Disponible</span>` : `<span style="color: var(--slate-400); font-size: 11px;">Sin PDF</span>`}
         </td>
-        <td style="text-align: right;">
+        <td style="text-align: right; white-space: nowrap;">
           <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
             👁 Ver
           </a>
@@ -335,9 +438,64 @@
     document.getElementById("repAnioSelect").value = "";
     document.getElementById("repAreaSelect").value = "";
     document.getElementById("repEstadoSelect").value = "";
+
+    // Resetear textos visuales de los custom selects
+    const valAnio = document.getElementById("csValRepAnio");
+    if (valAnio) valAnio.innerHTML = `<span class="opt-icon">📅</span><span>Todos los años (2020–2026)</span>`;
+    const valArea = document.getElementById("csValRepArea");
+    if (valArea) valArea.innerHTML = `<span class="opt-icon">🏢</span><span>Todas las dependencias</span>`;
+    const valEstado = document.getElementById("csValRepEstado");
+    if (valEstado) valEstado.innerHTML = `<span class="opt-icon">📊</span><span>Todos los estados</span>`;
+
+    // Marcar la primera opción como seleccionada en cada dropdown
+    ['csWrapRepAnio', 'csWrapRepArea', 'csWrapRepEstado'].forEach(id => {
+      const wrap = document.getElementById(id);
+      if (wrap) {
+        wrap.querySelectorAll('.custom-select-option').forEach((opt, idx) => {
+          if (idx === 0) opt.classList.add('selected');
+          else opt.classList.remove('selected');
+        });
+      }
+    });
+
     calculateReportMetrics();
     showToast("Filtros de reporte restablecidos", "info");
   }
+
+  // Lógica Custom Dropdown Select
+  function toggleCustomDropdown(wrapId) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    const wasOpen = wrap.classList.contains("open");
+    document.querySelectorAll(".custom-select-wrap.open").forEach(el => el.classList.remove("open"));
+    if (!wasOpen) {
+      wrap.classList.add("open");
+    }
+  }
+
+  function selectCustomOption(wrapId, hiddenInputId, valDisplayId, value, labelHtml, optionEl) {
+    const hiddenInput = document.getElementById(hiddenInputId);
+    if (hiddenInput) {
+      hiddenInput.value = value;
+    }
+    const valDisplay = document.getElementById(valDisplayId);
+    if (valDisplay) {
+      valDisplay.innerHTML = labelHtml;
+    }
+    const wrap = document.getElementById(wrapId);
+    if (wrap) {
+      wrap.querySelectorAll(".custom-select-option").forEach(o => o.classList.remove("selected"));
+      if (optionEl) optionEl.classList.add("selected");
+      wrap.classList.remove("open");
+    }
+    calculateReportMetrics();
+  }
+
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".custom-select-wrap")) {
+      document.querySelectorAll(".custom-select-wrap.open").forEach(el => el.classList.remove("open"));
+    }
+  });
 </script>
 </body>
 </html>

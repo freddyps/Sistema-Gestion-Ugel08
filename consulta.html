@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Consulta y Búsqueda - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  <!-- Sidebar Oficial dinámico -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Módulo de Búsqueda y Consulta Institucional</h2>
+          <p class="topbar-subtitle">Acceso de solo lectura para Personal Autorizado y Dependencias de la UGEL 08</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <span class="badge" style="background: #e0e7ff; color: #3730a3; font-weight: 700; padding: 6px 14px; border-radius: 9999px;">
+          👁 Modo Consulta / Solo Lectura
+        </span>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Banner Informativo -->
+      <div class="card card--p" style="margin-bottom: 24px; border-left: 4px solid var(--blue); background: #f8fafc;">
+        <div class="flex-center gap-3">
+          <div style="font-size: 28px;">🔍</div>
+          <div>
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--slate-800);">
+              Búsqueda Rápida de Resoluciones y Localización Física
+            </h4>
+            <p style="margin: 0; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
+              Permite a los funcionarios autorizados consultar el contenido digital (PDF), el estado del trámite y la ubicación exacta en el Archivo Central (Caja, Estante y Archivador) sin privilegios de edición o eliminación.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buscador Principal Directo -->
+      <div class="card card--p" style="margin-bottom: 20px;">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="filter-label" style="font-size: 13px; font-weight: 700; color: var(--slate-800);">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Búsqueda Rápida de Resoluciones
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="left: 14px; width: 18px; height: 18px; color: var(--blue);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="inputConsultaQuery" placeholder="Ingresa N° de RD (ej. 3874), DNI, Apellidos o Asunto..." class="filter-quick-search" oninput="ejecutarConsulta()">
+          </div>
+        </div>
+
+        <div class="flex-center gap-2" style="flex-wrap: wrap;">
+          <span style="font-size: 11px; font-weight: 700; color: var(--slate-500);">Filtros rápidos:</span>
+          <button type="button" onclick="filtrarConsultaRapida('')" class="btn btn-light btn--xs">Todos</button>
+          <button type="button" onclick="filtrarConsultaRapida('2026')" class="btn btn-light btn--xs">Año 2026</button>
+          <button type="button" onclick="filtrarConsultaRapida('2025')" class="btn btn-light btn--xs">Año 2025</button>
+          <button type="button" onclick="filtrarConsultaRapida('Recursos Humanos')" class="btn btn-light btn--xs">Recursos Humanos</button>
+          <button type="button" onclick="filtrarConsultaRapida('Gestión Pedagógica')" class="btn btn-light btn--xs">Pedagógica</button>
+          <button type="button" onclick="filtrarConsultaRapida('Archivado')" class="btn btn-light btn--xs">En Archivo Central</button>
+        </div>
+      </div>
+
+      <!-- Conteo de Resultados -->
+      <div class="flex-center justify-between" style="margin-bottom: 12px;">
+        <span id="consultaCount" style="font-size: 13px; font-weight: 600; color: var(--slate-700);">Mostrando resultados</span>
+      </div>
+
+      <!-- Tabla de Resultados de Solo Lectura -->
+      <div class="card table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>N° RD</th>
+                <th>Fecha Emisión</th>
+                <th>Administrado / Interesado</th>
+                <th>Asunto</th>
+                <th>Área Origen</th>
+                <th>PDF Digital</th>
+                <th>Ubicación Física en Archivo</th>
+                <th>Estado</th>
+                <th style="text-align: right;">Consulta</th>
+              </tr>
+            </thead>
+            <tbody id="consultaTableBody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal Visor PDF Simple -->
+<div class="modal-backdrop" id="modalPdfViewer" style="display: none;">
+  <div class="modal-container" style="max-width: 700px;">
+    <div class="modal-header">
+      <h3 class="modal-title" id="pdfViewerTitle">Visor de Documento Digital</h3>
+      <button class="modal-close-btn" onclick="cerrarPdfViewer()">&times;</button>
+    </div>
+    <div class="modal-body" style="padding: 24px; text-align: center;">
+      <div style="font-size: 48px; margin-bottom: 12px;">📑</div>
+      <h4 id="pdfViewerSub" style="font-size: 15px; font-weight: 700; color: var(--slate-800); margin: 0 0 6px;">Documento Oficial Autógrafo Digitalizado</h4>
+      <p style="font-size: 12px; color: var(--slate-500); margin-bottom: 20px;">Escaneo oficial en alta definición custodiado en el repositorio institucional.</p>
+      
+      <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 8px; padding: 30px 20px; margin-bottom: 20px;">
+        <p style="font-size: 13px; color: var(--slate-600); font-family: monospace;" id="pdfViewerMeta">Foliación: 3 páginas | Tamaño: 1.4 MB | Firma digital: Válida</p>
+        <span class="badge" style="background: #d1fae5; color: #047857; font-weight: 700; margin-top: 8px;">
+          ✓ Documento Auténtico Cotejado
+        </span>
+      </div>
+
+      <div class="flex-center justify-center gap-2">
+        <button class="btn btn-primary btn--sm" onclick="alert('Abriendo documento en nueva pestaña...'); cerrarPdfViewer();">
+          ⬇ Descargar Copia Simple
+        </button>
+        <button class="btn btn-light btn--sm" onclick="cerrarPdfViewer()">Cerrar Visor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("consultar-rd");
+    ejecutarConsulta();
+  });
+
+  function filtrarConsultaRapida(texto) {
+    document.getElementById("inputConsultaQuery").value = texto;
+    ejecutarConsulta();
+  }
+
+  function ejecutarConsulta() {
+    const q = (document.getElementById("inputConsultaQuery").value || "").toLowerCase().trim();
+    const all = window.db.getTable("resoluciones");
+
+    let results = all;
+    if (q) {
+      results = all.filter(r => 
+        (r.numero_rd && r.numero_rd.toLowerCase().includes(q)) ||
+        (r.administrado_nombre && r.administrado_nombre.toLowerCase().includes(q)) ||
+        (r.administrado_dni && r.administrado_dni.includes(q)) ||
+        (r.asunto && r.asunto.toLowerCase().includes(q)) ||
+        (r.area_origen && r.area_origen.toLowerCase().includes(q)) ||
+        (r.fecha_emision && r.fecha_emision.includes(q)) ||
+        (r.estado && r.estado.toLowerCase().includes(q))
+      );
+    }
+
+    document.getElementById("consultaCount").innerText = `${results.length} documento${results.length === 1 ? '' : 's'} encontrado${results.length === 1 ? '' : 's'}`;
+
+    const tbody = document.getElementById("consultaTableBody");
+    if (!results.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" class="text-center" style="padding: 40px;">
+            <div style="font-size: 32px; margin-bottom: 6px;">🔍</div>
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-700); margin: 0;">No se encontraron registros coincidentes</h4>
+            <p style="font-size: 11px; color: var(--slate-500); margin-top: 4px;">Intente con otro número de RD, nombre o DNI.</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = results.map(r => `
+      <tr>
+        <td class="td-code">${r.numero_rd}</td>
+        <td style="white-space: nowrap; color: var(--slate-600); font-size: 11px;">${r.fecha_emision}</td>
+        <td class="td-name">
+          ${r.administrado_nombre}
+          ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
+        </td>
+        <td style="max-width: 240px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; color: var(--slate-600);" title="${r.asunto}">
+          ${r.asunto}
+        </td>
+        <td style="font-size: 11px; color: var(--slate-700);">${r.area_origen}</td>
+        <td>
+          ${r.tiene_documento ? `
+            <button onclick="verPdfModal('${r.numero_rd}', '${r.asunto}')" class="badge-pdf-dark">
+              📄 PDF
+            </button>
+          ` : '<span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>'}
+        </td>
+        <td>
+          ${r.tiene_ubicacion ? `
+            <div style="font-size: 11px; font-weight: 700; color: #1e3a8a; background: #dbeafe; padding: 3px 8px; border-radius: 4px; display: inline-block;">
+              📍 Caja ${r.ubicacion_caja} | Estante ${r.ubicacion_estante || '-'}
+            </div>
+          ` : '<span style="font-size: 10px; color: #b45309; background: #fef3c7; padding: 2px 6px; border-radius: 4px;">En trámite / Sin archivar</span>'}
+        </td>
+        <td>${renderBadgeEstado(r.estado)}</td>
+        <td style="text-align: right;">
+          <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs" title="Ver ficha completa">
+            👁 Ver Ficha
+          </a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function verPdfModal(num, asunto) {
+    document.getElementById("pdfViewerTitle").innerText = `Resolución Directoral ${num}`;
+    document.getElementById("pdfViewerSub").innerText = asunto;
+    document.getElementById("modalPdfViewer").style.display = "flex";
+  }
+
+  function cerrarPdfViewer() {
+    document.getElementById("modalPdfViewer").style.display = "none";
+  }
+</script>
+
+</body>
+</html>

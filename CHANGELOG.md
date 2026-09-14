@@ -4,6 +4,40 @@ Registro de cambios y versiones del **Sistema de Gestión y Localización de Res
 
 ---
 
+## [v2.0.0] - 2026-09-13
+### 🚀 Reorganización Institucional por Roles, Permisos y Navegación Jerárquica
+**Nombre de la Versión:** *"Estructura Institucional Basada en Roles y Separación de Funciones"*
+
+- **Control de Acceso Basado en Roles y Permisos (RBAC)**:
+  - Implementación de 4 perfiles institucionales diferenciados:
+    1. **Oficina de Resoluciones (María Angélica)**: Registro de RD autógrafas firmadas por Director, metadatos, adjuntar PDF, notificaciones y acción formal `[Remitir a Archivo]`.
+    2. **Archivo Central (Marcos)**: Bandeja de recepción física (`recepcion-archivo.html`), confirmación de ingreso de originales y localización física (Sede, Estante, Archivador, Caja y Rango).
+    3. **Personal Autorizado / Consulta**: Acceso de solo lectura para dependencias (`consulta.html`), visor PDF y localización sin botones de edición.
+    4. **Administrador del Sistema**: Gestión de usuarios (`usuarios.html`), matriz de permisos (`roles-permisos.html`), configuración de catálogos (`configuracion.html`) y auditoría cronológica (`auditoria.html`).
+- **Jerarquía de Navegación (Sidebar Unificado)**:
+  - Estructuración estricta en dos módulos principales: **Inicio** y **Resoluciones**.
+  - Menú desplegable interactivo en **Resoluciones** que agrupa todos los submódulos correspondientes al perfil del usuario.
+  - Apertura automática contextual y resalte activo del submódulo seleccionado.
+- **Desacoplamiento de Mesa de Partes**:
+  - Remoción completa del módulo de Mesa de Partes, respetando su condición de sistema externo autónomo.
+- **Dashboard Reactivo**:
+  - `dashboard.html` adapta indicadores KPIs, accesos directos y tablas de auditoría según el rol en sesión.
+
+---
+### 🏛️ Implementación Formal de Arquitectura por Capas (Layered Architecture)
+- **Capa de Lógica de Negocio (`js/services/resolutionService.js`)**:
+  - Incorporación formal de `requestService` (reglas de negocio de solicitudes de copias, verificación de custodia física en cajas y ciclo de vida de requerimientos).
+  - Incorporación formal de `deliveryService` (generación de enlaces seguros únicos `ENT-YYYY-XXXXXX`, cálculo de vigencia institucional de 7 días y registro de accesos).
+  - Trazabilidad y auditoría cruzada automática en `historyService`.
+- **Capa de Acceso a Datos (DAL - `js/services/db.js`)**:
+  - Sincronización transparente de colecciones en LocalStorage y fallback a `SEED_DATA` para `solicitudes` y `entregas`.
+- **Capa de Presentación (UI Desacoplada)**:
+  - Eliminación de scripts residuales de Tailwind CDN en `solicitudes.html` y `detalle-solicitud.html`.
+  - Adopción integral del sistema de diseño institucional Vanilla CSS (`css/styles.css`).
+  - Controladores de vista desacoplados de persistencias directas.
+
+---
+
 ## [v1.1.0] - 2026-09-13
 ### 🏗️ Reestructuración Arquitectónica y Capa Backend API REST
 - **Backend Modular por Capas (`backend/`)**:

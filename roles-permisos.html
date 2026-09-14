@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roles y Permisos - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  <!-- Sidebar Oficial dinámico -->
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title">Matriz de Roles y Privilegios Granulares</h2>
+          <p class="topbar-subtitle">Control de acceso basado en funciones reales del personal de UGEL 08 Cañete</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <button onclick="restablecerPermisosPorDefecto()" class="btn btn-light btn--sm">
+          Restablecer a Valores de Fábrica
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Informative Box -->
+      <div class="card card--p" style="margin-bottom: 24px; border-left: 4px solid var(--blue); background: #f8fafc;">
+        <div class="flex-center gap-3">
+          <div style="font-size: 28px;">🔐</div>
+          <div>
+            <h4 style="margin: 0 0 4px; font-size: 14px; font-weight: 700; color: var(--slate-800);">
+              Seguridad Institucional y Separación de Deberes
+            </h4>
+            <p style="margin: 0; font-size: 12px; color: var(--slate-600); line-height: 1.5;">
+              Ningún usuario accede a menús o botones que no le corresponden. María Angélica no ubica físicamente en estantes; Marcos no crea ni numera resoluciones; Consulta no puede editar ni eliminar.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de Roles -->
+      <div class="form-grid-2" style="gap: 20px;" id="rolesCardsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Scripts -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    renderSidebar("roles");
+    renderMatrizRoles();
+  });
+
+  function renderMatrizRoles() {
+    const roles = window.db.getTable("roles") || [];
+    const container = document.getElementById("rolesCardsContainer");
+
+    const roleInfo = {
+      admin: {
+        color: '#dc2626',
+        badge: 'background: #fee2e2; color: #991b1b;',
+        icon: '🛡️',
+        desc: 'Acceso total y configuración del sistema, gestión de usuarios, catálogos y auditoría.'
+      },
+      maria: {
+        color: '#3b82f6',
+        badge: 'background: #dbeafe; color: #1e40af;',
+        icon: '✍️',
+        desc: 'Registro de RD autógrafas firmadas por Director, metadatos, adjuntar PDF, notificaciones y remisión formal a Archivo.'
+      },
+      marcos: {
+        color: '#f59e0b',
+        badge: 'background: #fef3c7; color: #92400e;',
+        icon: '📦',
+        desc: 'Recepción física de expedientes/RD, custodia definitiva, registro y modificación de ubicación física (caja, estante, archivador).'
+      },
+      consulta: {
+        color: '#10b981',
+        badge: 'background: #d1fae5; color: #065f46;',
+        icon: '👁️',
+        desc: 'Personal autorizado con acceso exclusivo de consulta, búsqueda y visualización de documentos y ubicación (solo lectura).'
+      }
+    };
+
+    container.innerHTML = roles.map(r => {
+      const meta = roleInfo[r.id] || { color: '#64748b', badge: 'background: #f1f5f9;', icon: '👤', desc: '' };
+      return `
+        <div class="card card--p" style="border-top: 3px solid ${meta.color};">
+          <div class="flex-center justify-between" style="margin-bottom: 12px;">
+            <div class="flex-center gap-2">
+              <span style="font-size: 24px;">${meta.icon}</span>
+              <div>
+                <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: var(--slate-800);">${r.nombre}</h3>
+                <span class="badge" style="${meta.badge} font-size: 10px; margin-top: 2px;">Rol: ${r.id}</span>
+              </div>
+            </div>
+            <span style="font-size: 11px; font-weight: 700; color: var(--slate-500);">${r.permisos.includes('*') ? 'Acceso Total' : r.permisos.length + ' permisos activos'}</span>
+          </div>
+
+          <p style="font-size: 12px; color: var(--slate-600); margin: 0 0 16px; line-height: 1.4;">
+            ${meta.desc}
+          </p>
+
+          <div style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
+            <label style="font-size: 11px; font-weight: 700; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;">
+              Permisos Granulares Concedidos
+            </label>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              ${r.permisos.map(p => `
+                <span style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 3px 8px; font-size: 11px; font-family: monospace; color: var(--slate-700);">
+                  ${p === '*' ? '⭐ Todas las facultades (*)' : p}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function restablecerPermisosPorDefecto() {
+    if (!confirm("¿Deseas restablecer los permisos y roles a la configuración por defecto de la UGEL 08?")) return;
+    localStorage.removeItem("ug_roles");
+    location.reload();
+  }
+</script>
+
+</body>
+</html>

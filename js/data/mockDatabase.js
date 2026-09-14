@@ -9993,27 +9993,338 @@ const SEED_DATA = {
   "usuarios": [
     {
       "id": 1,
-      "usuario": "marcos",
-      "nombre": "Marcos (Archivo y Resoluciones)",
-      "rol": "Archivo y Resoluciones"
+      "usuario": "admin",
+      "nombre": "Lic. Carlos Navarro",
+      "cargo": "Administrador General del Sistema",
+      "rol": "Administrador",
+      "correo": "admin.sistemas@ugel08.gob.pe",
+      "estado": "Activo"
     },
     {
       "id": 2,
-      "usuario": "admin",
-      "nombre": "Administrador del Sistema",
-      "rol": "Administrador"
+      "usuario": "maria",
+      "nombre": "María Angélica Sánchez",
+      "cargo": "Responsable de Oficina de Resoluciones",
+      "rol": "Oficina de Resoluciones",
+      "correo": "resoluciones.drelp@ugel08.gob.pe",
+      "estado": "Activo"
     },
     {
       "id": 3,
-      "usuario": "resoluciones",
-      "nombre": "Especialista de Resoluciones",
-      "rol": "Resoluciones"
+      "usuario": "marcos",
+      "nombre": "Marcos Huamán Quispe",
+      "cargo": "Responsable de Archivo Central",
+      "rol": "Archivo",
+      "correo": "archivo.central@ugel08.gob.pe",
+      "estado": "Activo"
     },
     {
       "id": 4,
       "usuario": "consulta",
-      "nombre": "Usuario de Consulta",
-      "rol": "Consulta"
+      "nombre": "Dr. Fernando Ruiz",
+      "cargo": "Personal Autorizado (Asesoría Jurídica)",
+      "rol": "Personal Autorizado",
+      "correo": "asesoria.legal@ugel08.gob.pe",
+      "estado": "Activo"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "codigo": "admin",
+      "nombre": "Administrador",
+      "descripcion": "Acceso total y configuración del sistema",
+      "permisos": ["*"]
+    },
+    {
+      "id": 2,
+      "codigo": "resoluciones",
+      "nombre": "Oficina de Resoluciones — María Angélica",
+      "descripcion": "Gestión de RD autógrafas, numeración, PDF, notificación y remisión a archivo",
+      "permisos": [
+        "resoluciones.ver",
+        "resoluciones.crear",
+        "resoluciones.editar",
+        "resoluciones.remitir",
+        "documentos.ver",
+        "documentos.subir",
+        "notificaciones.ver",
+        "notificaciones.crear",
+        "notificaciones.editar",
+        "consultas.ver",
+        "historial.ver"
+      ]
+    },
+    {
+      "id": 3,
+      "codigo": "archivo",
+      "nombre": "Archivo — Marcos",
+      "descripcion": "Recepción física de RD autógrafas, custodia, asignación de caja/estante y localización",
+      "permisos": [
+        "archivo.ver",
+        "archivo.recibir",
+        "archivo.ubicacion.crear",
+        "archivo.ubicacion.editar",
+        "archivo.localizar",
+        "resoluciones.ver",
+        "documentos.ver",
+        "consultas.ver",
+        "historial.ver"
+      ]
+    },
+    {
+      "id": 4,
+      "codigo": "consulta",
+      "nombre": "Personal Autorizado",
+      "descripcion": "Consulta y búsqueda institucional de resoluciones, documentos y ubicación sin edición",
+      "permisos": [
+        "resoluciones.ver",
+        "documentos.ver",
+        "archivo.consultar",
+        "consultas.ver"
+      ]
+    }
+  ],
+  "mesa_partes": [
+    {
+      "id": 1,
+      "numero_registro": "EXP-2026-000412",
+      "fecha": "02/09/2026",
+      "hora": "09:30",
+      "remitente": "Prof. Juan Pérez Ramos",
+      "dni": "42891044",
+      "asunto": "Solicitud de copia fedateada de Resolución Directoral de nombramiento",
+      "tipo_documento": "FUT - Solicitud",
+      "area_destino": "Oficina de Resoluciones",
+      "descripcion": "Adjunta copia de DNI y solicita fedateo para trámite de reasignación.",
+      "estado": "En trámite",
+      "derivado_a": "María Angélica (Resoluciones)",
+      "fecha_derivacion": "02/09/2026 10:15"
+    },
+    {
+      "id": 2,
+      "numero_registro": "EXP-2026-000413",
+      "fecha": "02/09/2026",
+      "hora": "11:00",
+      "remitente": "I.E. CNI 20066 San Luis",
+      "dni": "Oficio N° 085-2026-D",
+      "asunto": "Remisión de actas de adjudicación de plazas docentes 2026",
+      "tipo_documento": "Oficio",
+      "area_destino": "Recursos Humanos",
+      "descripcion": "Actas consolidadas del comité de evaluación docente.",
+      "estado": "Derivado",
+      "derivado_a": "Recursos Humanos",
+      "fecha_derivacion": "02/09/2026 11:45"
+    },
+    {
+      "id": 3,
+      "numero_registro": "EXP-2026-000414",
+      "fecha": "03/09/2026",
+      "hora": "08:45",
+      "remitente": "María Torres Quintana",
+      "dni": "10982341",
+      "asunto": "Constancia de servicios y copia de resolución histórica",
+      "tipo_documento": "FUT - Solicitud",
+      "area_destino": "Archivo Central",
+      "descripcion": "Para verificación de tiempo de servicios en la carrera magisterial.",
+      "estado": "En trámite",
+      "derivado_a": "Marcos (Archivo)",
+      "fecha_derivacion": "03/09/2026 09:10"
+    }
+  ],
+  "solicitudes": [
+    {
+      "id": 1,
+      "codigo": "SOL-2026-000125",
+      "fecha": "02/09/2026",
+      "solicitante": "Prof. Juan Pérez Ramos",
+      "dni": "42891044",
+      "tipo": "Copia de resolución y antecedentes",
+      "motivo": "Solicitud de copia fedateada de Resolución Directoral y antecedentes para trámite de reasignación.",
+      "rd_solicitada": "RD-0001-2004",
+      "rd_numero": "0001",
+      "rd_anio": 2004,
+      "estado": "DOCUMENTO LOCALIZADO",
+      "ubicacion_id": 1,
+      "ubicacion_resumen": {
+        "local": "Archivo Central (Sede Principal)",
+        "ambiente": "Ambiente N° 1 - Legajos Docentes",
+        "estante": "Estante A",
+        "caja": "Caja 001",
+        "rango": "RD-0001 a RD-0100"
+      },
+      "documentos_disponibles": [
+        {
+          "id": "doc-001-1",
+          "nombre": "RD-0001-2004.pdf",
+          "tipo": "Resolución Directoral",
+          "paginas": 18,
+          "tamano": "4.8 MB",
+          "fecha": "09/01/2004",
+          "estado": "Digitalizado Alta Calidad",
+          "defaultSelected": true
+        },
+        {
+          "id": "doc-001-2",
+          "nombre": "Antecedente 01 - Informe Escalafonario.pdf",
+          "tipo": "Antecedente",
+          "paginas": 12,
+          "tamano": "2.1 MB",
+          "fecha": "02/01/2004",
+          "estado": "Digitalizado",
+          "defaultSelected": true
+        },
+        {
+          "id": "doc-001-3",
+          "nombre": "Antecedente 02 - Solicitud y Anexos.pdf",
+          "tipo": "Antecedente",
+          "paginas": 8,
+          "tamano": "1.4 MB",
+          "fecha": "28/12/2003",
+          "estado": "Digitalizado",
+          "defaultSelected": false
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "codigo": "SOL-2026-000126",
+      "fecha": "01/09/2026",
+      "solicitante": "María Torres Quintana",
+      "dni": "10982341",
+      "tipo": "Antecedentes y legajo",
+      "motivo": "Copia de informe sustentatorio de nombramiento para verificación de tiempo de servicio.",
+      "rd_solicitada": "RD-0005-2004",
+      "rd_numero": "0005",
+      "rd_anio": 2004,
+      "estado": "PENDIENTE",
+      "ubicacion_id": 3,
+      "ubicacion_resumen": {
+        "local": "Archivo Histórico (Anexo 2)",
+        "ambiente": "Ambiente B - Legajos Pasivos",
+        "estante": "Estante C",
+        "caja": "Caja 003",
+        "rango": "RD-0201 a RD-0300"
+      },
+      "documentos_disponibles": [
+        {
+          "id": "doc-005-1",
+          "nombre": "RD-0005-2004.pdf",
+          "tipo": "Resolución Directoral",
+          "paginas": 10,
+          "tamano": "2.4 MB",
+          "fecha": "09/01/2004",
+          "estado": "Digitalizado",
+          "defaultSelected": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "codigo": "SOL-2026-000127",
+      "fecha": "30/08/2026",
+      "solicitante": "Oficina de Personal - UGEL 08",
+      "dni": "Oficio N° 342-2026-PER",
+      "tipo": "Resolución y Anexo Interno",
+      "motivo": "Requerimiento interno para auditoría de pagos de encargaturas.",
+      "rd_solicitada": "RD-0008-2004",
+      "rd_numero": "0008",
+      "rd_anio": 2004,
+      "estado": "ATENDIDA",
+      "ubicacion_id": 5,
+      "ubicacion_resumen": {
+        "local": "Archivo Central",
+        "ambiente": "Ambiente N° 2 - Trámite Documentario",
+        "estante": "Estante E",
+        "caja": "Caja 005",
+        "rango": "RD-0401 a RD-0500"
+      },
+      "documentos_disponibles": [
+        {
+          "id": "doc-008-1",
+          "nombre": "RD-0008-2004.pdf",
+          "tipo": "Resolución Directoral",
+          "paginas": 14,
+          "tamano": "3.8 MB",
+          "fecha": "09/01/2004",
+          "estado": "Digitalizado",
+          "defaultSelected": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "codigo": "SOL-2026-000128",
+      "fecha": "02/09/2026",
+      "solicitante": "Lic. Roberto Dávila Campos",
+      "dni": "08765432",
+      "tipo": "Copia de resolución",
+      "motivo": "Constancia de reconocimiento de años de servicios.",
+      "rd_solicitada": "RD-0010-2004",
+      "rd_numero": "0010",
+      "rd_anio": 2004,
+      "estado": "PENDIENTE",
+      "ubicacion_id": 1,
+      "ubicacion_resumen": {
+        "local": "Archivo Central (Sede Principal)",
+        "ambiente": "Ambiente N° 1 - Legajos Docentes",
+        "estante": "Estante A",
+        "caja": "Caja 001",
+        "rango": "RD-0001 a RD-0100"
+      },
+      "documentos_disponibles": [
+        {
+          "id": "doc-010-1",
+          "nombre": "RD-0010-2004.pdf",
+          "tipo": "Resolución Directoral",
+          "paginas": 8,
+          "tamano": "1.9 MB",
+          "fecha": "09/01/2004",
+          "estado": "Digitalizado",
+          "defaultSelected": true
+        }
+      ]
+    }
+  ],
+  "entregas": [
+    {
+      "id": 1,
+      "codigo": "ENT-2026-000045",
+      "solicitud_codigo": "SOL-2026-000125",
+      "solicitante": "Prof. Juan Pérez Ramos",
+      "resolucion": "RD-0001-2004",
+      "documentos": [
+        { "nombre": "RD-0001-2004.pdf", "paginas": 18, "tamano": "4.8 MB" },
+        { "nombre": "Antecedente 01 - Informe Escalafonario.pdf", "paginas": 12, "tamano": "2.1 MB" }
+      ],
+      "total_documentos": 2,
+      "total_paginas": 30,
+      "total_peso": "6.9 MB",
+      "fecha_creacion": "02/09/2026",
+      "fecha_vencimiento": "09/09/2026",
+      "medio": "Enlace Seguro / WhatsApp",
+      "estado": "DISPONIBLE",
+      "accesos": 3,
+      "enlace": "https://sistema-demo-ugel.gob.pe/documentos/ENT-2026-000045"
+    },
+    {
+      "id": 2,
+      "codigo": "ENT-2026-000044",
+      "solicitud_codigo": "SOL-2026-000127",
+      "solicitante": "Oficina de Personal - UGEL 08",
+      "resolucion": "RD-0008-2004",
+      "documentos": [
+        { "nombre": "RD-0008-2004.pdf", "paginas": 14, "tamano": "3.8 MB" }
+      ],
+      "total_documentos": 1,
+      "total_paginas": 14,
+      "total_peso": "3.8 MB",
+      "fecha_creacion": "31/08/2026",
+      "fecha_vencimiento": "07/09/2026",
+      "medio": "Oficio Institucional",
+      "estado": "DISPONIBLE",
+      "accesos": 5,
+      "enlace": "https://sistema-demo-ugel.gob.pe/documentos/ENT-2026-000044"
     }
   ]
 };

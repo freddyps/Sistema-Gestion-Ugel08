@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resoluciones Directorales - UGEL 08 Cañete</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
 <body class="page-app">
 
@@ -26,11 +26,8 @@
         </div>
       </div>
 
-      <div class="topbar-right">
-        <a href="registrar-resolucion.html" class="btn btn-primary btn--rounded">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-          Nueva Resolución
-        </a>
+      <div class="topbar-right" id="topbarActions">
+        <!-- Rendered dynamically by permission -->
       </div>
     </header>
 
@@ -38,90 +35,252 @@
     <div class="page-body">
       
       <!-- Filter and Search Box -->
-      <div class="card card--p">
-        <div class="card-header">
-          <h3 class="card-title">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-            Criterios de Búsqueda y Filtros Combinados
-          </h3>
-          <button type="button" onclick="resetFilters()" class="text-xs" style="color: var(--slate-500); font-weight: 700; background: none; border: none; cursor: pointer;">
-            Limpiar Filtros
+      <div class="card card--p filter-card">
+        <div class="card-header" style="margin-bottom: 20px;">
+          <div class="flex-center gap-3">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--blue-50); display: flex; align-items: center; justify-content: center; color: var(--blue);">
+              <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+            </div>
+            <div>
+              <h3 class="card-title" style="font-size: 15px; margin: 0;">Filtros de Búsqueda y Localización</h3>
+              <p style="font-size: 11px; color: var(--slate-400); margin: 2px 0 0 0;">Filtra por criterios combinados en tiempo real</p>
+            </div>
+          </div>
+          <button type="button" onclick="resetFilters()" class="filter-reset-btn">
+            <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Restablecer Filtros
           </button>
         </div>
 
         <form id="searchFilterForm" onsubmit="applyFilters(event)">
           <!-- Buscador principal -->
-          <div style="margin-bottom: 16px;">
-            <label class="form-label" style="font-size: 13px;">Búsqueda Rápida (Número RD, DNI, Nombre, Asunto o Expediente)</label>
+          <div style="margin-bottom: 20px;">
+            <label class="filter-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Búsqueda Inteligente (N° Resolución, DNI, Apellidos y Nombres, Expediente o Asunto)
+            </label>
             <div class="input-wrapper">
-              <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <input type="text" id="filterQuery" placeholder="Ejemplo: 3874, Juan Pérez, nombramiento, 12345678..." class="form-input" style="padding-left: 40px; font-size: 14px; padding-top: 10px; padding-bottom: 10px;">
+              <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="left: 14px; width: 18px; height: 18px; color: var(--blue);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input type="text" id="filterQuery" placeholder="Escribe para buscar... Ej: 3874, Juan Pérez, nombramiento, 10234567" class="filter-quick-search" oninput="applyFilters()">
             </div>
           </div>
 
-          <!-- Filtros avanzados -->
-          <div class="form-grid-3">
-            <div>
-              <label class="form-label">Año de Emisión</label>
-              <select id="filterAnio" class="form-select" onchange="applyFilters()">
-                <option value="">-- Todos los años --</option>
-                <option value="2026">2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2020">2020</option>
-              </select>
+          <!-- Filtros avanzados con Custom Select Moderno -->
+          <div class="form-grid-3" style="gap: 18px;">
+            
+            <!-- 1. Año -->
+            <div class="filter-field-wrapper">
+              <label class="filter-label">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                Año de Emisión
+              </label>
+              <input type="hidden" id="filterAnio" value="">
+              <div class="custom-select-wrap" id="csWrapAnio">
+                <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapAnio')">
+                  <div class="custom-select-value" id="csValAnio">
+                    <span class="opt-icon">📅</span>
+                    <span>Todos los años (Histórico)</span>
+                  </div>
+                  <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="custom-select-dropdown">
+                  <div class="custom-select-option selected" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '', '📅 Todos los años (Histórico)', this)">
+                    <span><span class="opt-icon">📅</span> Todos los años (Histórico)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '2026', '🔵 2026 (Gestión Actual)', this)">
+                    <span><span class="opt-icon">🔵</span> 2026 (Gestión Actual)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '2025', '📅 Año 2025', this)">
+                    <span><span class="opt-icon">📅</span> Año 2025</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '2024', '📅 Año 2024', this)">
+                    <span><span class="opt-icon">📅</span> Año 2024</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '2023', '📅 Año 2023', this)">
+                    <span><span class="opt-icon">📅</span> Año 2023</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '2022', '📅 Año 2022', this)">
+                    <span><span class="opt-icon">📅</span> Año 2022</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapAnio', 'filterAnio', 'csValAnio', '2020', '📅 Año 2020', this)">
+                    <span><span class="opt-icon">📅</span> Año 2020</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label class="form-label">Área de Origen</label>
-              <select id="filterArea" class="form-select" onchange="applyFilters()">
-                <option value="">-- Todas las áreas --</option>
-                <option value="Recursos Humanos">Recursos Humanos</option>
-                <option value="Gestión Pedagógica">Gestión Pedagógica</option>
-                <option value="Gestión Institucional">Gestión Institucional</option>
-                <option value="Administración y Finanzas">Administración y Finanzas</option>
-                <option value="Asesoría Jurídica">Asesoría Jurídica</option>
-                <option value="Infraestructura">Infraestructura</option>
-              </select>
+            <!-- 2. Área de Origen -->
+            <div class="filter-field-wrapper">
+              <label class="filter-label">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                Área de Origen
+              </label>
+              <input type="hidden" id="filterArea" value="">
+              <div class="custom-select-wrap" id="csWrapArea">
+                <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapArea')">
+                  <div class="custom-select-value" id="csValArea">
+                    <span class="opt-icon">🏢</span>
+                    <span>Todas las dependencias</span>
+                  </div>
+                  <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="custom-select-dropdown">
+                  <div class="custom-select-option selected" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', '', '🏢 Todas las dependencias', this)">
+                    <span><span class="opt-icon">🏢</span> Todas las dependencias</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', 'Recursos Humanos', '👥 Recursos Humanos (RRHH)', this)">
+                    <span><span class="opt-icon">👥</span> Recursos Humanos (RRHH)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', 'Gestión Pedagógica', '📚 Gestión Pedagógica (AGP)', this)">
+                    <span><span class="opt-icon">📚</span> Gestión Pedagógica (AGP)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', 'Gestión Institucional', '🏛️ Gestión Institucional (AGI)', this)">
+                    <span><span class="opt-icon">🏛️</span> Gestión Institucional (AGI)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', 'Administración y Finanzas', '💼 Adm. y Finanzas (AGA)', this)">
+                    <span><span class="opt-icon">💼</span> Adm. y Finanzas (AGA)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', 'Asesoría Jurídica', '⚖️ Asesoría Jurídica', this)">
+                    <span><span class="opt-icon">⚖️</span> Asesoría Jurídica</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapArea', 'filterArea', 'csValArea', 'Infraestructura', '🏗️ Infraestructura', this)">
+                    <span><span class="opt-icon">🏗️</span> Infraestructura</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label class="form-label">Estado de la RD</label>
-              <select id="filterEstado" class="form-select" onchange="applyFilters()">
-                <option value="TODOS">-- Todos los estados --</option>
-                <option value="Archivado">Archivado</option>
-                <option value="Notificado">Notificado</option>
-                <option value="Pendiente de notificación">Pendiente de notificación</option>
-                <option value="Remitido a archivo">Remitido a archivo</option>
-                <option value="Observado">Observado</option>
-                <option value="Registrado">Registrado</option>
-              </select>
+            <!-- 3. Estado de la RD -->
+            <div class="filter-field-wrapper">
+              <label class="filter-label">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Estado de la RD
+              </label>
+              <input type="hidden" id="filterEstado" value="TODOS">
+              <div class="custom-select-wrap" id="csWrapEstado">
+                <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapEstado')">
+                  <div class="custom-select-value" id="csValEstado">
+                    <span class="opt-icon">🏷️</span>
+                    <span>Todos los estados</span>
+                  </div>
+                  <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="custom-select-dropdown">
+                  <div class="custom-select-option selected" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'TODOS', '🏷️ Todos los estados', this)">
+                    <span><span class="opt-icon">🏷️</span> Todos los estados</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'Archivado', '📦 Archivado (En Custodia)', this)">
+                    <span><span class="opt-icon">📦</span> Archivado (En Custodia)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'Notificado', '✅ Notificado (Con Cargo)', this)">
+                    <span><span class="opt-icon">✅</span> Notificado (Con Cargo)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'Pendiente de notificación', '⏳ Pendiente de Notificación', this)">
+                    <span><span class="opt-icon">⏳</span> Pendiente de Notificación</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'Remitido a archivo', '📁 Remitido a Archivo', this)">
+                    <span><span class="opt-icon">📁</span> Remitido a Archivo</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'Observado', '⚠️ Observado', this)">
+                    <span><span class="opt-icon">⚠️</span> Observado</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapEstado', 'filterEstado', 'csValEstado', 'Registrado', '📝 Registrado Inicial', this)">
+                    <span><span class="opt-icon">📝</span> Registrado Inicial</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label class="form-label">Documento Digital (PDF)</label>
-              <select id="filterDocumento" class="form-select" onchange="applyFilters()">
-                <option value="TODOS">-- Todos --</option>
-                <option value="DISPONIBLE">Con PDF disponible</option>
-                <option value="NO_DISPONIBLE">Sin PDF disponible</option>
-              </select>
+            <!-- 4. Documento Digital -->
+            <div class="filter-field-wrapper">
+              <label class="filter-label">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                Documento Digital (PDF)
+              </label>
+              <input type="hidden" id="filterDocumento" value="TODOS">
+              <div class="custom-select-wrap" id="csWrapDoc">
+                <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapDoc')">
+                  <div class="custom-select-value" id="csValDoc">
+                    <span class="opt-icon">📄</span>
+                    <span>Todos (Con y Sin PDF)</span>
+                  </div>
+                  <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="custom-select-dropdown">
+                  <div class="custom-select-option selected" onclick="selectCustomOption('csWrapDoc', 'filterDocumento', 'csValDoc', 'TODOS', '📄 Todos (Con y Sin PDF)', this)">
+                    <span><span class="opt-icon">📄</span> Todos (Con y Sin PDF)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapDoc', 'filterDocumento', 'csValDoc', 'DISPONIBLE', '📕 Con PDF digitalizado', this)">
+                    <span><span class="opt-icon">📕</span> Con PDF digitalizado</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapDoc', 'filterDocumento', 'csValDoc', 'NO_DISPONIBLE', '📁 Solo físico (Sin PDF)', this)">
+                    <span><span class="opt-icon">📁</span> Solo físico (Sin PDF)</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <label class="form-label">Ubicación Física</label>
-              <select id="filterUbicacion" class="form-select" onchange="applyFilters()">
-                <option value="TODOS">-- Todas --</option>
-                <option value="CON_UBICACION">Con caja y ubicación asignada</option>
-                <option value="SIN_UBICACION">Ubicación pendiente de registrar</option>
-              </select>
+            <!-- 5. Ubicación Física -->
+            <div class="filter-field-wrapper">
+              <label class="filter-label">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                Ubicación Física
+              </label>
+              <input type="hidden" id="filterUbicacion" value="TODOS">
+              <div class="custom-select-wrap" id="csWrapUbic">
+                <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapUbic')">
+                  <div class="custom-select-value" id="csValUbic">
+                    <span class="opt-icon">📍</span>
+                    <span>Todas las ubicaciones</span>
+                  </div>
+                  <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="custom-select-dropdown">
+                  <div class="custom-select-option selected" onclick="selectCustomOption('csWrapUbic', 'filterUbicacion', 'csValUbic', 'TODOS', '📍 Todas las ubicaciones', this)">
+                    <span><span class="opt-icon">📍</span> Todas las ubicaciones</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapUbic', 'filterUbicacion', 'csValUbic', 'CON_UBICACION', '📦 Con caja y estante asignado', this)">
+                    <span><span class="opt-icon">📦</span> Con caja y estante asignado</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                  <div class="custom-select-option" onclick="selectCustomOption('csWrapUbic', 'filterUbicacion', 'csValUbic', 'SIN_UBICACION', '⏳ Pendiente de ubicar', this)">
+                    <span><span class="opt-icon">⏳</span> Pendiente de ubicar</span>
+                    <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div style="display: flex; align-items: flex-end;">
-              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 38px;">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                BUSCAR RESOLUCIÓN
+            <!-- 6. Botón de Acción -->
+            <div class="filter-field-wrapper" style="justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 46px; font-size: 13px; border-radius: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.3);">
+                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                FILTRAR RESOLUCIONES
               </button>
             </div>
           </div>
@@ -156,7 +315,6 @@
             <thead>
               <tr>
                 <th>N° RD</th>
-                <th>Año</th>
                 <th>Fecha</th>
                 <th>Administrado / Interesado</th>
                 <th>Asunto</th>
@@ -233,11 +391,38 @@
   document.addEventListener("DOMContentLoaded", () => {
     renderSidebar("resoluciones");
 
-    // Verificar si viene una consulta rápida por URL
+    // Botón de nueva resolución solo para autorizados (María Angélica / Admin)
+    const topbarActions = document.getElementById("topbarActions");
+    if (topbarActions && window.authService.hasPermission("resoluciones.crear")) {
+      topbarActions.innerHTML = `
+        <a href="registrar-resolucion.html" class="btn btn-primary btn--rounded">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Nueva Resolución
+        </a>
+      `;
+    }
+
+    // Verificar si vienen parámetros por URL (q, estado, doc)
     const urlParams = new URLSearchParams(window.location.search);
     const qParam = urlParams.get("q");
     if (qParam) {
       document.getElementById("filterQuery").value = qParam;
+    }
+
+    const estadoParam = urlParams.get("estado");
+    if (estadoParam) {
+      document.getElementById("filterEstado").value = estadoParam;
+      const csVal = document.getElementById("csValEstado");
+      if (csVal) csVal.innerHTML = `<span>⏳ ${estadoParam}</span>`;
+      renderSidebar("notificaciones");
+    }
+
+    const docParam = urlParams.get("doc");
+    if (docParam) {
+      document.getElementById("filterDocumento").value = docParam;
+      const csVal = document.getElementById("csValDoc");
+      if (csVal) csVal.innerHTML = `<span>📕 Con PDF digitalizado</span>`;
+      renderSidebar("documentos");
     }
 
     applyFilters();
@@ -260,8 +445,64 @@
     renderTable();
   }
 
+  function toggleCustomDropdown(wrapId) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    const isActive = wrap.classList.contains('active');
+    
+    // Cerrar otros dropdowns abiertos
+    document.querySelectorAll('.custom-select-wrap.active').forEach(w => {
+      if (w.id !== wrapId) w.classList.remove('active');
+    });
+
+    if (isActive) {
+      wrap.classList.remove('active');
+    } else {
+      wrap.classList.add('active');
+    }
+  }
+
+  function selectCustomOption(wrapId, hiddenInputId, labelId, value, displayText, optionEl) {
+    document.getElementById(hiddenInputId).value = value;
+    document.getElementById(labelId).innerHTML = `<span>${displayText}</span>`;
+    
+    const wrap = document.getElementById(wrapId);
+    wrap.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
+    optionEl.classList.add('selected');
+    wrap.classList.remove('active');
+
+    applyFilters();
+  }
+
+  // Cerrar dropdowns si se hace clic afuera
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select-wrap')) {
+      document.querySelectorAll('.custom-select-wrap.active').forEach(w => w.classList.remove('active'));
+    }
+  });
+
   function resetFilters() {
     document.getElementById("searchFilterForm").reset();
+    
+    // Resetear custom selects a estado inicial
+    document.getElementById("filterAnio").value = "";
+    document.getElementById("csValAnio").innerHTML = `<span class="opt-icon">📅</span><span>Todos los años (Histórico)</span>`;
+    
+    document.getElementById("filterArea").value = "";
+    document.getElementById("csValArea").innerHTML = `<span class="opt-icon">🏢</span><span>Todas las dependencias</span>`;
+
+    document.getElementById("filterEstado").value = "TODOS";
+    document.getElementById("csValEstado").innerHTML = `<span class="opt-icon">🏷️</span><span>Todos los estados</span>`;
+
+    document.getElementById("filterDocumento").value = "TODOS";
+    document.getElementById("csValDoc").innerHTML = `<span class="opt-icon">📄</span><span>Todos (Con y Sin PDF)</span>`;
+
+    document.getElementById("filterUbicacion").value = "TODOS";
+    document.getElementById("csValUbic").innerHTML = `<span class="opt-icon">📍</span><span>Todas las ubicaciones</span>`;
+
+    document.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
+    document.querySelectorAll('.custom-select-dropdown > .custom-select-option:first-child').forEach(opt => opt.classList.add('selected'));
+
     applyFilters();
     showToast("Filtros restablecidos", "info");
   }
@@ -304,7 +545,6 @@
     tbody.innerHTML = paginatedItems.map(r => `
       <tr>
         <td class="td-code">${r.numero_rd}</td>
-        <td><span class="badge badge-slate">${r.anio}</span></td>
         <td style="color: var(--slate-600); white-space: nowrap;">${r.fecha_emision}</td>
         <td class="td-name">
           ${r.administrado_nombre}
@@ -336,15 +576,34 @@
         <td>${renderBadgeEstado(r.estado)}</td>
         <td style="text-align: right;">
           <div class="flex-center gap-1" style="justify-content: flex-end;">
-            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs" title="Ver ficha completa y ¿Dónde está?">
+            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs" title="Ver ficha completa y trazabilidad">
               👁 Ver
             </a>
-            <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar resolución">
-              ✏
-            </a>
-            <button onclick="promptDeleteRd(${r.id}, '${r.numero_rd}', '${r.administrado_nombre}')" class="btn btn-light btn--xs" style="color: var(--red-600);" title="Eliminar">
-              🗑
-            </button>
+            ${window.authService.hasPermission("resoluciones.editar") ? `
+              <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar resolución">
+                ✏
+              </a>
+            ` : ''}
+            ${window.authService.hasPermission("resoluciones.remitir") && r.estado !== 'Pendiente de archivo' && r.estado !== 'Archivado' ? `
+              <button onclick="remitirDesdeLista(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;" title="Remitir física y formalmente a Archivo">
+                📤 Remitir
+              </button>
+            ` : ''}
+            ${window.authService.hasPermission("archivo.recibir") && r.estado === 'Pendiente de archivo' ? `
+              <button onclick="recibirDesdeLista(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a;" title="Confirmar recepción física en Archivo">
+                📥 Recibir
+              </button>
+            ` : ''}
+            ${window.authService.hasPermission("ubicacion.crear") && !r.tiene_ubicacion && (r.estado === 'Recibida en archivo' || r.estado === 'Archivado') ? `
+              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="btn btn--xs" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;" title="Asignar ubicación física">
+                📍 Ubicar
+              </a>
+            ` : ''}
+            ${window.authService.hasPermission("admin.config") ? `
+              <button onclick="promptDeleteRd(${r.id}, '${r.numero_rd}', '${r.administrado_nombre}')" class="btn btn-light btn--xs" style="color: var(--red-600);" title="Eliminar">
+                🗑
+              </button>
+            ` : ''}
           </div>
         </td>
       </tr>
@@ -394,11 +653,33 @@
   }
 
   // Modal de Eliminación
-  function promptDeleteRd(id, numero, persona) {
+  function remitirDesdeLista(id, num) {
+    if (!confirm(`¿Confirmas la remisión formal de la RD N.° ${num} al área de Archivo Central para su custodia física definitiva?`)) return;
+    const res = window.resolutionService.remitirAArchivo(id, "Remisión formal desde bandeja de resoluciones");
+    if (res.success) {
+      showToast(`RD N.° ${num} remitida a Archivo exitosamente`, "success");
+      applyFilters();
+    } else {
+      showToast(res.message || "Error al remitir", "error");
+    }
+  }
+
+  function recibirDesdeLista(id, num) {
+    if (!confirm(`¿Confirmar recepción física de la RD N.° ${num} en el Archivo Central (Responsable: Marcos)?`)) return;
+    const res = window.resolutionService.recibirEnArchivo(id, "Recepción física confirmada en Archivo");
+    if (res.success) {
+      showToast(`RD N.° ${num} recibida en Archivo. Procede a registrar su ubicación.`, "success");
+      applyFilters();
+    } else {
+      showToast(res.message || "Error al recibir", "error");
+    }
+  }
+
+  function promptDeleteRd(id, num, nombre) {
     targetDeleteId = id;
-    document.getElementById("deleteRdNumber").innerText = numero;
-    document.getElementById("deleteRdPerson").innerText = persona;
-    document.getElementById("modalDelete").classList.add("open");
+    document.getElementById("deleteRdNumber").innerText = num;
+    document.getElementById("deleteRdAdmin").innerText = nombre;
+    document.getElementById("deleteModal").classList.add("active");
   }
 
   function closeDeleteModal() {

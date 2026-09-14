@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle de Solicitud - UGEL 08 Cañete</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased app-layout">
+<body class="page-app">
 
+<div class="app-wrapper">
   <!-- Sidebar Unificado -->
   <aside class="sidebar" id="mainSidebar"></aside>
 
@@ -20,152 +20,152 @@
     <header class="topbar">
       <div class="topbar-left">
         <div>
-          <h2 class="topbar-title" id="topbarTitle">Atención de Solicitud: SOL-2026-000125</h2>
+          <h2 class="topbar-title" id="topbarTitle">Atención de Solicitud</h2>
           <p class="topbar-subtitle">Verificación de antecedentes, localización en caja y entrega digital al administrado</p>
         </div>
         <span class="badge badge-amber" id="solStatusBadge" style="font-weight: 700;">
-          PENDIENTE
+          Cargando...
         </span>
       </div>
 
-      <div class="flex items-center gap-3">
-        <a href="solicitudes.html" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-bold transition">
+      <div class="topbar-right">
+        <a href="solicitudes.html" class="btn btn-light btn--rounded">
           &larr; Volver a Solicitudes
         </a>
       </div>
     </header>
 
     <!-- Page Body -->
-    <div class="p-8 flex-1 flex flex-col gap-6">
+    <div class="page-body">
       
       <!-- Top Grid: Request Info (Left) + Physical Location Box (Right) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="grid-12">
         
         <!-- Left: Request Dossier Card (Col 7) -->
-        <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+        <div class="col-7 card" style="display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <div class="flex justify-between items-start border-b border-slate-100 pb-3 mb-4">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--slate-100); padding-bottom: 12px; margin-bottom: 16px;">
               <div>
-                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Requerimiento Ciudadano</span>
-                <h3 class="text-xl font-black text-slate-900 font-['Outfit'] mt-0.5" id="solCode">SOL-2026-000125</h3>
+                <span style="font-size: 11px; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.05em;">Requerimiento Ciudadano</span>
+                <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 900; color: var(--slate-900); margin: 2px 0 0;" id="solCode">SOL-2026-000125</h3>
               </div>
-              <span class="text-xs text-slate-500 font-medium" id="solFecha">Fecha: 02/09/2026</span>
+              <span class="td-muted" style="font-size: 12px;" id="solFecha">Fecha: 02/09/2026</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 text-xs mb-4">
-              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span class="text-slate-400 font-bold uppercase text-[10px]">Solicitante / Administrado</span>
-                <p class="font-bold text-slate-900 text-sm mt-0.5" id="solApplicant">Prof. Juan Pérez Ramos</p>
-                <p class="text-slate-500 text-[11px]" id="solDni">DNI: 42891044</p>
+            <div class="detail-grid">
+              <div class="detail-cell">
+                <span class="detail-cell-label">Solicitante / Administrado</span>
+                <p class="detail-cell-value detail-cell-value--md" id="solApplicant">Prof. Juan Pérez Ramos</p>
+                <p class="td-muted" style="font-size: 11px; margin-top: 2px;" id="solDni">DNI: 42891044</p>
               </div>
 
-              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span class="text-slate-400 font-bold uppercase text-[10px]">Resolución Requerida</span>
-                <p class="font-bold text-blue-700 text-sm mt-0.5" id="solRdNumber">R.D. N.º 154-2022</p>
-                <p class="text-slate-500 text-[11px]" id="solRdYear">Año de Emisión: 2022</p>
+              <div class="detail-cell">
+                <span class="detail-cell-label">Resolución Requerida</span>
+                <p class="detail-cell-value detail-cell-value--md" style="color: var(--blue);" id="solRdNumber">RD-0001-2004</p>
+                <p class="td-muted" style="font-size: 11px; margin-top: 2px;" id="solRdYear">Año de Emisión: 2004</p>
               </div>
             </div>
 
-            <div class="bg-blue-50/50 p-3.5 rounded-xl border border-blue-100 text-xs">
-              <span class="font-bold text-slate-700 uppercase text-[10px]">Motivo / Trámite Solicitado:</span>
-              <p class="text-slate-800 mt-1" id="solReason">
-                Solicito copia autenticada de resolución directoral de reasignación docente por interés personal para trámite de escalafón.
+            <div class="reason-box">
+              <span style="font-weight: 700; color: var(--slate-700); text-transform: uppercase; font-size: 10px; display: block; margin-bottom: 4px;">Motivo / Trámite Solicitado:</span>
+              <p class="td-name" style="font-size: 12px; line-height: 1.6; margin: 0;" id="solReason">
+                Solicitud de copia fedateada de Resolución Directoral y antecedentes para trámite institucional.
               </p>
             </div>
           </div>
         </div>
 
         <!-- Right: Physical Archive Box Highlight Card (Col 5) -->
-        <div class="lg:col-span-5 bg-gradient-to-br from-[#07192F] to-[#0A2540] rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between">
+        <div class="col-5 dark-card" style="padding: 24px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 16px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); display: flex; align-items: center; justify-content: center; color: var(--amber-400);">
                   📦
                 </div>
-                <h4 class="font-bold text-sm font-['Outfit'] text-white">UBICACIÓN EN ARCHIVO FÍSICO</h4>
+                <h4 style="font-family: var(--font-display); font-size: 13px; font-weight: 700; color: white; margin: 0;">UBICACIÓN EN ARCHIVO FÍSICO</h4>
               </div>
-              <span class="text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded">
+              <span style="font-size: 10px; font-weight: 700; background: rgba(245,158,11,0.2); color: var(--amber-300); border: 1px solid rgba(245,158,11,0.3); padding: 2px 8px; border-radius: 4px;">
                 Custodia UGEL 08
               </span>
             </div>
 
-            <div class="space-y-2 text-xs">
-              <div class="flex justify-between py-1.5 border-b border-white/5">
-                <span class="text-slate-400">Local de Custodia:</span>
-                <span class="font-bold text-white" id="locLocal">Archivo Central (Sede Cañete)</span>
+            <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px;">
+              <div class="location-row">
+                <span class="location-row-label">Local de Custodia:</span>
+                <span class="location-row-value" id="locLocal">Archivo Central (Sede Principal)</span>
               </div>
-              <div class="flex justify-between py-1.5 border-b border-white/5">
-                <span class="text-slate-400">Ambiente & Estante:</span>
-                <span class="font-bold text-white" id="locAmbiente">Ambiente N° 1 • Estante E-03</span>
+              <div class="location-row">
+                <span class="location-row-label">Ambiente & Estante:</span>
+                <span class="location-row-value" id="locAmbiente">Ambiente N° 1 • Estante A</span>
               </div>
-              <div class="flex justify-between py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3">
-                <span class="font-bold text-amber-300">Caja de Archivo:</span>
-                <span class="font-black text-amber-400 text-sm" id="locCaja">Caja 18</span>
+              <div class="location-row location-row--amber">
+                <span class="location-row-label">Caja de Archivo:</span>
+                <span class="location-row-value" id="locCaja">Caja 001</span>
               </div>
-              <div class="flex justify-between py-1.5">
-                <span class="text-slate-400">Rango de Resoluciones:</span>
-                <span class="text-slate-300 font-mono" id="locRango">R.D. 140 – R.D. 160</span>
+              <div class="location-row">
+                <span class="location-row-label">Rango de Resoluciones:</span>
+                <span class="location-row-value" id="locRango">RD-0001 a RD-0100</span>
               </div>
             </div>
           </div>
 
-          <p class="text-[11px] text-slate-400 mt-4 italic">
-            El personal de archivo puede verificar la documentación física en la Caja 18 si se requiere cotejo.
+          <p class="location-note">
+            El personal de archivo puede verificar la documentación física en la Caja de custodia si se requiere cotejo con el acervo original.
           </p>
         </div>
 
       </div>
 
       <!-- Associated Documents & Delivery Selection Workspace -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-4 mb-5">
+      <div class="card" style="margin-top: 24px;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--slate-100); padding-bottom: 16px; margin-bottom: 20px;">
           <div>
-            <h3 class="font-bold text-base text-[#0A2540] font-['Outfit'] flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--primary); margin: 0; display: flex; align-items: center; gap: 8px;">
+              <svg style="width: 20px; height: 20px; color: var(--blue);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
               Documentos Digitales Asociados para Entrega
             </h3>
-            <p class="text-xs text-slate-500 mt-0.5">
-              Marcos puede revisar los PDFs en el visor y seleccionar qué documentos entregar al solicitante:
+            <p class="td-muted" style="font-size: 12px; margin: 4px 0 0;">
+              Seleccione los folios y antecedentes digitalizados a ser incluidos en el enlace seguro para el administrado:
             </p>
           </div>
 
-          <div class="flex items-center gap-2">
-            <button onclick="toggleSelectAllDocs(true)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button type="button" onclick="toggleSelectAllDocs(true)" class="btn btn-light btn--sm">
               Marcar Todos
             </button>
-            <button onclick="toggleSelectAllDocs(false)" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+            <button type="button" onclick="toggleSelectAllDocs(false)" class="btn btn-light btn--sm">
               Desmarcar
             </button>
           </div>
         </div>
 
         <!-- Documents List -->
-        <div class="space-y-3" id="docSelectionList">
+        <div style="display: flex; flex-direction: column; gap: 12px;" id="docSelectionList">
           <!-- Rendered via JS -->
         </div>
 
-        <!-- Sticky Delivery Preparation Bar -->
-        <div class="mt-6 bg-gradient-to-r from-slate-900 via-[#0A2540] to-blue-950 text-white rounded-xl p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl border border-slate-700">
-          <div class="flex items-center gap-6">
+        <!-- Delivery Preparation Bar -->
+        <div class="delivery-bar">
+          <div class="delivery-stats">
             <div>
-              <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Documentos Seleccionados:</span>
-              <p class="text-lg font-black text-blue-400 font-['Outfit']" id="summaryDocCount">2 seleccionados</p>
+              <span class="delivery-stat-label">Documentos Seleccionados:</span>
+              <p class="delivery-stat-value delivery-stat-value--blue" id="summaryDocCount">0 seleccionados</p>
             </div>
-            <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+            <div class="delivery-divider"></div>
             <div>
-              <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Total Folios:</span>
-              <p class="text-lg font-black text-white font-['Outfit']" id="summaryPageCount">30 páginas</p>
+              <span class="delivery-stat-label">Total Folios:</span>
+              <p class="delivery-stat-value delivery-stat-value--white" id="summaryPageCount">0 páginas</p>
             </div>
-            <div class="h-8 w-px bg-white/10 hidden sm:block"></div>
+            <div class="delivery-divider"></div>
             <div>
-              <span class="text-[10px] text-slate-400 uppercase tracking-wider font-bold">Peso Total:</span>
-              <p class="text-lg font-black text-white font-['Outfit']" id="summarySize">6.9 MB</p>
+              <span class="delivery-stat-label">Peso Total Estimado:</span>
+              <p class="delivery-stat-value delivery-stat-value--white" id="summarySize">0 KB</p>
             </div>
           </div>
 
-          <button onclick="abrirModalConfirmacionEntrega()" id="btnGenerarEntrega" class="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl text-xs tracking-wider uppercase transition shadow-lg shadow-blue-600/40 flex items-center justify-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+          <button type="button" onclick="abrirModalConfirmacionEntrega()" id="btnGenerarEntrega" class="btn btn-primary btn--lg btn--rounded">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
             GENERAR ENTREGA DIGITAL
           </button>
         </div>
@@ -177,39 +177,41 @@
 </div>
 
 <!-- Modal 1: Confirmación de Entrega -->
-<div id="modalConfirmarEntrega" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-  <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-    <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-      <h3 class="font-bold text-base text-slate-900 font-['Outfit'] flex items-center gap-2">
+<div id="modalConfirmarEntrega" class="modal-overlay">
+  <div class="modal-box modal-box--md">
+    <div class="modal-header">
+      <h3 class="modal-title">
         <span>🔐 Confirmar Preparación de Entrega Digital</span>
       </h3>
-      <button onclick="cerrarModalConfirmacion()" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+      <button type="button" onclick="cerrarModalConfirmacion()" class="modal-close">✕</button>
     </div>
 
-    <p class="text-xs text-slate-600 mb-4">
-      Se generará un enlace digital seguro y único con vigencia de 7 días hábiles para el solicitante <strong id="modalConfApplicant">Prof. Juan Pérez Ramos</strong>.
-    </p>
+    <div class="modal-body">
+      <p class="td-muted" style="font-size: 13px; margin-bottom: 16px;">
+        Se generará un enlace digital seguro y único con vigencia de 7 días hábiles para el solicitante <strong id="modalConfApplicant" style="color: var(--slate-900);">Prof. Juan Pérez Ramos</strong>.
+      </p>
 
-    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2 mb-5">
-      <div class="flex justify-between">
-        <span class="text-slate-500">Documentos a entregar:</span>
-        <strong class="text-slate-800" id="modalConfDocs">2 archivos</strong>
-      </div>
-      <div class="flex justify-between">
-        <span class="text-slate-500">Total de Folios autorizados:</span>
-        <strong class="text-slate-800" id="modalConfPages">30 páginas</strong>
-      </div>
-      <div class="flex justify-between">
-        <span class="text-slate-500">Resolución Matriz:</span>
-        <strong class="text-blue-700">R.D. N.º 154-2022</strong>
+      <div class="modal-summary-box">
+        <div class="modal-summary-row">
+          <span>Documentos a entregar:</span>
+          <strong id="modalConfDocs">0 archivos</strong>
+        </div>
+        <div class="modal-summary-row">
+          <span>Total de Folios autorizados:</span>
+          <strong id="modalConfPages">0 páginas</strong>
+        </div>
+        <div class="modal-summary-row">
+          <span>Vigencia del Enlace:</span>
+          <strong style="color: var(--blue);">7 días hábiles</strong>
+        </div>
       </div>
     </div>
 
-    <div class="flex justify-end gap-3">
-      <button onclick="cerrarModalConfirmacion()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
+    <div class="modal-footer">
+      <button type="button" onclick="cerrarModalConfirmacion()" class="btn btn-light">
         Cancelar
       </button>
-      <button onclick="ejecutarGeneracionEntrega()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-lg shadow-blue-600/30 transition flex items-center gap-2">
+      <button type="button" onclick="ejecutarGeneracionEntrega()" class="btn btn-primary">
         Confirmar y Generar Enlace
       </button>
     </div>
@@ -217,73 +219,67 @@
 </div>
 
 <!-- Modal 2: Enlace Generado y Opciones de Compartir -->
-<div id="modalEntregaExitosa" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-  <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200">
-    <div class="text-center mb-5">
-      <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 font-black text-xl flex items-center justify-center mx-auto mb-2">
-        ✓
-      </div>
-      <h3 class="font-extrabold text-lg text-slate-900 font-['Outfit']">Entrega Digital Generada con Éxito</h3>
-      <p class="text-xs text-slate-500">El expediente digital está listo para ser entregado al administrado.</p>
-    </div>
+<div id="modalEntregaExitosa" class="modal-overlay">
+  <div class="modal-box modal-box--md">
+    <div class="modal-body" style="text-align: center; padding-top: 32px;">
+      <div class="modal-success-icon">✓</div>
+      <h3 class="modal-success-title">Entrega Digital Generada con Éxito</h3>
+      <p class="modal-success-sub" style="margin-top: 4px; margin-bottom: 20px;">El expediente digital está listo para ser entregado al administrado con trazabilidad institucional.</p>
 
-    <!-- Generated Secure Link Box -->
-    <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-5">
-      <div class="flex justify-between items-center mb-1 text-xs">
-        <span class="font-bold text-blue-900">Código de Entrega: <span id="genCodEntrega" class="font-mono text-blue-700">ENT-2026-000045</span></span>
-        <span class="bg-emerald-600 text-white font-bold text-[10px] px-2 py-0.5 rounded-full">🟢 DISPONIBLE</span>
+      <!-- Generated Secure Link Box -->
+      <div style="background: var(--blue-50); border: 2px solid var(--blue-200); border-radius: 12px; padding: 16px; margin-bottom: 20px; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px;">
+          <span style="font-weight: 700; color: var(--blue-900);">Código de Entrega: <strong id="genCodEntrega" style="font-family: monospace; color: var(--blue);">ENT-2026-000045</strong></span>
+          <span class="badge badge-vigente">🟢 DISPONIBLE</span>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <input type="text" id="genLinkInput" readonly value="https://sistema-demo-ugel.gob.pe/documentos/ENT-2026-000045" 
+                 class="form-input" style="font-family: monospace; font-size: 12px; font-weight: 700;">
+          <button type="button" onclick="copiarEnlaceGenerado()" class="btn btn-primary" style="flex-shrink: 0;">
+            Copiar Enlace
+          </button>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(37,99,235,0.2); font-size: 11px; color: var(--blue-800);">
+          <span>Vigencia Institucional: <strong>7 días hábiles</strong></span>
+          <span class="td-muted">Entrega digital autorizada</span>
+        </div>
       </div>
 
-      <div class="flex items-center gap-2 mt-2">
-        <input type="text" id="genLinkInput" readonly value="https://sistema-ugelsimulacion.gob.pe/documentos/ENT-2026-000045" 
-               class="w-full bg-white border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 font-semibold focus:outline-none">
-        <button onclick="copiarEnlaceGenerado()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs shrink-0 shadow transition flex items-center gap-1.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-          Copiar Enlace
+      <!-- Channels to Share -->
+      <h4 style="font-size: 11px; font-weight: 700; color: var(--slate-700); text-transform: uppercase; letter-spacing: 0.05em; text-align: left; margin-bottom: 8px;">
+        Medios Institucionales para Notificar:
+      </h4>
+      <div class="share-grid">
+        <button type="button" onclick="simularWhatsApp()" class="share-btn share-btn--whatsapp">
+          <span>📱 WhatsApp</span>
+        </button>
+        <button type="button" onclick="simularCorreo()" class="share-btn share-btn--email">
+          <span>✉️ Correo Institucional</span>
         </button>
       </div>
 
-      <div class="flex justify-between items-center mt-3 pt-2 border-t border-blue-200/60 text-[11px] text-blue-800">
-        <span>Vigencia: <strong>7 días hábiles</strong></span>
-        <a id="btnAbrirPortalCiudadano" href="consulta-ciudadano.html?codigo=ENT-2026-000045" target="_blank" class="font-bold text-blue-600 hover:underline">
-          Abrir en Portal Ciudadano &rarr;
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
+        <a href="entregas.html" class="btn btn-dark">
+          Ver Historial de Entregas
         </a>
+        <button type="button" onclick="cerrarModalExito()" class="btn btn-light">
+          Listo
+        </button>
       </div>
-    </div>
-
-    <!-- Channels to Share -->
-    <h4 class="font-bold text-xs text-slate-700 uppercase tracking-wider mb-2">Medios Alternativos para Compartir:</h4>
-    <div class="grid grid-cols-2 gap-2 text-xs mb-5">
-      <button onclick="simularWhatsApp()" class="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-semibold flex items-center gap-2 transition">
-        <span>📱 WhatsApp</span>
-      </button>
-      <button onclick="simularCorreo()" class="p-2.5 rounded-xl border border-blue-300 bg-blue-50 hover:bg-blue-100 text-blue-900 font-semibold flex items-center gap-2 transition">
-        <span>✉️ Correo Institucional</span>
-      </button>
-    </div>
-
-    <div class="flex justify-end gap-3">
-      <a href="entregas.html" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs transition">
-        Ver Historial de Entregas
-      </a>
-      <button onclick="cerrarModalExito()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-xs transition">
-        Listo
-      </button>
     </div>
   </div>
 </div>
 
-<script src="js/mockData.js"></script>
-<script src="js/services/apiClient.js"></script>
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="js/data/mockDatabase.js"></script>
+<script src="js/services/db.js"></script>
+<script src="js/services/resolutionService.js"></script>
 <script src="js/app.js"></script>
 <script src="js/pdfViewer.js"></script>
 <script src="js/deliveryFlow.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    if (typeof renderSidebar === 'function') {
-      renderSidebar('solicitudes');
-    }
-  });
-</script>
 </body>
 </html>

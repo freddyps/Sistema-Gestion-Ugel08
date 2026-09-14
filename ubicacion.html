@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Archivo y Ubicación Física - UGEL 08 Cañete</title>
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/logo-ugel08.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/logo-ugel-canete.jpg" type="image/jpeg">
 </head>
 <body class="page-app">
 
@@ -26,10 +26,8 @@
         </div>
       </div>
 
-      <div class="topbar-right">
-        <a href="registrar-resolucion.html" class="btn btn-primary btn--rounded">
-          + Nueva Resolución
-        </a>
+      <div class="topbar-right" id="ubicacionTopbarActions">
+        <!-- Rendered based on user permissions -->
       </div>
     </header>
 
@@ -45,31 +43,67 @@
         </div>
       </div>
 
-      <!-- Buscador de Archivo -->
-      <div class="card card--p">
-        <div class="card-header">
-          <h3 class="card-title">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            Buscador en Archivo Físico
-          </h3>
-          <span class="text-xs" style="color: var(--slate-400);">Filtro reactivo</span>
+      <!-- Buscador y Filtros de Ubicación -->
+      <div class="card card--p filter-card">
+        <div class="card-header" style="margin-bottom: 18px;">
+          <div class="flex-center gap-3">
+            <div style="width: 36px; height: 36px; border-radius: 10px; background: var(--blue-50); display: flex; align-items: center; justify-content: center; color: var(--blue);">
+              <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+            </div>
+            <div>
+              <h3 class="card-title" style="font-size: 15px; margin: 0;">Localizador en Archivo Físico</h3>
+              <p style="font-size: 11px; color: var(--slate-400); margin: 2px 0 0 0;">Búsqueda instantánea de cajas, estantes y correlativos</p>
+            </div>
+          </div>
+          <div class="flex-center gap-2">
+            <span class="badge badge-blue">Búsqueda reactiva</span>
+            <button onclick="resetLocationFilters()" class="filter-reset-btn">
+              <svg style="width: 14px; height: 14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              Restablecer
+            </button>
+          </div>
         </div>
 
-        <div class="form-grid-3">
-          <div style="grid-column: span 2;">
-            <label class="form-label">Buscar por Caja, Rango o Número de RD</label>
+        <div class="form-grid-3" style="gap: 18px;">
+          <div class="filter-field-wrapper" style="grid-column: span 2;">
+            <label class="filter-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              Buscar por Caja, Rango o Número de RD
+            </label>
             <div class="input-wrapper">
-              <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--blue);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               <input type="text" id="ubicacionSearchInput" placeholder="Ejemplo: Caja 025, RD 3800, 3874, Estante A..." class="form-input" oninput="filterLocations()">
             </div>
           </div>
-          <div>
-            <label class="form-label">Filtrar por Sede</label>
-            <select id="sedeSelect" class="form-select" onchange="filterLocations()">
-              <option value="">-- Todas las Sedes --</option>
-              <option value="Sede Principal">Sede Principal</option>
-              <option value="Archivo Histórico">Archivo Histórico (Anexo 2)</option>
-            </select>
+          <div class="filter-field-wrapper">
+            <label class="filter-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+              Filtrar por Sede Institucional
+            </label>
+            <input type="hidden" id="sedeSelect" value="">
+            <div class="custom-select-wrap" id="csWrapSede">
+              <div class="custom-select-trigger" onclick="toggleCustomDropdown('csWrapSede')">
+                <div class="custom-select-value" id="csValSede">
+                  <span class="opt-icon">🏢</span>
+                  <span>Todas las Sedes</span>
+                </div>
+                <svg class="custom-select-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </div>
+              <div class="custom-select-dropdown">
+                <div class="custom-select-option selected" onclick="selectCustomOption('csWrapSede', 'sedeSelect', 'csValSede', '', '🏢 Todas las Sedes', this)">
+                  <span><span class="opt-icon">🏢</span> Todas las Sedes</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapSede', 'sedeSelect', 'csValSede', 'Sede Principal', '🏛️ Sede Principal (Archivo Central)', this)">
+                  <span><span class="opt-icon">🏛️</span> Sede Principal (Archivo Central)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="custom-select-option" onclick="selectCustomOption('csWrapSede', 'sedeSelect', 'csValSede', 'Archivo Histórico', '📚 Archivo Histórico (Anexo 2)', this)">
+                  <span><span class="opt-icon">📚</span> Archivo Histórico (Anexo 2)</span>
+                  <svg class="opt-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -157,12 +191,28 @@
   document.addEventListener("DOMContentLoaded", () => {
     renderSidebar("ubicacion");
 
+    const topbarRight = document.getElementById("ubicacionTopbarActions");
+    if (topbarRight && window.authService.hasPermission("archivo.recibir")) {
+      topbarRight.innerHTML = `
+        <a href="recepcion-archivo.html" class="btn btn-primary btn--rounded">
+          📥 Bandeja de Recepción
+        </a>
+      `;
+    }
+
     allUbicaciones = window.locationService.getAll();
     allResoluciones = window.resolutionService.getAll();
 
-    // Comprobar si viene parámetro de caja en URL (ej: ?caja=Caja%20025)
+    // Comprobar si viene parámetro de caja o de asignación en URL
     const urlParams = new URLSearchParams(window.location.search);
     const cajaParam = urlParams.get("caja");
+    const rdIdParam = urlParams.get("rdId");
+    const rdNumParam = urlParams.get("rdNum");
+
+    if (rdIdParam && rdNumParam) {
+      showToast(`Asignando ubicación física para RD N.° ${decodeURIComponent(rdNumParam)}`, "info");
+    }
+
     if (cajaParam) {
       document.getElementById("ubicacionSearchInput").value = cajaParam;
     }
@@ -274,6 +324,63 @@
 
     card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+
+  function resetLocationFilters() {
+    document.getElementById("ubicacionSearchInput").value = "";
+    document.getElementById("sedeSelect").value = "";
+
+    const valDisplay = document.getElementById("csValSede");
+    if (valDisplay) {
+      valDisplay.innerHTML = `<span class="opt-icon">🏢</span><span>Todas las Sedes</span>`;
+    }
+
+    const wrap = document.getElementById("csWrapSede");
+    if (wrap) {
+      wrap.querySelectorAll(".custom-select-option").forEach((opt, idx) => {
+        if (idx === 0) opt.classList.add("selected");
+        else opt.classList.remove("selected");
+      });
+      wrap.classList.remove("open", "active");
+    }
+
+    filterLocations();
+    showToast("Filtros restablecidos", "info");
+  }
+
+  // Lógica Custom Dropdown Select
+  function toggleCustomDropdown(wrapId) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    const wasOpen = wrap.classList.contains("open") || wrap.classList.contains("active");
+    document.querySelectorAll(".custom-select-wrap").forEach(el => el.classList.remove("open", "active"));
+    if (!wasOpen) {
+      wrap.classList.add("open", "active");
+    }
+  }
+
+  function selectCustomOption(wrapId, hiddenInputId, valDisplayId, value, labelHtml, optionEl) {
+    const hiddenInput = document.getElementById(hiddenInputId);
+    if (hiddenInput) {
+      hiddenInput.value = value;
+    }
+    const valDisplay = document.getElementById(valDisplayId);
+    if (valDisplay) {
+      valDisplay.innerHTML = labelHtml;
+    }
+    const wrap = document.getElementById(wrapId);
+    if (wrap) {
+      wrap.querySelectorAll(".custom-select-option").forEach(o => o.classList.remove("selected"));
+      if (optionEl) optionEl.classList.add("selected");
+      wrap.classList.remove("open", "active");
+    }
+    filterLocations();
+  }
+
+  document.addEventListener("click", function(e) {
+    if (!e.target.closest(".custom-select-wrap")) {
+      document.querySelectorAll(".custom-select-wrap").forEach(el => el.classList.remove("open", "active"));
+    }
+  });
 </script>
 </body>
 </html>
