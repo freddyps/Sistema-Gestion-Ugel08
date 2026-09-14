@@ -149,8 +149,8 @@
     document.getElementById("heroDesc").innerText = "Registre las resoluciones autógrafas firmadas por el Director, asocie el archivo digital autenticado, controle las notificaciones y remita formalmente los expedientes al Archivo Central.";
     
     document.getElementById("heroActions").innerHTML = `
-      <a href="registrar-resolucion.html" class="btn btn-primary btn--lg btn--rounded">
-        + Registrar Resolución
+      <a href="resoluciones.html?nueva=1" class="btn btn-primary btn--lg btn--rounded" style="box-shadow: 0 4px 14px rgba(37,99,235,0.35);">
+        + Nueva Resolución
       </a>
       <a href="resoluciones.html" class="btn btn-white-ghost btn--lg btn--rounded">
         Bandeja de Resoluciones
@@ -199,11 +199,11 @@
     `;
 
     document.getElementById("dashQuickOpsGrid").innerHTML = `
-      <a href="registrar-resolucion.html" class="module-card border-blue">
-        <div class="module-icon module-icon--primary">➕</div>
-        <h4 class="module-title">Registrar Resolución</h4>
-        <p class="module-desc">Ingrese RD autógrafa, administado, expediente, PDF y datos de notificación.</p>
-        <span class="module-cta module-cta--blue">Nuevo Registro &rarr;</span>
+      <a href="resoluciones.html" class="module-card border-blue">
+        <div class="module-icon module-icon--blue">🔍</div>
+        <h4 class="module-title">Bandeja y Búsqueda RD</h4>
+        <p class="module-desc">Búsqueda rápida por DNI, N° RD y remisión formal de expedientes.</p>
+        <span class="module-cta module-cta--blue">Abrir Bandeja &rarr;</span>
       </a>
       <a href="resoluciones.html?estado=Pendiente+de+notificacion" class="module-card border-blue">
         <div class="module-icon module-icon--amber">🔔</div>
@@ -211,11 +211,11 @@
         <p class="module-desc">Diligencie notificaciones presenciales, correo electrónico y acuses.</p>
         <span class="module-cta module-cta--blue">Ver Notificaciones &rarr;</span>
       </a>
-      <a href="resoluciones.html" class="module-card border-blue">
-        <div class="module-icon module-icon--blue">🔍</div>
-        <h4 class="module-title">Consultar Resoluciones</h4>
-        <p class="module-desc">Búsqueda rápida y remisión formal de expedientes a Archivo Central.</p>
-        <span class="module-cta module-cta--blue">Consultar Catálogo &rarr;</span>
+      <a href="resoluciones.html?doc=DISPONIBLE" class="module-card border-blue">
+        <div class="module-icon module-icon--primary">📄</div>
+        <h4 class="module-title">Documentos Digitales</h4>
+        <p class="module-desc">Consulta rápida y visualización de resoluciones con archivo PDF autenticado.</p>
+        <span class="module-cta module-cta--blue">Ver Digitalizados &rarr;</span>
       </a>
       <a href="auditoria.html?filtro=resoluciones" class="module-card border-blue">
         <div class="module-icon module-icon--purple">📜</div>
@@ -469,7 +469,7 @@
               👁 Ver
             </a>
             ${allowEdit ? `
-              <a href="registrar-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Editar">
+              <a href="resoluciones.html?editar=${r.id}" class="btn btn-light btn--xs" title="Editar en panel">
                 ✏
               </a>
             ` : ''}

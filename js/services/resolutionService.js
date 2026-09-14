@@ -696,7 +696,6 @@ const authService = {
             icon: "document",
             subitems: [
               { key: "resoluciones-lista", label: "Gestión de Resoluciones", url: "resoluciones.html", icon: "document" },
-              { key: "registrar-rd", label: "Registrar Resolución", url: "registrar-resolucion.html", icon: "plus" },
               { key: "notificaciones", label: "Notificaciones", url: "notificaciones.html", icon: "bell" },
               { key: "archivo", label: "Archivo Físico", url: "ubicacion.html", icon: "archive" },
               { key: "usuarios", label: "Usuarios del Sistema", url: "usuarios.html", icon: "users" },
@@ -723,7 +722,6 @@ const authService = {
             url: "resoluciones.html", 
             icon: "document",
             subitems: [
-              { key: "registrar-rd", label: "Registrar Resolución", url: "resoluciones.html?nueva=1", icon: "plus" },
               { key: "resoluciones-lista", label: "Búsqueda y Gestión RD", url: "resoluciones.html", icon: "document" },
               { key: "documentos", label: "Documentos Digitales", url: "resoluciones.html?doc=DISPONIBLE", icon: "file-text" },
               { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" },

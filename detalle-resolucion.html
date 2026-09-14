@@ -87,7 +87,7 @@
         <button id="btnRemitirArchivoTop" onclick="ejecutarRemisionArchivo()" class="btn btn-primary btn--rounded" style="display: none; background: #0A2540;">
           📦 Remitir a Archivo
         </button>
-        <a id="btnEditLink" href="registrar-resolucion.html" class="btn btn-ghost btn--rounded" style="display: none;">
+        <a id="btnEditLink" href="resoluciones.html" class="btn btn-ghost btn--rounded" style="display: none;">
           ✏ Editar RD
         </a>
         <button id="btnTopVerPdf" class="btn btn-primary btn--rounded">
@@ -432,7 +432,7 @@
 
     if (canEdit) {
       document.getElementById("btnEditLink").style.display = "inline-flex";
-      document.getElementById("btnEditLink").href = `registrar-resolucion.html?id=${rd.id}`;
+      document.getElementById("btnEditLink").href = `resoluciones.html?editar=${rd.id}`;
     }
 
     if (canRemitir && rd.estado !== "Pendiente de archivo" && rd.estado !== "Recibida en archivo" && rd.estado !== "Archivado") {
@@ -479,7 +479,7 @@
     } else {
       document.getElementById("ubicacionDisponibleBox").style.display = "none";
       document.getElementById("ubicacionNoDisponibleBox").style.display = "block";
-      document.getElementById("btnAsignarUbicacion").href = `registrar-resolucion.html?id=${rd.id}`;
+      document.getElementById("btnAsignarUbicacion").href = `ubicacion.html?rdId=${rd.id}&rdNum=${encodeURIComponent(rd.numero_rd)}`;
       document.getElementById("btnVerEnArchivo").style.display = "none";
     }
 
@@ -514,7 +514,7 @@
       document.getElementById("docDisponibleView").style.display = "none";
       document.getElementById("docNoDisponibleView").style.display = "block";
       document.getElementById("docStatusBadge").innerHTML = `<span class="badge badge-observada">No disponible</span>`;
-      document.getElementById("btnAsociarPdf").href = `registrar-resolucion.html?id=${rd.id}`;
+      document.getElementById("btnAsociarPdf").href = `resoluciones.html?editar=${rd.id}`;
       document.getElementById("btnTopVerPdf").onclick = () => {
         showToast("Documento digital no disponible para esta resolución.", "warning");
       };
