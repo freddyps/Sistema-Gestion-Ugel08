@@ -134,13 +134,7 @@
       return;
     }
 
-    // 3. PERSONAL AUTORIZADO (CONSULTA)
-    if (rol.includes("personal") || rol.includes("consulta") || user.usuario === "consulta") {
-      setupConsultaDashboard(user);
-      return;
-    }
-
-    // 4. ADMINISTRADOR
+    // 3. ADMINISTRADOR
     setupAdminDashboard(user);
   }
 
@@ -326,84 +320,7 @@
 
 
 
-  // --- DASHBOARD PERSONAL AUTORIZADO (CONSULTA) ---
-  function setupConsultaDashboard(user) {
-    document.getElementById("dashTopTitle").innerText = "Personal Autorizado — Consulta Institucional";
-    document.getElementById("dashTopSubtitle").innerText = "Módulo de búsqueda, verificación de autenticidad y localización de resoluciones";
-    document.getElementById("dashRoleBadge").innerHTML = `<span class="dot" style="background: var(--purple-500);"></span> ${user.nombre}`;
 
-    document.getElementById("heroBadge").innerText = "Acceso de Consulta Oficial • Solo Lectura";
-    document.getElementById("heroTitle").innerText = "Consulta y Localización de Resoluciones";
-    document.getElementById("heroDesc").innerText = "Realice búsquedas directas por número de resolución, DNI, administrado o asunto, visualice los documentos PDF oficiales y verifique la ubicación física en archivo.";
-    
-    document.getElementById("heroActions").innerHTML = `
-      <a href="consulta.html" class="btn btn-primary btn--lg btn--rounded">
-        🔍 Consultar Resoluciones
-      </a>
-      <a href="consulta.html?tab=documentos" class="btn btn-white-ghost btn--lg btn--rounded">
-        📄 Ver Documentos
-      </a>
-    `;
-
-    const all = window.resolutionService.getAll();
-    document.getElementById("dashKpiGrid").innerHTML = `
-      <div class="kpi-card" data-accent="primary">
-        <div class="kpi-body">
-          <span class="kpi-label">Resoluciones Disponibles</span>
-          <span class="kpi-value">${all.length.toLocaleString()}</span>
-          <p class="kpi-sub">Acervo histórico y actual</p>
-        </div>
-        <div class="kpi-icon kpi-icon--primary">📚</div>
-      </div>
-      <div class="kpi-card" data-accent="emerald">
-        <div class="kpi-body">
-          <span class="kpi-label">Documentos con PDF</span>
-          <span class="kpi-value" style="color: var(--emerald-600);">${all.filter(r => r.tiene_documento).length}</span>
-          <p class="kpi-sub">Digitalizados para lectura</p>
-        </div>
-        <div class="kpi-icon kpi-icon--emerald">📄</div>
-      </div>
-      <div class="kpi-card" data-accent="amber">
-        <div class="kpi-body">
-          <span class="kpi-label">Ubicadas en Archivo</span>
-          <span class="kpi-value" style="color: var(--amber-600);">${all.filter(r => r.tiene_ubicacion).length}</span>
-          <p class="kpi-sub">Con caja y estante verificados</p>
-        </div>
-        <div class="kpi-icon kpi-icon--amber">📦</div>
-      </div>
-      <div class="kpi-card" data-accent="purple">
-        <div class="kpi-body">
-          <span class="kpi-label">Áreas de Emisión</span>
-          <span class="kpi-value" style="color: var(--purple-600);">6</span>
-          <p class="kpi-sub">RRHH, Pedagógica, etc.</p>
-        </div>
-        <div class="kpi-icon kpi-icon--purple">🏛️</div>
-      </div>
-    `;
-
-    document.getElementById("dashQuickOpsGrid").innerHTML = `
-      <a href="consulta.html" class="module-card border-blue">
-        <div class="module-icon module-icon--blue">🔍</div>
-        <h4 class="module-title">Consultar Resoluciones</h4>
-        <p class="module-desc">Búsqueda rápida y reactiva por cualquier criterio institucional.</p>
-        <span class="module-cta module-cta--blue">Abrir Buscador &rarr;</span>
-      </a>
-      <a href="consulta.html?tab=documentos" class="module-card border-blue">
-        <div class="module-icon module-icon--primary">📄</div>
-        <h4 class="module-title">Consultar Documentos Digitales</h4>
-        <p class="module-desc">Visualice resoluciones digitalizadas en alta calidad.</p>
-        <span class="module-cta module-cta--blue">Ver Documentos &rarr;</span>
-      </a>
-      <a href="consulta.html?tab=ubicacion" class="module-card border-blue">
-        <div class="module-icon module-icon--amber">📦</div>
-        <h4 class="module-title">Consultar Ubicación Física</h4>
-        <p class="module-desc">Consulte la caja, estante y sede donde reposa el legajo original.</p>
-        <span class="module-cta module-cta--blue">Ver Ubicación &rarr;</span>
-      </a>
-    `;
-
-    renderRecentResolutionsTable(all.slice(0, 6), false, false, true);
-  }
 
   // --- DASHBOARD ADMINISTRADOR ---
   function setupAdminDashboard(user) {
@@ -443,7 +360,7 @@
         <div class="kpi-body">
           <span class="kpi-label">Usuarios Activos</span>
           <span class="kpi-value" style="color: var(--emerald-600);">${usersCount}</span>
-          <p class="kpi-sub">En 4 perfiles oficiales</p>
+          <p class="kpi-sub">En 3 perfiles oficiales</p>
         </div>
         <div class="kpi-icon kpi-icon--emerald">👥</div>
       </div>

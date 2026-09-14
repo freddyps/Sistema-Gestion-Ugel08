@@ -9,17 +9,16 @@ Registro de cambios y versiones del **Sistema de Gestión y Localización de Res
 **Nombre de la Versión:** *"Estructura Institucional Basada en Roles y Separación de Funciones"*
 
 - **Control de Acceso Basado en Roles y Permisos (RBAC)**:
-  - Implementación de 4 perfiles institucionales diferenciados:
+  - Implementación de 3 perfiles institucionales diferenciados:
     1. **Oficina de Resoluciones (María Angélica)**: Registro de RD autógrafas firmadas por Director, metadatos, adjuntar PDF, notificaciones y acción formal `[Remitir a Archivo]`.
     2. **Archivo Central (Marcos)**: Bandeja de recepción física (`recepcion-archivo.html`), confirmación de ingreso de originales y localización física (Sede, Estante, Archivador, Caja y Rango).
-    3. **Personal Autorizado / Consulta**: Acceso de solo lectura para dependencias (`consulta.html`), visor PDF y localización sin botones de edición.
-    4. **Administrador del Sistema**: Gestión de usuarios (`usuarios.html`), matriz de permisos (`roles-permisos.html`), configuración de catálogos (`configuracion.html`) y auditoría cronológica (`auditoria.html`).
+    3. **Administrador del Sistema**: Gestión de usuarios (`usuarios.html`), matriz de permisos (`roles-permisos.html`), configuración de catálogos (`configuracion.html`) y auditoría cronológica (`auditoria.html`).
 - **Jerarquía de Navegación (Sidebar Unificado)**:
   - Estructuración estricta en dos módulos principales: **Inicio** y **Resoluciones**.
   - Menú desplegable interactivo en **Resoluciones** que agrupa todos los submódulos correspondientes al perfil del usuario.
   - Apertura automática contextual y resalte activo del submódulo seleccionado.
-- **Desacoplamiento de Mesa de Partes**:
-  - Remoción completa del módulo de Mesa de Partes, respetando su condición de sistema externo autónomo.
+- **Desacoplamiento de Módulos Externos**:
+  - Remoción completa de Mesa de Partes y Personal Autorizado, simplificando el acceso exclusivamente al personal operativo institucional.
 - **Dashboard Reactivo**:
   - `dashboard.html` adapta indicadores KPIs, accesos directos y tablas de auditoría según el rol en sesión.
 

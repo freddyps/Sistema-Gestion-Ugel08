@@ -18,9 +18,10 @@ const db = {
       // Auto-migración si faltan colecciones agregadas recientemente en SEED_DATA
       if (typeof window.SEED_DATA !== "undefined") {
         let modified = false;
-        // Asegurar que usuarios contenga los nuevos 5 perfiles
-        if (!parsed.usuarios || parsed.usuarios.length < 5) {
+        // Asegurar que usuarios contenga los 3 perfiles oficiales
+        if (!parsed.usuarios || parsed.usuarios.length !== window.SEED_DATA.usuarios.length) {
           parsed.usuarios = [...window.SEED_DATA.usuarios];
+          parsed.roles = [...window.SEED_DATA.roles];
           modified = true;
         }
         for (const col of ["solicitudes", "entregas", "roles"]) {

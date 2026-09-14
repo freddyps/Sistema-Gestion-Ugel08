@@ -712,7 +712,6 @@ const authService = {
               { key: "resoluciones-lista", label: "Búsqueda y Gestión RD", url: "resoluciones.html", icon: "document" },
               { key: "documentos", label: "Documentos Digitales", url: "resoluciones.html?doc=DISPONIBLE", icon: "file-text" },
               { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" },
-              { key: "consultas", label: "Consultas", url: "consulta.html", icon: "search" },
               { key: "historial", label: "Historial de Emisiones", url: "auditoria.html?filtro=resoluciones", icon: "clock" }
             ]
           }
@@ -721,44 +720,22 @@ const authService = {
     }
 
     // 3. MARCOS — ARCHIVO
-    if (rol.includes("archivo") || (user && user.usuario === "marcos")) {
-      return {
-        roleKey: "marcos",
-        roleTitle: "Archivo Central — Marcos",
-        items: [
-          { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
-          { 
-            key: "resoluciones", 
-            label: "Resoluciones", 
-            url: "resoluciones.html", 
-            icon: "document",
-            subitems: [
-              { key: "recibidas", label: "Resoluciones Recibidas", url: "recepcion-archivo.html", icon: "inbox" },
-              { key: "resoluciones-lista", label: "Consulta de Resoluciones", url: "resoluciones.html", icon: "document" },
-              { key: "ubicacion", label: "Ubicación Física (Cajas)", url: "ubicacion.html", icon: "archive" },
-              { key: "localizar", label: "Buscar / Localizar", url: "ubicacion.html?modo=localizar", icon: "search" },
-              { key: "historial", label: "Historial de Custodia", url: "auditoria.html?filtro=archivo", icon: "clock" }
-            ]
-          }
-        ]
-      };
-    }
-
-    // 4. PERSONAL AUTORIZADO (CONSULTA)
     return {
-      roleKey: "consulta",
-      roleTitle: "Personal Autorizado",
+      roleKey: "marcos",
+      roleTitle: "Archivo Central — Marcos",
       items: [
         { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
         { 
           key: "resoluciones", 
           label: "Resoluciones", 
-          url: "consulta.html", 
+          url: "resoluciones.html", 
           icon: "document",
           subitems: [
-            { key: "consultar-rd", label: "Consultar Resoluciones", url: "consulta.html", icon: "search" },
-            { key: "resoluciones-lista", label: "Catálogo General RD", url: "resoluciones.html", icon: "document" },
-            { key: "consultar-ubi", label: "Consultar Ubicación", url: "ubicacion.html", icon: "archive" }
+            { key: "recibidas", label: "Resoluciones Recibidas", url: "recepcion-archivo.html", icon: "inbox" },
+            { key: "resoluciones-lista", label: "Consulta de Resoluciones", url: "resoluciones.html", icon: "document" },
+            { key: "ubicacion", label: "Ubicación Física (Cajas)", url: "ubicacion.html", icon: "archive" },
+            { key: "localizar", label: "Buscar / Localizar", url: "ubicacion.html?modo=localizar", icon: "search" },
+            { key: "historial", label: "Historial de Custodia", url: "auditoria.html?filtro=archivo", icon: "clock" }
           ]
         }
       ]

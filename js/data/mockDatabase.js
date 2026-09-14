@@ -10017,15 +10017,6 @@ const SEED_DATA = {
       "rol": "Archivo",
       "correo": "archivo.central@ugel08.gob.pe",
       "estado": "Activo"
-    },
-    {
-      "id": 4,
-      "usuario": "consulta",
-      "nombre": "Dr. Fernando Ruiz",
-      "cargo": "Personal Autorizado (Asesoría Jurídica)",
-      "rol": "Personal Autorizado",
-      "correo": "asesoria.legal@ugel08.gob.pe",
-      "estado": "Activo"
     }
   ],
   "roles": [
@@ -10070,18 +10061,6 @@ const SEED_DATA = {
         "documentos.ver",
         "consultas.ver",
         "historial.ver"
-      ]
-    },
-    {
-      "id": 4,
-      "codigo": "consulta",
-      "nombre": "Personal Autorizado",
-      "descripcion": "Consulta y búsqueda institucional de resoluciones, documentos y ubicación sin edición",
-      "permisos": [
-        "resoluciones.ver",
-        "documentos.ver",
-        "archivo.consultar",
-        "consultas.ver"
       ]
     }
   ],
