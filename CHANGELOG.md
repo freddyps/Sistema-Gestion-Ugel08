@@ -4,6 +4,22 @@ Registro de cambios y versiones del **Sistema de Gestión y Localización de Res
 
 ---
 
+## [v2.1.0] - 2026-09-15
+### 💎 Modal Interactivo Unificado, Optimización de Rendimiento y Pulido de Interfaz
+**Nombre de la Versión:** *"Modal Unificado y Experiencia de Usuario de Alto Rendimiento"*
+
+- **Modal Interactivo Unificado para Resoluciones**:
+  - Registro y edición integrados completamente en modal dinámico sin recargar la página.
+  - Dimensiones optimizadas con scroll vertical independiente y visibilidad total de bloques de datos.
+  - Retiro de página separada redundante para unificar el flujo en un único punto.
+- **Correcciones de Interfaz y Usabilidad (UI/UX)**:
+  - Corrección de superposición y z-index en dropdowns de filtros.
+  - Limpieza del sidebar: remoción del submódulo innecesario de Historial de Emisiones y Custodia.
+- **Rendimiento y Navegación**:
+  - Carga y filtrado optimizado en memoria, eliminando lag de búsqueda y acelerando transiciones de vista.
+
+---
+
 ## [v2.0.0] - 2026-09-13
 ### 🚀 Reorganización Institucional por Roles, Permisos y Navegación Jerárquica
 **Nombre de la Versión:** *"Estructura Institucional Basada en Roles y Separación de Funciones"*
