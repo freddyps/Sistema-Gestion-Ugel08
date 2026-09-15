@@ -84,9 +84,13 @@ function renderSidebar(activeMenuKey) {
     }
   });
 
+  const isInsideSubdir = window.location.pathname.includes("/pages/") || window.location.pathname.includes("\\pages\\");
+  const logoPath = isInsideSubdir ? "../assets/logo-ugel-canete.jpg" : "assets/logo-ugel-canete.jpg";
+  const loginUrl = isInsideSubdir ? "../index.html" : "index.html";
+
   sidebarContainer.innerHTML = `
     <div class="sidebar-brand">
-      <img src="assets/logo-ugel-canete.jpg" alt="UGEL 08 Cañete">
+      <img src="${logoPath}" alt="UGEL 08 Cañete">
       <div>
         <h1 class="sidebar-brand-title">UGEL 08 CAÑETE</h1>
         <p class="sidebar-brand-sub" title="${menuConfig.roleTitle}">${menuConfig.roleTitle}</p>
@@ -146,7 +150,7 @@ function renderSidebar(activeMenuKey) {
           <p class="sidebar-user-role">${currentUser.cargo || currentUser.rol}</p>
         </div>
       </div>
-      <a href="index.html" onclick="if(window.authService) window.authService.logout();" class="sidebar-logout" title="Cerrar Sesión">
+      <a href="${loginUrl}" onclick="if(window.authService) window.authService.logout();" class="sidebar-logout" title="Cerrar Sesión">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
       </a>
     </div>

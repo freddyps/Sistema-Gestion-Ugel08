@@ -178,6 +178,9 @@ function renderModalPage(pageNum) {
 
   if (!sheet) return;
 
+  const isInsideSubdir = window.location.pathname.includes("/pages/") || window.location.pathname.includes("\\pages\\");
+  const logoPath = isInsideSubdir ? "../assets/logo-ugel-canete.jpg" : "assets/logo-ugel-canete.jpg";
+
   if (pageNum === 1) {
     sheet.innerHTML = `
       <div class="border-b-2 border-slate-900 pb-4 mb-6 flex justify-between items-center">
@@ -186,7 +189,7 @@ function renderModalPage(pageNum) {
           <h3 class="text-sm font-bold text-slate-700">GOBIERNO REGIONAL DE LIMA - DRELP</h3>
           <h4 class="text-base font-extrabold text-blue-900 font-['Outfit']">UNIDAD DE GESTIÓN EDUCATIVA LOCAL N° 08 - CAÑETE</h4>
         </div>
-        <img src="assets/logo-ugel-canete.jpg" class="w-16 h-16 rounded-full object-cover border border-slate-300" alt="Sello UGEL 08">
+        <img src="${logoPath}" class="w-16 h-16 rounded-full object-cover border border-slate-300" alt="Sello UGEL 08">
       </div>
 
       <div class="text-center my-4 pb-4 border-b border-slate-200">
@@ -226,7 +229,7 @@ function renderModalPage(pageNum) {
           <h4 class="text-base font-extrabold text-blue-900 font-['Outfit']">RESOLUCIÓN DIRECTORAL N.º ${currentDocData.rd.replace(/[^\d-]/g, '') || '0154-2022'}</h4>
           <span class="text-xs font-semibold text-slate-500">PÁGINA FINAL DE RESOLUCIÓN Y DISPOSICIONES</span>
         </div>
-        <img src="assets/logo-ugel-canete.jpg" class="w-14 h-14 rounded-full object-cover border border-slate-300" alt="Sello UGEL 08">
+        <img src="${logoPath}" class="w-14 h-14 rounded-full object-cover border border-slate-300" alt="Sello UGEL 08">
       </div>
 
       <div class="space-y-4 text-justify font-serif text-slate-800 text-sm md:text-base leading-relaxed flex-1">

@@ -16,7 +16,9 @@ Registro de cambios y versiones del **Sistema de Gestión y Localización de Res
   - Corrección de superposición y z-index en dropdowns de filtros.
   - Limpieza del sidebar: remoción del submódulo innecesario de Historial de Emisiones y Custodia.
 - **Rendimiento y Navegación**:
-  - Carga y filtrado optimizado en memoria, eliminando lag de búsqueda y acelerando transiciones de vista.
+- **Reorganización Estructural del Proyecto (`pages/`)**:
+  - Centralización de todas las pantallas y vistas HTML del sistema dentro de la carpeta `pages/`, manteniendo `index.html` en la raíz como punto de acceso y autenticación.
+  - Actualización limpia de referencias relativas (`css/`, `js/`, `assets/`) y compatibilidad total con navegación directa en navegador.
 
 ---
 

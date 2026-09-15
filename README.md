@@ -73,31 +73,38 @@ El sistema está diseñado bajo un modelo formal de **Arquitectura por Capas** d
 ## 📂 3. Estructura del Proyecto
 
 ```text
-├── index.html                   # Acceso institucional y selección de perfil
-├── dashboard.html               # Panel general de indicadores y accesos rápidos
-├── resoluciones.html            # Búsqueda avanzada y gestión de resoluciones
-├── registrar-resolucion.html    # Formulario de alta y edición con validación
-├── detalle-resolucion.html      # Dossier completo, trazabilidad y antecedentes
-├── ubicacion.html               # Localización física interactiva de cajas y estantes
-├── solicitudes.html             # Bandeja de solicitudes de copias y legajos
-├── detalle-solicitud.html       # Preparación de folios y emisión de entrega digital
-├── entregas.html                # Registro y control de enlaces seguros y cargos
-├── reportes.html                # Métricas y estadísticas institucionales
-├── visor.html                   # Visor de documentos PDF oficiales
+├── index.html                   # Punto de entrada y acceso institucional (Login)
+├── pages/                       # Vistas y pantallas del sistema organizado
+│   ├── dashboard.html           # Panel general de indicadores según rol
+│   ├── resoluciones.html        # Gestión, búsqueda avanzada y modal de resoluciones
+│   ├── registrar-resolucion.html# Formulario alternativo de registro/edición
+│   ├── detalle-resolucion.html  # Dossier completo, trazabilidad y antecedentes
+│   ├── ubicacion.html           # Localización física interactiva de cajas y estantes
+│   ├── recepcion-archivo.html   # Bandeja de recepción de resoluciones remitidas
+│   ├── usuarios.html            # Administración de cuentas y roles institucionales
+│   ├── roles-permisos.html      # Matriz de privilegios y permisos por perfil
+│   ├── configuracion.html       # Catálogos de configuración del sistema
+│   ├── auditoria.html           # Registro cronológico e inmutable de operaciones
+│   ├── solicitudes.html         # Bandeja de solicitudes de copias y legajos
+│   ├── detalle-solicitud.html   # Preparación de folios y emisión de entrega digital
+│   ├── entregas.html            # Registro y control de enlaces seguros y cargos
+│   ├── reportes.html            # Métricas y estadísticas institucionales
+│   └── visor.html               # Visor de documentos PDF oficiales
 ├── css/
 │   └── styles.css               # Sistema de diseño institucional (Vanilla CSS)
+├── assets/                      # Identidad gráfica institucional y demos
 └── js/
     ├── app.js                   # Utilitarios UI, Sidebar unificado, Toasts
     ├── deliveryFlow.js          # Controlador de flujo de entrega y folios
     ├── locationExplorer.js      # Controlador de mapa y vista física de estantes
     ├── pdfViewer.js             # Controlador modal de visor PDF
     ├── reports.js               # Gráficos y cálculos estadísticos
+    ├── search.js                # Algoritmos de búsqueda en memoria
     ├── data/
     │   └── mockDatabase.js      # Base de datos semilla institucional
     └── services/
         ├── db.js                # Data Access Layer (DAL)
-        ├── resolutionService.js # Capa de Servicios y Lógica de Negocio
-        └── apiClient.js         # Cliente para conexión con backend externo
+        └── resolutionService.js # Capa de Servicios y Lógica de Negocio
 ```
 
 ---
