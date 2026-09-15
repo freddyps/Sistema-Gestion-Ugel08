@@ -175,9 +175,6 @@
         <a id="btnEditLink" href="resoluciones.html" class="btn btn-ghost btn--rounded" style="display: none;">
           ✏ Editar RD
         </a>
-        <button id="btnTopVerPdf" class="btn btn-primary btn--rounded">
-          🔍 Pantalla Completa
-        </button>
       </div>
     </header>
 
@@ -665,16 +662,18 @@
       const openPdfFn = () => {
         openPdfViewerModal(rd.numero_rd, rd.documento.numero_paginas, rd.documento.tamanio, rd.documento.nombre_archivo);
       };
-      document.getElementById("btnVerPdfAction").onclick = openPdfFn;
-      document.getElementById("btnTopVerPdf").onclick = openPdfFn;
+      if (document.getElementById("btnVerPdfAction")) document.getElementById("btnVerPdfAction").onclick = openPdfFn;
+      if (document.getElementById("btnTopVerPdf")) document.getElementById("btnTopVerPdf").onclick = openPdfFn;
     } else {
       document.getElementById("docDisponibleView").style.display = "none";
       document.getElementById("docNoDisponibleView").style.display = "block";
       document.getElementById("docStatusBadge").innerHTML = `<span class="badge badge-observada">No disponible</span>`;
       document.getElementById("btnAsociarPdf").href = `resoluciones.html?editar=${rd.id}`;
-      document.getElementById("btnTopVerPdf").onclick = () => {
-        showToast("Documento digital no disponible para esta resolución.", "warning");
-      };
+      if (document.getElementById("btnTopVerPdf")) {
+        document.getElementById("btnTopVerPdf").onclick = () => {
+          showToast("Documento digital no disponible para esta resolución.", "warning");
+        };
+      }
     }
 
     // Antecedentes
