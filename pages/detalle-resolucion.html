@@ -7,6 +7,91 @@
   <link rel="stylesheet" href="../css/styles.css">
   <link rel="icon" href="../assets/logo-ugel-canete.jpg" type="image/jpeg">
   <style>
+    /* Layout Split: Izquierda Información / Derecha Visor Documento */
+    .split-layout-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (min-width: 1024px) {
+      .split-layout-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+    }
+
+    /* Columna Izquierda: Información Completa */
+    .split-left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Columna Derecha: Visor de PDF Integrado y Sticky */
+    .split-right-column {
+      position: sticky;
+      top: calc(var(--topbar-h) + 16px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .embedded-viewer-card {
+      background: var(--slate-900);
+      border-radius: 16px;
+      border: 1px solid var(--slate-700);
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .embedded-viewer-header {
+      background: var(--slate-950);
+      border-bottom: 1px solid var(--slate-800);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+    }
+
+    .embedded-viewer-body {
+      background: #1e293b;
+      min-height: 640px;
+      max-height: 750px;
+      overflow-y: auto;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .embedded-viewer-sheet {
+      background: white;
+      color: var(--slate-900);
+      width: 100%;
+      max-width: 580px;
+      min-height: 780px;
+      padding: 40px 32px;
+      border-radius: 4px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      font-family: 'Times New Roman', serif;
+      position: relative;
+    }
+
+    .embedded-viewer-footer {
+      background: var(--slate-950);
+      border-top: 1px solid var(--slate-800);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--slate-400);
+      font-size: 11px;
+    }
+
     /* Estilos específicos de trazabilidad y ficha */
     .timeline {
       position: relative;
@@ -91,20 +176,21 @@
           ✏ Editar RD
         </a>
         <button id="btnTopVerPdf" class="btn btn-primary btn--rounded">
-          📄 Abrir PDF
+          🔍 Pantalla Completa
         </button>
       </div>
     </header>
 
-    <!-- Page Body -->
+    <!-- Page Body: Layout Dividido 50/50 -->
     <div class="page-body">
       
-      <!-- Top Dossier Grid: Información RD + Tarjeta Destacada "¿DÓNDE ESTÁ?" -->
-      <div class="grid-12">
+      <div class="split-layout-container">
         
-        <!-- Left: Resolution Dossier Card (Col 7) -->
-        <div class="col-7 card card--p">
-          <div>
+        <!-- ==================== LADO IZQUIERDO: INFORMACIÓN DE LA RESOLUCIÓN ==================== -->
+        <div class="split-left-column">
+          
+          <!-- Bloque 1: Ficha Principal de la Resolución -->
+          <div class="card card--p">
             <div class="card-header">
               <div>
                 <span class="text-xs" style="color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
@@ -117,7 +203,7 @@
               <span id="rdStatusBadge"></span>
             </div>
 
-            <!-- Ficha técnica en 4 celdas -->
+            <!-- Ficha técnica en celdas -->
             <div class="detail-grid">
               <div class="detail-cell">
                 <span class="detail-cell-label">Número RD:</span>
@@ -148,7 +234,7 @@
               </div>
             </div>
 
-            <!-- Administrado -->
+            <!-- Administrado / Beneficiario -->
             <div class="user-highlight">
               <span class="user-highlight-label">Administrado / Beneficiario / Interesado:</span>
               <div class="flex-between">
@@ -177,218 +263,234 @@
               <p class="text-xs" style="color: var(--slate-600); margin: 0; font-style: italic;" id="rdObservaciones"></p>
             </div>
           </div>
-        </div>
 
-        <!-- Right: Tarjeta Destacada "¿DÓNDE ESTÁ?" (Ubicación Física) (Col 5) -->
-        <div class="col-5 dark-card">
-          <div>
-            <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-              <h3 class="dark-card-title flex-center gap-2">
-                <span>📍 ¿DÓNDE ESTÁ FÍSICAMENTE?</span>
-              </h3>
-              <span class="badge badge-amber-glow">Custodia UGEL 08</span>
-            </div>
+          <!-- Bloque 2: Tarjeta de Ubicación Física ("¿DÓNDE ESTÁ?") -->
+          <div class="dark-card">
+            <div>
+              <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <h3 class="dark-card-title flex-center gap-2">
+                  <span>📍 ¿DÓNDE ESTÁ FÍSICAMENTE?</span>
+                </h3>
+                <span class="badge badge-amber-glow">Custodia UGEL 08</span>
+              </div>
 
-            <!-- Alerta de Ubicación -->
-            <div id="ubicacionDisponibleBox">
-              <p class="text-xs" style="color: var(--slate-300); margin-bottom: 16px;">
-                Coordenadas de archivo asignadas para la localización inmediata del legajo original:
-              </p>
-
-              <!-- Caja y Rango Destacados -->
-              <div style="background: rgba(245,158,11,0.25); border: 2px solid rgba(245,158,11,0.5); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center;">
-                <span style="font-size: 11px; font-weight: 800; color: var(--amber-300); text-transform: uppercase; letter-spacing: 0.1em; display: block;">
-                  UBICACIÓN PRINCIPAL
-                </span>
-                <h2 style="font-size: 26px; font-weight: 900; color: var(--amber-300); margin: 4px 0; font-family: var(--font-display);" id="locCajaMain">
-                  Caja 025
-                </h2>
-                <p style="font-size: 13px; font-weight: 700; color: white; margin: 0;" id="locRangoMain">
-                  Rango: RD 3800 - RD 3900
+              <!-- Ubicación Disponible -->
+              <div id="ubicacionDisponibleBox">
+                <p class="text-xs" style="color: var(--slate-300); margin-bottom: 16px;">
+                  Coordenadas de archivo asignadas para la localización inmediata del legajo original:
                 </p>
+
+                <!-- Caja y Rango Destacados -->
+                <div style="background: rgba(245,158,11,0.25); border: 2px solid rgba(245,158,11,0.5); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center;">
+                  <span style="font-size: 11px; font-weight: 800; color: var(--amber-300); text-transform: uppercase; letter-spacing: 0.1em; display: block;">
+                    UBICACIÓN PRINCIPAL
+                  </span>
+                  <h2 style="font-size: 26px; font-weight: 900; color: var(--amber-300); margin: 4px 0; font-family: var(--font-display);" id="locCajaMain">
+                    Caja 025
+                  </h2>
+                  <p style="font-size: 13px; font-weight: 700; color: white; margin: 0;" id="locRangoMain">
+                    Rango: RD 3800 - RD 3900
+                  </p>
+                </div>
+
+                <!-- Pasos de Ubicación -->
+                <div class="space-y-2">
+                  <div class="location-step">
+                    <div class="location-step-num">1</div>
+                    <div>
+                      <span class="location-step-label">Sede:</span>
+                      <p class="location-step-value" id="locSede">Sede Principal</p>
+                    </div>
+                  </div>
+
+                  <div class="location-step">
+                    <div class="location-step-num">2</div>
+                    <div>
+                      <span class="location-step-label">Ambiente:</span>
+                      <p class="location-step-value" id="locAmbiente">Archivo</p>
+                    </div>
+                  </div>
+
+                  <div class="location-step">
+                    <div class="location-step-num">3</div>
+                    <div>
+                      <span class="location-step-label">Estante:</span>
+                      <p class="location-step-value" id="locEstante">Estante A</p>
+                    </div>
+                  </div>
+
+                  <div class="location-step">
+                    <div class="location-step-num">4</div>
+                    <div>
+                      <span class="location-step-label">Archivador:</span>
+                      <p class="location-step-value" id="locArchivador">Archivador 03</p>
+                    </div>
+                  </div>
+
+                  <div class="location-step">
+                    <div class="location-step-num">5</div>
+                    <div>
+                      <span class="location-step-label">Estado de Archivo:</span>
+                      <p class="location-step-value" id="locEstadoArchivo" style="color: var(--emerald-400);">Archivado</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <!-- Pasos de Ubicación -->
-              <div class="space-y-2">
-                <div class="location-step">
-                  <div class="location-step-num">1</div>
-                  <div>
-                    <span class="location-step-label">Sede:</span>
-                    <p class="location-step-value" id="locSede">Sede Principal</p>
-                  </div>
-                </div>
-
-                <div class="location-step">
-                  <div class="location-step-num">2</div>
-                  <div>
-                    <span class="location-step-label">Ambiente:</span>
-                    <p class="location-step-value" id="locAmbiente">Archivo</p>
-                  </div>
-                </div>
-
-                <div class="location-step">
-                  <div class="location-step-num">3</div>
-                  <div>
-                    <span class="location-step-label">Estante:</span>
-                    <p class="location-step-value" id="locEstante">Estante A</p>
-                  </div>
-                </div>
-
-                <div class="location-step">
-                  <div class="location-step-num">4</div>
-                  <div>
-                    <span class="location-step-label">Archivador:</span>
-                    <p class="location-step-value" id="locArchivador">Archivador 03</p>
-                  </div>
-                </div>
-
-                <div class="location-step">
-                  <div class="location-step-num">5</div>
-                  <div>
-                    <span class="location-step-label">Estado de Archivo:</span>
-                    <p class="location-step-value" id="locEstadoArchivo" style="color: var(--emerald-400);">Archivado</p>
-                  </div>
-                </div>
+              <!-- Estado cuando no tiene ubicación física registrada -->
+              <div id="ubicacionNoDisponibleBox" style="display: none; padding: 24px 0; text-align: center;">
+                <div style="font-size: 32px; margin-bottom: 8px;">📦⚠️</div>
+                <h4 style="font-size: 15px; font-weight: 800; color: var(--amber-300); margin: 0;">Ubicación física pendiente de registrar</h4>
+                <p class="text-xs" style="color: var(--slate-300); margin: 8px 0 16px;">
+                  Esta resolución aún no tiene asignada una caja, estante o ambiente de custodia física.
+                </p>
+                <a id="btnAsignarUbicacion" href="ubicacion.html" class="btn btn-primary btn--sm btn--rounded">
+                  + Asignar Ubicación Física
+                </a>
               </div>
+
             </div>
 
-            <!-- Estado cuando no tiene ubicación física registrada -->
-            <div id="ubicacionNoDisponibleBox" style="display: none; padding: 24px 0; text-align: center;">
-              <div style="font-size: 32px; margin-bottom: 8px;">📦⚠️</div>
-              <h4 style="font-size: 15px; font-weight: 800; color: var(--amber-300); margin: 0;">Ubicación física pendiente de registrar</h4>
-              <p class="text-xs" style="color: var(--slate-300); margin: 8px 0 16px;">
-                Esta resolución aún no tiene asignada una caja, estante o ambiente de custodia física.
-              </p>
-              <a id="btnAsignarUbicacion" href="registrar-resolucion.html" class="btn btn-primary btn--sm btn--rounded">
-                + Asignar Ubicación Física
+            <div style="margin-top: 16px;">
+              <a id="btnVerEnArchivo" href="ubicacion.html" class="btn btn-primary btn--xl btn--rounded" style="background: var(--amber-500); color: var(--slate-900); font-weight: 800; width: 100%; justify-content: center;">
+                📦 VER EN MAPA DE ARCHIVO FÍSICO &rarr;
               </a>
             </div>
-
           </div>
 
-          <div style="margin-top: 16px;">
-            <a id="btnVerEnArchivo" href="ubicacion.html" class="btn btn-primary btn--xl btn--rounded" style="background: var(--amber-500); color: var(--slate-900); font-weight: 800;">
-              📦 VER EN MAPA DE ARCHIVO FÍSICO &rarr;
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Sección 2: Notificación + Documento Digital PDF -->
-      <div class="grid-2col">
-        
-        <!-- Notificación -->
-        <div class="card card--p">
-          <div class="card-header">
-            <h3 class="card-title">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-              Estado de Notificación al Administrado
-            </h3>
-            <span id="notifStatusBadge"></span>
-          </div>
-
-          <div id="notifContent">
-            <div class="detail-grid">
-              <div class="detail-cell">
-                <span class="detail-cell-label">Fecha de Notificación:</span>
-                <span class="detail-cell-value detail-cell-value--md" id="notifFecha">-</span>
-              </div>
-              <div class="detail-cell">
-                <span class="detail-cell-label">Medio de Entrega:</span>
-                <span class="detail-cell-value detail-cell-value--md" id="notifMedio">-</span>
-              </div>
+          <!-- Bloque 3: Estado de Notificación -->
+          <div class="card card--p">
+            <div class="card-header">
+              <h3 class="card-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                Estado de Notificación al Administrado
+              </h3>
+              <span id="notifStatusBadge"></span>
             </div>
 
-            <div class="detail-cell" style="margin-bottom: 8px;">
-              <span class="detail-cell-label">Destinatario / Receptor:</span>
-              <span class="detail-cell-value detail-cell-value--md" id="notifDestinatario">-</span>
-            </div>
-
-            <p class="text-xs" style="color: var(--slate-500); margin: 8px 0 0;" id="notifObservacion"></p>
-          </div>
-        </div>
-
-        <!-- Documento Digital PDF -->
-        <div class="card card--p">
-          <div class="card-header">
-            <h3 class="card-title">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-              Documento Digital (PDF Asociado)
-            </h3>
-            <span id="docStatusBadge"></span>
-          </div>
-
-          <div id="docDisponibleView">
-            <div class="doc-item" style="margin-bottom: 16px;">
-              <div class="doc-item-left">
-                <div class="doc-icon">PDF</div>
-                <div>
-                  <h4 class="doc-name" id="docFileName">RD-3874-2026.pdf</h4>
-                  <p class="doc-meta" id="docMetaInfo">8 páginas • 2.4 MB • Resolución Matriz Oficial</p>
+            <div id="notifContent">
+              <div class="detail-grid">
+                <div class="detail-cell">
+                  <span class="detail-cell-label">Fecha de Notificación:</span>
+                  <span class="detail-cell-value detail-cell-value--md" id="notifFecha">-</span>
+                </div>
+                <div class="detail-cell">
+                  <span class="detail-cell-label">Medio de Entrega:</span>
+                  <span class="detail-cell-value detail-cell-value--md" id="notifMedio">-</span>
                 </div>
               </div>
+
+              <div class="detail-cell" style="margin-bottom: 8px;">
+                <span class="detail-cell-label">Destinatario / Receptor:</span>
+                <span class="detail-cell-value detail-cell-value--md" id="notifDestinatario">-</span>
+              </div>
+
+              <p class="text-xs" style="color: var(--slate-500); margin: 8px 0 0;" id="notifObservacion"></p>
+            </div>
+          </div>
+
+          <!-- Bloque 4: Antecedentes y Documentos Sustentatorios -->
+          <div class="card card--p">
+            <div class="card-header">
+              <h3 class="card-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                Antecedentes y Documentos Sustentatorios
+              </h3>
+              <span class="badge badge-slate" id="antecedentesCount">0 vinculados</span>
+            </div>
+
+            <div id="antecedentesList" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Renderizado dinámico -->
+            </div>
+          </div>
+
+          <!-- Bloque 5: Historial y Trazabilidad Cronológica -->
+          <div class="card card--p">
+            <div class="card-header">
+              <h3 class="card-title">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Historial y Trazabilidad Cronológica
+              </h3>
+              <span class="badge badge-blue">Auditoría</span>
+            </div>
+
+            <p class="text-xs" style="color: var(--slate-500); margin: 0 0 12px;">
+              Registro cronológico de las acciones efectuadas sobre este expediente:
+            </p>
+
+            <div class="timeline" id="historyTimeline">
+              <!-- Renderizado dinámico de la línea de tiempo -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================== LADO DERECHO: VISOR DE PDF / DOCUMENTO INTEGRADO ==================== -->
+        <div class="split-right-column">
+          
+          <div class="embedded-viewer-card">
+            
+            <!-- Encabezado del Visor de Documento -->
+            <div class="embedded-viewer-header">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; color: #f87171; font-weight: 800; font-size: 11px;">
+                  PDF
+                </div>
+                <div>
+                  <h4 style="margin: 0; font-size: 14px; font-weight: 800; font-family: var(--font-display); color: white;" id="docFileName">
+                    RD-3874-2026.pdf
+                  </h4>
+                  <span style="font-size: 11px; color: var(--slate-400);" id="docMetaInfo">
+                    8 páginas • 2.4 MB • Resolución Matriz Oficial
+                  </span>
+                </div>
+              </div>
+
               <div class="flex-center gap-2">
-                <button id="btnVerPdfAction" class="btn btn-primary btn--sm">
-                  👁 Ver en Visor
+                <button onclick="window.print()" class="btn btn-ghost btn--xs" title="Imprimir acto resolutivo">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                  Imprimir
+                </button>
+                <button id="btnVerPdfAction" class="btn btn-primary btn--xs" title="Abrir en modal ampliado">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+                  Maximizar
                 </button>
               </div>
             </div>
-            <p class="text-xs" style="color: var(--slate-500); margin: 0;">
-              Documento digital autenticado para verificación de autenticidad en la UGEL 08.
-            </p>
+
+            <!-- Cuerpo del Visor / Hoja Foliada de la RD -->
+            <div class="embedded-viewer-body" id="docViewerBody">
+              
+              <div id="docDisponibleView" style="width: 100%; display: flex; justify-content: center;">
+                <div class="embedded-viewer-sheet" id="embeddedSheetContent">
+                  <!-- Contenido institucional auténtico inyectado por JS -->
+                </div>
+              </div>
+
+              <!-- Vista de Respaldo cuando la RD no tiene documento adjunto -->
+              <div id="docNoDisponibleView" style="display: none; padding: 60px 24px; text-align: center; color: var(--slate-300); width: 100%;">
+                <div style="font-size: 48px; margin-bottom: 12px;">📁⚠️</div>
+                <h3 style="font-size: 16px; font-weight: 800; color: white; margin: 0 0 8px;">Documento digital pendiente de carga</h3>
+                <p style="font-size: 12px; color: var(--slate-400); max-width: 320px; margin: 0 auto 20px;">
+                  Esta resolución todavía no tiene un archivo PDF digitalizado adjunto en el repositorio.
+                </p>
+                <a id="btnAsociarPdf" href="resoluciones.html" class="btn btn-primary btn--sm btn--rounded">
+                  + Asociar Documento PDF
+                </a>
+              </div>
+
+            </div>
+
+            <!-- Pie del Visor -->
+            <div class="embedded-viewer-footer">
+              <span id="docFooterLeft">UGEL 08 Cañete • Repositorio Digital Oficial</span>
+              <span id="docStatusBadge">
+                <span class="badge badge-notificada">Disponible</span>
+              </span>
+            </div>
+
           </div>
 
-          <!-- Estado cuando no tiene documento -->
-          <div id="docNoDisponibleView" style="display: none; padding: 24px 16px; text-align: center; background: var(--slate-50); border-radius: 12px; border: 1px dashed var(--slate-300);">
-            <div style="font-size: 28px; margin-bottom: 8px;">⚠️</div>
-            <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-800); margin: 0;">Documento digital no disponible</h4>
-            <p class="text-xs" style="color: var(--slate-500); margin: 4px 0 12px;">
-              Esta resolución todavía no tiene un documento digital PDF asociado.
-            </p>
-            <a id="btnAsociarPdf" href="registrar-resolucion.html" class="btn btn-light btn--xs">
-              + Asociar Archivo PDF
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Sección 3: Antecedentes Relacionados + Línea de Tiempo de Trazabilidad -->
-      <div class="grid-2col">
-        
-        <!-- Antecedentes Relacionados -->
-        <div class="card card--p">
-          <div class="card-header">
-            <h3 class="card-title">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-              Antecedentes y Documentos Sustentatorios
-            </h3>
-            <span class="badge badge-slate" id="antecedentesCount">0 vinculados</span>
-          </div>
-
-          <div id="antecedentesList" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Renderizado dinámico -->
-          </div>
-        </div>
-
-        <!-- Trazabilidad / Historial Cronológico -->
-        <div class="card card--p">
-          <div class="card-header">
-            <h3 class="card-title">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-              Historial y Trazabilidad Cronológica
-            </h3>
-            <span class="badge badge-blue">Auditoría</span>
-          </div>
-
-          <p class="text-xs" style="color: var(--slate-500); margin: 0 0 12px;">
-            Registro cronológico de las acciones efectuadas sobre este expediente:
-          </p>
-
-          <div class="timeline" id="historyTimeline">
-            <!-- Renderizado dinámico de la línea de tiempo -->
-          </div>
         </div>
 
       </div>
@@ -497,13 +599,68 @@
       document.getElementById("notifDestinatario").innerText = rd.administrado_nombre;
     }
 
-    // Documento Digital PDF
+    // Documento Digital PDF y Hoja Foliada Integrada
     if (rd.tiene_documento) {
-      document.getElementById("docDisponibleView").style.display = "block";
+      document.getElementById("docDisponibleView").style.display = "flex";
       document.getElementById("docNoDisponibleView").style.display = "none";
       document.getElementById("docStatusBadge").innerHTML = `<span class="badge badge-notificada">Disponible</span>`;
       document.getElementById("docFileName").innerText = rd.documento.nombre_archivo;
       document.getElementById("docMetaInfo").innerText = `${rd.documento.numero_paginas} páginas • ${rd.documento.tamanio} • ${rd.documento.tipo_documento}`;
+
+      // Inyectar visualización auténtica del documento oficial en la hoja integrada
+      const isInsideSubdir = window.location.pathname.includes("/pages/") || window.location.pathname.includes("\\pages\\");
+      const logoPath = isInsideSubdir ? "../assets/logo-ugel-canete.jpg" : "assets/logo-ugel-canete.jpg";
+      const totalPags = rd.documento.numero_paginas || 8;
+      const numClean = rd.numero_rd.replace(/[^\d-]/g, '') || '0001-2026';
+
+      const sheetEl = document.getElementById("embeddedSheetContent");
+      if (sheetEl) {
+        sheetEl.innerHTML = `
+          <div style="text-align: center; border-bottom: 2px solid #0A2540; padding-bottom: 14px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="text-align: left;">
+                <h4 style="font-size: 10px; font-weight: 800; letter-spacing: 0.12em; color: #0F172A; text-transform: uppercase; margin: 0;">REPÚBLICA DEL PERÚ</h4>
+                <h5 style="font-size: 11px; font-weight: 700; color: #475569; margin: 2px 0;">GOBIERNO REGIONAL DE LIMA • DRELP</h5>
+              </div>
+              <img src="${logoPath}" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid #cbd5e1;" alt="Sello UGEL 08">
+            </div>
+            <h3 style="font-size: 13px; font-weight: 900; color: #1e3a8a; margin: 0; font-family: var(--font-display);">UNIDAD DE GESTIÓN EDUCATIVA LOCAL N° 08 - CAÑETE</h3>
+          </div>
+
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="font-size: 16px; font-weight: 900; color: #0F172A; margin: 0; font-family: 'Times New Roman', serif;">
+              RESOLUCIÓN DIRECTORAL N.º ${numClean} - UGEL 08
+            </h2>
+            <p style="font-size: 11px; font-style: italic; color: #475569; margin: 4px 0 0;">
+              San Vicente de Cañete, ${rd.fecha_emision || '14 de Junio de 2026'}
+            </p>
+          </div>
+
+          <div style="font-size: 12.5px; line-height: 1.7; text-align: justify; color: #1E293B;">
+            <p style="margin-bottom: 12px;"><strong>VISTO:</strong> El expediente administrativo <strong>${rd.expediente || 'EXP-2026-000001'}</strong>, el informe técnico favorable del área de ${rd.area_origen || 'Recursos Humanos'} y demás recaudos adjuntos en un total de ${totalPags} folios útiles;</p>
+            
+            <p style="margin-bottom: 10px;"><strong>CONSIDERANDO:</strong></p>
+            <p style="margin-bottom: 10px;">Que, de conformidad con la Ley General de Educación N° 28044, la Ley N° 29944 y sus normas reglamentarias conexas;</p>
+            <p style="margin-bottom: 14px;">Que, evaluados los antecedentes del administrado <strong>${rd.administrado_nombre || (rd.persona ? rd.persona.nombres : 'ADMINISTRADO REGISTRADO')}</strong> con DNI <strong>${rd.persona ? rd.persona.dni : '51725357'}</strong>, resulta procedente atender lo solicitado conforme a ley;</p>
+            
+            <p style="text-align: center; font-weight: bold; font-size: 13px; margin: 16px 0; color: #0F172A;">SE RESUELVE:</p>
+            <p style="margin-bottom: 10px;"><strong>ARTÍCULO 1°.- DISPONER</strong> ${rd.asunto || 'lo estipulado en los actuados técnicos y administrativos que forman parte del expediente institucional'}.</p>
+            <p style="margin-bottom: 10px;"><strong>ARTÍCULO 2°.- PRECISAR</strong> que el legajo original se encuentra bajo custodia física del Archivo Central de la UGEL N° 08 Cañete (${rd.tiene_ubicacion ? `Caja: ${rd.ubicacion.caja}, Estante: ${rd.ubicacion.estante}` : 'Pendiente de caja y estante'}).</p>
+            <p style="margin-bottom: 10px;"><strong>ARTÍCULO 3°.- NOTIFICAR</strong> el presente acto resolutivo a las partes interesadas conforme a las formalidades de ley.</p>
+          </div>
+
+          <div style="margin-top: 40px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid #CBD5E1; padding-top: 14px; font-family: var(--font-base); font-size: 10.5px;">
+            <div>
+              <span>Folio 01 de ${totalPags}</span><br>
+              <span style="color: #64748B;">Documento Digital Autenticado</span>
+            </div>
+            <div style="text-align: center; border-top: 1px solid #1E293B; width: 170px; padding-top: 4px;">
+              <strong style="color: #0F172A; font-size: 11px;">DIRECCIÓN GENERAL</strong><br>
+              <span style="color: #64748B; font-size: 9.5px;">UGEL 08 Cañete • Firma Digital</span>
+            </div>
+          </div>
+        `;
+      }
 
       const openPdfFn = () => {
         openPdfViewerModal(rd.numero_rd, rd.documento.numero_paginas, rd.documento.tamanio, rd.documento.nombre_archivo);
