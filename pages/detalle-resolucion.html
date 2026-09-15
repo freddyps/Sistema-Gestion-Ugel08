@@ -355,7 +355,7 @@
             </div>
           </div>
 
-          <!-- Bloque 3: Estado de Notificación -->
+          <!-- Bloque 3: Estado de Notificación Oficial -->
           <div class="card card--p">
             <div class="card-header">
               <h3 class="card-title">
@@ -382,7 +382,19 @@
                 <span class="detail-cell-value detail-cell-value--md" id="notifDestinatario">-</span>
               </div>
 
-              <p class="text-xs" style="color: var(--slate-500); margin: 8px 0 0;" id="notifObservacion"></p>
+              <p class="text-xs" style="color: var(--slate-500); margin: 8px 0 12px;" id="notifObservacion"></p>
+
+              <!-- Botón interactivo para María Angélica / Responsable de Notificación -->
+              <div style="border-top: 1px dashed var(--slate-200); padding-top: 12px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <div style="font-size: 11px; color: var(--slate-500); display: flex; align-items: center; gap: 6px;">
+                  <span>📧</span>
+                  <span>Canal Digital Institucional (Outlook)</span>
+                </div>
+                <button type="button" onclick="abrirModalNotificarOutlook()" class="btn btn-primary btn--sm btn--rounded" style="background: #0078d4; gap: 6px; box-shadow: 0 4px 10px rgba(0,120,212,0.3);">
+                  <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 24 24"><path d="M7 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6H7zm9 7h-5V4l5 5zM8 12h8v2H8v-2zm0 3h8v2H8v-2z"/></svg>
+                  <span>Verificar y Notificar por Outlook &rarr;</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -496,6 +508,114 @@
   </main>
 </div>
 
+<!-- MODAL DE VERIFICACIÓN DE NOTIFICACIÓN POR CORREO (OUTLOOK) -->
+<div id="modalNotificarOutlook" class="modal-backdrop" onclick="if(event.target.id==='modalNotificarOutlook') cerrarModalNotificarOutlook();" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: white; border-radius: 16px; width: 100%; max-width: 640px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; animation: modalFadeIn 0.2s ease-out;">
+    
+    <!-- Encabezado del Modal -->
+    <div style="background: #0078d4; color: white; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+          📧
+        </div>
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 800; font-family: var(--font-display); color: white;">
+            Verificación de Notificación Institucional (Outlook)
+          </h3>
+          <p style="margin: 2px 0 0; font-size: 11px; color: rgba(255,255,255,0.85);">
+            Oficina de Resoluciones • Responsable: María Angélica Sánchez
+          </p>
+        </div>
+      </div>
+      <button onclick="cerrarModalNotificarOutlook()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; line-height: 1; padding: 4px;">&times;</button>
+    </div>
+
+    <!-- Cuerpo con los datos jalados para verificación -->
+    <div style="padding: 24px; max-height: 75vh; overflow-y: auto;">
+      
+      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; color: #1e40af; line-height: 1.5;">
+        <strong>Paso de Seguridad Oficial:</strong> María Angélica, verifique que los datos del destinatario, asunto y documento sean exactos. Al hacer clic en <em>"Abrir en Outlook"</em> se preparará el correo automáticamente con todo completado y se descargará el PDF oficial para adjuntarlo.
+      </div>
+
+      <!-- Destinatario y Correo -->
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
+          Destinatario (Administrado / Notificado) *
+        </label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <input type="text" id="outlookDestinatarioNombre" class="form-input" placeholder="Nombre completo">
+          <input type="email" id="outlookDestinatarioCorreo" class="form-input" placeholder="correo@ejemplo.com" required style="font-weight: 600; color: #0078d4;">
+        </div>
+        <span style="font-size: 10px; color: var(--slate-400); margin-top: 3px; display: block;">Puede ajustar el correo si el administrado proporcionó uno actualizado.</span>
+      </div>
+
+      <!-- Asunto jalado automáticamente -->
+      <div style="margin-bottom: 16px;">
+        <label style="display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
+          Asunto del Correo Electrónico *
+        </label>
+        <input type="text" id="outlookAsunto" class="form-input" style="font-weight: 700; color: var(--slate-900);">
+      </div>
+
+      <!-- Documento Digital PDF Asociado -->
+      <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 38px; height: 38px; border-radius: 8px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px;">
+              PDF
+            </div>
+            <div>
+              <h5 style="margin: 0; font-size: 13px; font-weight: 800; color: var(--slate-900);" id="outlookPdfNombre">
+                RD-3874-2026.pdf
+              </h5>
+              <span style="font-size: 11px; color: var(--slate-500);" id="outlookPdfMeta">
+                Documento Oficial Autenticado • UGEL 08 Cañete
+              </span>
+            </div>
+          </div>
+          <button type="button" onclick="descargarPdfNotificacion()" class="btn btn-light btn--xs" style="gap: 4px;">
+            ⬇ Descargar PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Vista previa del Mensaje Institucional -->
+      <div style="margin-bottom: 12px;">
+        <label style="display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
+          Cuerpo del Mensaje Formal
+        </label>
+        <textarea id="outlookCuerpoMensaje" rows="5" class="form-input" style="font-family: inherit; font-size: 12px; line-height: 1.6; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Selección de Outlook Web o App de Escritorio -->
+      <div style="background: #f1f5f9; padding: 10px 14px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+        <span style="font-weight: 600; color: var(--slate-700);">Destino de apertura:</span>
+        <div style="display: flex; gap: 16px;">
+          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            <input type="radio" name="outlookDestino" value="web" checked style="accent-color: #0078d4;"> Outlook Web (Navegador)
+          </label>
+          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            <input type="radio" name="outlookDestino" value="app" style="accent-color: #0078d4;"> Outlook App (Escritorio)
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pie del Modal con Acciones -->
+    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;">
+      <button type="button" onclick="cerrarModalNotificarOutlook()" class="btn btn-light">
+        Cancelar
+      </button>
+      <button type="button" onclick="enviarAOutlook()" class="btn btn-primary btn--lg" style="background: #0078d4; gap: 8px;">
+        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        Confirmar y Abrir en Outlook &rarr;
+      </button>
+    </div>
+
+  </div>
+</div>
+
 <div id="toastContainer"></div>
 
 <!-- Capa de Datos y Servicios -->
@@ -504,6 +624,8 @@
 <script src="../js/services/resolutionService.js"></script>
 <script src="../js/app.js"></script>
 <script>
+  let currentResolutionDetail = null;
+
   document.addEventListener("DOMContentLoaded", () => {
     renderSidebar("resoluciones");
 
@@ -520,6 +642,8 @@
       setTimeout(() => { window.location.href = "resoluciones.html"; }, 1500);
       return;
     }
+
+    currentResolutionDetail = rd;
 
     // Cabecera y Topbar
     document.getElementById("topbarRdTitle").innerText = `Ficha: ${rd.numero_rd}`;
@@ -710,6 +834,142 @@
         </div>
       `).join('');
     }
+  }
+
+  // Lógica de Notificación por Outlook
+  function abrirModalNotificarOutlook() {
+    if (!currentResolutionDetail) return;
+    const rd = currentResolutionDetail;
+
+    const modal = document.getElementById("modalNotificarOutlook");
+    const nomDest = rd.administrado_nombre || (rd.persona ? `${rd.persona.nombres} ${rd.persona.apellidos}` : "Administrado");
+    
+    // Buscar correo de la persona en la base de datos si existe
+    let correoSugerido = "";
+    if (rd.persona && rd.persona.correo) {
+      correoSugerido = rd.persona.correo;
+    } else if (rd.persona && rd.persona.dni) {
+      const p = window.personService ? window.personService.findByDni(rd.persona.dni) : null;
+      if (p && p.correo) correoSugerido = p.correo;
+    }
+    if (!correoSugerido) {
+      // Sugerir formato institucional
+      const dniVal = (rd.persona && rd.persona.dni) ? rd.persona.dni : "usuario";
+      correoSugerido = `${dniVal}@ugel08canete.gob.pe`;
+    }
+
+    document.getElementById("outlookDestinatarioNombre").value = nomDest;
+    document.getElementById("outlookDestinatarioCorreo").value = correoSugerido;
+    
+    const asuntoPredeterminado = `NOTIFICACIÓN OFICIAL: ${rd.numero_rd} - UGEL N° 08 CAÑETE`;
+    document.getElementById("outlookAsunto").value = asuntoPredeterminado;
+
+    const pdfName = (rd.documento && rd.documento.nombre_archivo) ? rd.documento.nombre_archivo : `${rd.numero_rd}.pdf`;
+    document.getElementById("outlookPdfNombre").innerText = pdfName;
+    document.getElementById("outlookPdfMeta").innerText = `${(rd.documento && rd.documento.numero_paginas) || 8} páginas • Archivo Digitalizado Autenticado`;
+
+    // Cuerpo redactado institucional formal
+    const cuerpoTexto = `Estimado(a) ${nomDest},\n\nPor medio del presente, la Unidad de Gestión Educativa Local N° 08 Cañete, a través de la Oficina de Resoluciones, le notifica formalmente la emisión del siguiente acto administrativo:\n\n` +
+      `• Acto Resolutivo: ${rd.numero_rd}\n` +
+      `• Expediente: ${rd.expediente || 'EXP-2026-000001'}\n` +
+      `• Fecha de Emisión: ${rd.fecha_emision || '2026'}\n` +
+      `• Asunto: ${rd.asunto || 'Resolución Directoral oficial'}\n\n` +
+      `Se adjunta a este correo el documento digital oficial en formato PDF (${pdfName}) debidamente suscrito con firma digital conforme a ley.\n\n` +
+      `Atentamente,\n` +
+      `María Angélica Sánchez\n` +
+      `Oficina de Resoluciones y Actos Administrativos\n` +
+      `UGEL N° 08 - Cañete\n` +
+      `Gobierno Regional de Lima • DRELP`;
+
+    document.getElementById("outlookCuerpoMensaje").value = cuerpoTexto;
+
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+
+  function cerrarModalNotificarOutlook() {
+    const modal = document.getElementById("modalNotificarOutlook");
+    if (modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  }
+
+  function descargarPdfNotificacion() {
+    if (!currentResolutionDetail) return;
+    const rd = currentResolutionDetail;
+    const isInsideSubdir = window.location.pathname.includes("/pages/") || window.location.pathname.includes("\\pages\\");
+    const demoPdfPath = isInsideSubdir ? "../assets/demo-rd.pdf" : "assets/demo-rd.pdf";
+    const pdfName = (rd.documento && rd.documento.nombre_archivo) ? rd.documento.nombre_archivo : `${rd.numero_rd}.pdf`;
+
+    const a = document.createElement("a");
+    a.href = demoPdfPath;
+    a.download = pdfName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    showToast(`Descargando ${pdfName} para adjuntar en Outlook`, "success");
+  }
+
+  function enviarAOutlook() {
+    if (!currentResolutionDetail) return;
+    const rd = currentResolutionDetail;
+
+    const emailTo = document.getElementById("outlookDestinatarioCorreo").value.trim();
+    if (!emailTo) {
+      showToast("Por favor ingrese un correo de destino válido.", "warning");
+      document.getElementById("outlookDestinatarioCorreo").focus();
+      return;
+    }
+
+    const subject = document.getElementById("outlookAsunto").value.trim();
+    const body = document.getElementById("outlookCuerpoMensaje").value.trim();
+
+    // 1. Descargar el archivo PDF automáticamente para que María Angélica lo adjunte de inmediato
+    descargarPdfNotificacion();
+
+    // 2. Actualizar estado de la resolución a "Notificada" en la base de datos institucional
+    try {
+      const today = new Date().toISOString().split("T")[0];
+      if (window.resolutionService) {
+        window.resolutionService.update(rd.id, {
+          estado: "Notificada",
+          estado_notificacion: "Notificado con éxito",
+          fecha_notificacion: today,
+          medio_notificacion: "Correo Electrónico (Outlook)",
+          destinatario_notificacion: emailTo
+        });
+      }
+      showToast("Estado actualizado a 'Notificada' en la UGEL 08.", "info");
+    } catch (err) {
+      console.warn("No se pudo actualizar estado automáticamente:", err);
+    }
+
+    // 3. Generar enlace de Outlook (Web o Cliente de Escritorio)
+    const destinoEl = document.querySelector('input[name="outlookDestino"]:checked');
+    const tipoDestino = destinoEl ? destinoEl.value : "web";
+
+    let urlOutlook = "";
+    if (tipoDestino === "web") {
+      // Outlook en la Web (Office 365 / Outlook Live)
+      urlOutlook = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(emailTo)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    } else {
+      // Protocolo Mailto nativo para abrir la aplicación de escritorio Outlook
+      urlOutlook = `mailto:${encodeURIComponent(emailTo)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    // 4. Redirigir / Abrir en pestaña nueva
+    showToast("Redirigiendo a Outlook con asunto, destinatario y cuerpo listo...", "success");
+
+    setTimeout(() => {
+      cerrarModalNotificarOutlook();
+      window.open(urlOutlook, "_blank");
+      // Recargar detalles para reflejar nuevo estado
+      setTimeout(() => {
+        loadResolutionDetail(rd.id);
+      }, 1000);
+    }, 800);
   }
 
   function ejecutarRemisionArchivo() {
