@@ -694,33 +694,6 @@ const authService = {
         ]
       },
       {
-        key: "resoluciones",
-        title: "RESOLUCIONES",
-        items: [
-          {
-            key: "resoluciones",
-            label: "Gestión de Resoluciones",
-            url: "resoluciones.html",
-            icon: "document",
-            permission: "resoluciones.ver"
-          },
-          {
-            key: "ubicacion",
-            label: "Ubicación Física",
-            url: "ubicacion.html",
-            icon: "archive",
-            permission: "archivo.ver"
-          },
-          {
-            key: "reportes",
-            label: "Reportes",
-            url: "reportes.html",
-            icon: "chart",
-            permission: "reportes.ver"
-          }
-        ]
-      },
-      {
         key: "administracion",
         title: "ADMINISTRACIÓN",
         items: [
@@ -744,6 +717,46 @@ const authService = {
             url: "configuracion.html",
             icon: "cog",
             permission: "admin.config"
+          }
+        ]
+      },
+      {
+        key: "mesapartes",
+        title: "MESA DE PARTES",
+        items: [
+          {
+            key: "mesapartes-virtual",
+            label: "Mesa de Partes Virtual",
+            url: "mesa-de-partes.html",
+            icon: "document",
+            permission: null
+          }
+        ]
+      },
+      {
+        key: "resoluciones",
+        title: "RESOLUCIONES",
+        items: [
+          {
+            key: "resoluciones",
+            label: "Gestión de Resoluciones",
+            url: "resoluciones.html",
+            icon: "document",
+            permission: "resoluciones.ver"
+          },
+          {
+            key: "ubicacion",
+            label: "Ubicación Física",
+            url: "ubicacion.html",
+            icon: "archive",
+            permission: "archivo.ver"
+          },
+          {
+            key: "reportes",
+            label: "Reportes",
+            url: "reportes.html",
+            icon: "chart",
+            permission: "reportes.ver"
           }
         ]
       }

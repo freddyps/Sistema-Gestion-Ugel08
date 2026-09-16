@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesa de Partes Virtual - UGEL 08 Cañete</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" href="../assets/logo-ugel-canete.jpg" type="image/jpeg">
+  <style>
+    .mdp-header {
+      background: linear-gradient(to right, #1e3a8a, #3b82f6, #1e3a8a);
+      color: white;
+      text-align: center;
+      padding: 24px;
+      border-radius: 8px 8px 0 0;
+      margin-bottom: -1px;
+    }
+    .mdp-header img {
+      height: 48px;
+      margin-bottom: 8px;
+    }
+    .mdp-header h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+    .mdp-header p {
+      font-size: 14px;
+      margin: 4px 0 0;
+      opacity: 0.9;
+    }
+    .mdp-panel {
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: 0 0 8px 8px;
+      box-shadow: var(--shadow-sm);
+    }
+    .mdp-panel-title {
+      font-weight: 600;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--slate-200);
+      background-color: var(--slate-50);
+      font-size: 16px;
+    }
+    .mdp-form-container {
+      padding: 32px 24px;
+    }
+    .mdp-radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+    .mdp-radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .mdp-input-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .mdp-input-row label {
+      font-weight: 600;
+      min-width: 80px;
+      text-align: right;
+    }
+    .mdp-input-row input {
+      padding: 10px 16px;
+      border: 1px solid var(--slate-300);
+      border-radius: 4px;
+      width: 100%;
+      max-width: 380px;
+      background-color: var(--slate-50);
+    }
+    .mdp-info-box {
+      background-color: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      border-radius: 6px;
+      padding: 24px;
+      margin-bottom: 32px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #3f3f46;
+    }
+    .mdp-info-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      color: #18181b;
+    }
+    .mdp-info-box p {
+      margin: 0 0 12px 0;
+    }
+    .mdp-info-box ul {
+      margin: 0 0 12px 0;
+      padding-left: 20px;
+    }
+    .mdp-info-box a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .mdp-info-box a:hover {
+      text-decoration: underline;
+    }
+    .mdp-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .mdp-btn-green {
+      background-color: #16a34a;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.2s;
+    }
+    .mdp-btn-green:hover {
+      background-color: #15803d;
+    }
+    .mdp-footer-actions {
+      margin-top: 32px;
+    }
+    .mdp-checkbox-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .mdp-btn-next {
+      background-color: #22c55e;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+      transition: background-color 0.2s;
+      font-size: 15px;
+    }
+    .mdp-btn-next:hover {
+      background-color: #16a34a;
+    }
+    .icon-text {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .icon-text svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: #52525b;
+    }
+  </style>
+</head>
+<body class="page-app">
+
+<div class="app-wrapper">
+  
+  <aside class="sidebar" id="mainSidebar"></aside>
+
+  <main class="main-content">
+    
+    <header class="topbar">
+      <div class="topbar-left">
+        <div>
+          <h2 class="topbar-title" id="dashTopTitle">Mesa de Partes Virtual</h2>
+          <p class="topbar-subtitle" id="dashTopSubtitle">Recepción de Documentos Externos</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn--rounded" style="box-shadow: 0 4px 14px rgba(37,99,235,0.35);" onclick="openModalNuevoDoc()">
+          + Nuevo Documento
+        </button>
+      </div>
+    </header>
+
+    <div class="page-body">
+      
+      <div class="card card--p" style="margin-bottom: 24px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--slate-800);">TRAMITE PRESENCIAL</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px;">
+          <div style="display: flex; align-items: flex-start; gap: 8px; color: var(--slate-600);">
+            <svg style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <span>Para empezar un trámite en la UGEL 08 y quienes no tengan un documento que anexar, se debe descargar, rellenar y firmar el "Formato Único de Trámite" (<a href="javascript:void(0)" style="color: var(--blue); text-decoration: none;" onclick="openModalFUT()">Descargar FUT</a>) y adjuntar en el formulario correspondiente.</span>
+          </div>
+          
+          <div style="display: flex; align-items: flex-start; gap: 8px; color: var(--slate-600);">
+            <svg style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <span>Acércate a la mesa de partes del local administrativo ubicado en <em>Av. 28 de Julio S/N - San Vicente - Cañete</em> y presenta los documentos.</span>
+          </div>
+          
+          <div style="display: flex; align-items: flex-start; gap: 8px; color: var(--slate-600);">
+            <svg style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <span><strong>Horario:</strong> Lunes a viernes de 08:00 a.m. a 04:00 p.m.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card--p" id="dashTableSection">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title" id="dashTableTitle">DOCUMENTOS GENERADOS POR UNIDAD ORGANICA</h3>
+            <p class="text-xs" style="color: var(--slate-400); margin: 2px 0 0;" id="dashTableSubtitle">Desde: 07/09/2026 Hasta: 07/09/2026</p>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Expediente</th>
+                <th>Registro</th>
+                <th>Fecha</th>
+                <th>Documento</th>
+                <th>Folios</th>
+                <th>Asunto</th>
+                <th>Destino</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background-color: var(--slate-100);">
+                <td colspan="7" style="font-weight: 700; color: var(--slate-800);">UNIDAD ORGANICA: INSTITUCION</td>
+              </tr>
+              <tr>
+                <td class="td-code">04469668</td>
+                <td>07827575</td>
+                <td>07/09/2026</td>
+                <td>CARTA 000010-</td>
+                <td>007</td>
+                <td class="td-muted">VISADO DEL ANEXO 01</td>
+                <td>UGEL08 - AREA DE GESTIÓN ADMINISTR</td>
+              </tr>
+              <tr>
+                <td class="td-code">04469967</td>
+                <td>07828150</td>
+                <td>07/09/2026</td>
+                <td>OFICIO 000015-SITRADIERLP</td>
+                <td>021</td>
+                <td class="td-muted">SOLICITA OTORGAMIENTO DE LICENCIA SINDICAL CON GOCE</td>
+                <td>UGEL08 - AREA DE GESTIÓN ADMINISTR</td>
+              </tr>
+              <tr>
+                <td class="td-code">04470102</td>
+                <td>07828420</td>
+                <td>07/09/2026</td>
+                <td>OFICIO 000104-MPC</td>
+                <td>003</td>
+                <td class="td-muted">REMITE SOLICITUD DE IIEE EN SAN VICENTE CONSIDERADAS COMO POSIBLES LOCALES DE VOTACION PARA ELECCIONES MUNICIPALES 2026</td>
+                <td>UGEL08 - DIRECCION</td>
+              </tr>
+              <tr style="background-color: var(--slate-100);">
+                <td colspan="7" style="font-weight: 700; color: var(--slate-800);">UNIDAD ORGANICA: INSTITUCION EDUCATIVA</td>
+              </tr>
+              <tr>
+                <td class="td-code">04469684</td>
+                <td>07827614</td>
+                <td>07/09/2026</td>
+                <td>OFICIO 000036-DIEP SANTA ROSA</td>
+                <td>054</td>
+                <td class="td-muted">PRESENTACION DE EXPEDIENTE DE MANTENIMIENTO</td>
+                <td>UGEL08 - AREA DE GESTION INSTITUCI</td>
+              </tr>
+              <tr>
+                <td class="td-code">04469852</td>
+                <td>07827941</td>
+                <td>07/09/2026</td>
+                <td>OFICIO 000208-DIEP 20915</td>
+                <td>008</td>
+                <td class="td-muted">REMITO MEMORIAL SUSCRITO POR PADRES DE FAMILIA NIVEL SECUNDARIA REITERANDO LA SOLICITUD URGENTE DE ASIGNACION DE UN AUXILIAR DE EDUCACION.</td>
+                <td>UGEL08 - DIRECCION</td>
+              </tr>
+              <tr style="background-color: var(--slate-100);">
+                <td colspan="7" style="font-weight: 700; color: var(--slate-800);">UNIDAD ORGANICA: PERSONA NATURAL</td>
+              </tr>
+              <tr>
+                <td class="td-code">04469692</td>
+                <td>07827633</td>
+                <td>07/09/2026</td>
+                <td>FORMULARIO UNICO DE TRAMITE 000000-</td>
+                <td>005</td>
+                <td class="td-muted">SOLICITO EXONERACION DE DESCUENTO JUDICIAL</td>
+                <td>UGEL08 - AREA DE GESTION ADMINISTR</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div id="toastContainer"></div>
+
+<!-- Capa de Datos y Servicios -->
+<script src="../js/data/mockDatabase.js"></script>
+<script src="../js/services/db.js"></script>
+<script src="../js/services/resolutionService.js"></script>
+<script src="../js/app.js"></script>
+<!-- ============================================================
+     MODAL: VER / DESCARGAR FORMATO ÚNICO DE TRÁMITE (FUT)
+     ============================================================ -->
+<div id="modalFUT" onclick="if(event.target===this) closeModalFUT()" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: white; border-radius: 16px; width: 100%; max-width: 1100px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; animation: modalSlideUp 0.2s ease-out; height: 96vh;">
+    <!-- Header -->
+    <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1); flex-shrink: 0;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;">
+          <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 800; font-family: var(--font-display);">Formato Único de Trámite</h3>
+          <p style="margin: 2px 0 0; font-size: 11px; color: #c7d2fe;">Vista previa del documento • UGEL N.° 08 Cañete</p>
+        </div>
+      </div>
+      <button type="button" onclick="closeModalFUT()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer; opacity: 0.8; line-height: 1; padding: 4px;">&times;</button>
+    </div>
+
+    <!-- Aviso de instrucciones -->
+    <div style="background: #fff7ed; border-bottom: 1px solid #fed7aa; padding: 10px 22px; display: flex; align-items: flex-start; gap: 10px; flex-shrink: 0;">
+      <span style="font-size: 16px; line-height: 1.4;">⚠️</span>
+      <p style="margin: 0; font-size: 12px; color: #92400e; line-height: 1.5;">
+        <strong>Instrucciones:</strong> Descargue el FUT, rellénelo con sus datos personales, fírmelo. Sin este documento <strong>el trámite no será considerado válido</strong>.
+      </p>
+    </div>
+
+    <!-- Vista previa del PDF -->
+    <div style="flex: 1; overflow: hidden; background: #374151;">
+      <iframe
+        id="futPdfViewer"
+        src="../assets/documentos/FUT-UGEL.pdf"
+        style="width: 100%; height: 100%; min-height: 800px; border: none; display: block;"
+        title="Vista previa Formato Único de Trámite">
+        <p style="color: white; text-align: center; padding: 40px;">
+          Tu navegador no puede mostrar el PDF directamente.
+          <a href="../assets/documentos/FUT-UGEL.pdf" target="_blank" style="color: #93c5fd;">Abrirlo en una nueva pestaña</a>
+        </p>
+      </iframe>
+    </div>
+
+    <!-- Footer -->
+    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 22px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+      <button type="button" onclick="closeModalFUT()" class="btn btn-light">Cerrar</button>
+      <div style="display: flex; gap: 10px;">
+        <a href="../assets/documentos/FUT-UGEL.pdf" target="_blank" class="btn btn-light" style="gap: 8px; font-weight: 600;">
+          <svg style="width: 15px; height: 15px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Abrir en pestaña
+        </a>
+        <a href="../assets/documentos/FUT-UGEL.pdf" download="FUT_UGEL08.pdf" class="btn btn-primary" style="gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.3); font-weight: 700;" onclick="showToast('Descarga del FUT iniciada.', 'success');">
+          <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Descargar FUT
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL PANEL PROFESIONAL: REGISTRO DE NUEVO DOCUMENTO
+     ============================================================ -->
+<div id="modalNuevoDoc" class="modal-overlay" onclick="if(event.target===this) closeModalNuevoDoc()">
+  <div class="modal-resolucion-box" role="dialog" aria-modal="true">
+
+    <!-- Header del Panel -->
+    <div class="modal-resolucion-header">
+      <div class="modal-resolucion-header-left">
+        <div class="modal-resolucion-icon-badge">
+          <svg style="width: 24px; height: 24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="modal-resolucion-title">Registrar Nuevo Documento</h3>
+          <p class="modal-resolucion-sub">
+            <span style="font-weight: 600; color: #93c5fd;">Mesa de Partes Virtual</span>
+            <span style="color: #64748b;">•</span>
+            <span style="background: rgba(37,99,235,0.4); border: 1px solid rgba(147,197,253,0.35); padding: 2px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; color: #ffffff;">UGEL 08 Cañete</span>
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="closeModalNuevoDoc()" class="modal-resolucion-close" title="Cerrar (Esc)">✕</button>
+    </div>
+
+    <!-- Formulario -->
+    <form id="formNuevoDoc" onsubmit="handleGuardarNuevoDoc(event)" style="display: flex; flex-direction: column; flex: 1; overflow: hidden; margin: 0;">
+      <div class="modal-resolucion-body">
+
+        <!-- Alerta informativa -->
+        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px;">
+          <span style="font-size: 18px; line-height: 1;">ℹ️</span>
+          <div style="font-size: 12px; color: #1e3a8a; line-height: 1.5;">
+            <strong>Recepción de Documento Externo:</strong> Complete los datos del documento entrante.
+          </div>
+        </div>
+
+        <!-- BLOQUE 1: DATOS DEL DOCUMENTO -->
+        <div class="modal-form-card">
+          <div class="modal-form-card-head">
+            <h4 class="modal-form-card-title">Datos Principales del Documento</h4>
+            <span style="font-size: 11px; font-weight: 600; color: var(--blue);">* Campos obligatorios</span>
+          </div>
+          <div class="modal-form-card-body">
+            <div class="form-grid-2" style="gap: 14px;">
+              <div>
+                <label class="form-label">Expediente *</label>
+                <input type="text" id="ndExpediente" class="form-input" required placeholder="Ej: 04469668" style="font-weight: 700; color: var(--blue);">
+              </div>
+              <div>
+                <label class="form-label">Registro *</label>
+                <input type="text" id="ndRegistro" class="form-input" required placeholder="Ej: 07827575" style="font-weight: 700;">
+              </div>
+            </div>
+            <div class="form-grid-2" style="gap: 14px; margin-top: 14px;">
+              <div>
+                <label class="form-label">Fecha de Recepción *</label>
+                <input type="date" id="ndFecha" class="form-input" required>
+              </div>
+              <div>
+                <label class="form-label">N.° de Folios *</label>
+                <input type="number" id="ndFolios" class="form-input" required placeholder="Ej: 007" min="1">
+              </div>
+            </div>
+            <div style="margin-top: 14px;">
+              <label class="form-label">Tipo / N.° de Documento *</label>
+              <input type="text" id="ndDocumento" class="form-input" required placeholder="Ej: CARTA 000010- / OFICIO 000015-SITRADIERLP">
+              <span style="font-size: 10px; color: var(--slate-400); display: block; margin-top: 3px;">Incluir tipo y número según el documento físico recibido</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOQUE 2: ASUNTO Y DESTINO -->
+        <div class="modal-form-card">
+          <div class="modal-form-card-head">
+            <h4 class="modal-form-card-title">Asunto y Unidad de Destino</h4>
+          </div>
+          <div class="modal-form-card-body">
+            <div>
+              <label class="form-label">Asunto del Documento *</label>
+              <textarea id="ndAsunto" class="form-textarea" required rows="3" placeholder="Ej: SOLICITA OTORGAMIENTO DE LICENCIA SINDICAL CON GOCE DE HABER..." style="resize: vertical;"></textarea>
+            </div>
+            <div style="margin-top: 14px;">
+              <label class="form-label">Unidad Orgánica de Destino *</label>
+              <select id="ndDestino" class="form-select" required>
+                <option value="">Seleccione la unidad destino...</option>
+                <option value="UGEL08 - AREA DE GESTIÓN ADMINISTR">UGEL08 - ÁREA DE GESTIÓN ADMINISTRATIVA</option>
+                <option value="UGEL08 - DIRECCION">UGEL08 - DIRECCIÓN</option>
+                <option value="UGEL08 - AREA DE GESTION INSTITUCI">UGEL08 - ÁREA DE GESTIÓN INSTITUCIONAL</option>
+                <option value="UGEL08 - AREA DE GESTION PEDAGOGICA">UGEL08 - ÁREA DE GESTIÓN PEDAGÓGICA</option>
+                <option value="UGEL08 - ASESORIA JURIDICA">UGEL08 - ASESORÍA JURÍDICA</option>
+              </select>
+            </div>
+            <div style="margin-top: 14px;">
+              <label class="form-label">Unidad Orgánica de Origen</label>
+              <select id="ndUnidadOrg" class="form-select">
+                <option value="INSTITUCION">INSTITUCIÓN</option>
+                <option value="INSTITUCION EDUCATIVA">INSTITUCIÓN EDUCATIVA</option>
+                <option value="PERSONA NATURAL">PERSONA NATURAL</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer de Acciones -->
+      <div class="modal-resolucion-footer">
+        <button type="button" onclick="closeModalNuevoDoc()" class="btn btn-light btn--md">Cancelar</button>
+        <div class="flex-center gap-2">
+          <button type="button" onclick="document.getElementById('formNuevoDoc').reset()" class="btn btn-ghost btn--md">Limpiar</button>
+          <button type="submit" class="btn btn-primary btn--md" style="box-shadow: 0 4px 14px rgba(37,99,235,0.35); font-weight: 700;">
+            <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            GUARDAR DOCUMENTO
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Render sidebar with Mesa de Partes selected
+    renderSidebar("mesapartes-virtual");
+  });
+
+  function handleNextStep() {
+    const terms = document.getElementById("termsCheck").checked;
+    const dniRuc = document.getElementById("dniRuc").value.trim();
+    
+    if (!dniRuc) {
+      showToast("Por favor, ingrese su DNI o RUC.", "error");
+      return;
+    }
+    
+    if (!terms) {
+      showToast("Debe aceptar los términos y condiciones para continuar.", "warning");
+      return;
+    }
+    
+    showToast("Redirigiendo al formulario de carga de documentos...", "success");
+    // Lógica futura de redirección
+  }
+
+  function openModalFUT() {
+    document.getElementById("modalFUT").style.display = "flex";
+  }
+
+  function closeModalFUT() {
+    document.getElementById("modalFUT").style.display = "none";
+  }
+
+  function openModalNuevoDoc() {
+    const modal = document.getElementById("modalNuevoDoc");
+    modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("ndFecha").value = today;
+    setTimeout(() => { document.getElementById("ndExpediente").focus(); }, 150);
+  }
+
+  function closeModalNuevoDoc() {
+    const modal = document.getElementById("modalNuevoDoc");
+    if (modal) {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+  }
+
+  function handleGuardarNuevoDoc(e) {
+    e.preventDefault();
+    const btn = e.submitter;
+    if (btn) btn.disabled = true;
+
+    const data = {
+      expediente: document.getElementById("ndExpediente").value.trim(),
+      registro:   document.getElementById("ndRegistro").value.trim(),
+      fecha:      document.getElementById("ndFecha").value,
+      folios:     document.getElementById("ndFolios").value,
+      documento:  document.getElementById("ndDocumento").value.trim(),
+      asunto:     document.getElementById("ndAsunto").value.trim(),
+      destino:    document.getElementById("ndDestino").value,
+      unidadOrg:  document.getElementById("ndUnidadOrg").value,
+    };
+
+    // (Aquí conectarías con tu backend o servicio real en el futuro)
+    showToast(`Documento "${data.documento}" registrado con éxito.`, "success");
+    closeModalNuevoDoc();
+    document.getElementById("formNuevoDoc").reset();
+    if (btn) btn.disabled = false;
+  }
+
+  // Cerrar modales con Esc
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const nuevoDoc = document.getElementById("modalNuevoDoc");
+      if (nuevoDoc && nuevoDoc.classList.contains("open")) closeModalNuevoDoc();
+      const fut = document.getElementById("modalFUT");
+      if (fut && fut.style.display === "flex") closeModalFUT();
+    }
+  });
+</script>
+</body>
+</html>
