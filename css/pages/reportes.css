@@ -1,0 +1,97 @@
+/* ============================================================
+   REPORTES — Progress Bars
+   ============================================================ */
+.progress-group { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.progress-row { display: flex; justify-content: space-between; font-weight: 700; }
+.progress-track { width: 100%; background: var(--slate-100); border-radius: 9999px; height: 12px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 9999px; transition: width 0.7s ease; }
+.progress-fill--emerald { background: var(--emerald-500); }
+.progress-fill--amber   { background: var(--amber-500); }
+.progress-fill--red     { background: var(--red-500); }
+
+.report-summary-box {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--slate-50);
+  border-radius: 12px;
+  border: 1px solid var(--slate-200);
+  font-size: 11px;
+  color: var(--slate-600);
+}
+
+/* KPI cards de reportes (con borde izquierdo) */
+.rep-kpi-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--slate-200);
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.rep-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.08);
+}
+.rep-kpi-card[data-border="primary"] { border-left: 4px solid var(--blue); }
+.rep-kpi-card[data-border="emerald"] { border-left: 4px solid var(--emerald-500); }
+.rep-kpi-card[data-border="amber"]   { border-left: 4px solid var(--amber-500); }
+.rep-kpi-card[data-border="red"]     { border-left: 4px solid var(--purple-600); }
+
+.rep-kpi-label { font-size: 11px; font-weight: 700; color: var(--slate-400); text-transform: uppercase; letter-spacing: 0.08em; display: block; }
+.rep-kpi-value { font-family: var(--font-display); font-size: 30px; font-weight: 900; color: var(--slate-900); display: block; margin: 4px 0; }
+.rep-kpi-value--emerald { color: var(--emerald-700); }
+.rep-kpi-value--amber   { color: var(--amber-600); }
+.rep-kpi-value--red     { color: var(--red-600); }
+.rep-kpi-sub { font-size: 12px; color: var(--slate-500); margin: 0; }
+
+
+/* ============================================================
+   BARRA DE GRÁFICO (reportes.html)
+   ============================================================ */
+.bar-chart-visual {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 180px;
+  padding-top: 24px;
+}
+.bar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(to top, #2563EB, #60A5FA);
+  border-radius: 6px 6px 0 0;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 8px;
+  animation: barGrow 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+}
+.bar-fill:hover {
+  transform: scaleY(1.03);
+  filter: brightness(1.1);
+}
+.bar-fill-val {
+  position: absolute;
+  top: -22px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #1E293B;
+  white-space: nowrap;
+}
+.bar-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748B;
+  text-align: center;
+}

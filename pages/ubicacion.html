@@ -313,10 +313,13 @@
               </button>
             ` : `<span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>`}
           </td>
-          <td style="text-align: right;">
-            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
-              👁 Ver detalle
-            </a>
+          <td style="text-align: right; white-space: nowrap;">
+            <div class="table-actions-group">
+              <a href="detalle-resolucion.html?id=${r.id}" class="action-btn action-btn--view" title="Ver ficha y trazabilidad">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                <span>Ver</span>
+              </a>
+            </div>
           </td>
         </tr>
       `).join('');

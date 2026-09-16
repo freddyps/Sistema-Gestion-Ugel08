@@ -1,0 +1,77 @@
+/* ==========================================================================
+   UGEL 08 CAÑETE — Sistema de Gestión y Localización de Resoluciones
+   CSS Puro Semántico — Sin dependencias de Tailwind
+   ========================================================================== */
+
+/* --- Google Fonts --------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Cinzel:wght@600;700&display=swap');
+
+/* --- Variables del Design System ----------------------------------------- */
+:root {
+  /* Colores primarios institucionales */
+  --primary:       #0A2540;
+  --primary-dark:  #07192F;
+  --blue:          #2563EB;
+  --blue-hover:    #1D4ED8;
+  --blue-light:    #60A5FA;
+  --blue-50:       #EFF6FF;
+  --blue-100:      #DBEAFE;
+  --blue-200:      #BFDBFE;
+
+  /* Grises slate */
+  --slate-950:     #020617;
+  --slate-900:     #0F172A;
+  --slate-800:     #1E293B;
+  --slate-700:     #334155;
+  --slate-600:     #475569;
+  --slate-500:     #64748B;
+  --slate-400:     #94A3B8;
+  --slate-300:     #CBD5E1;
+  --slate-200:     #E2E8F0;
+  --slate-100:     #F1F5F9;
+  --slate-50:      #F8FAFC;
+
+  /* Colores de estado */
+  --emerald-50:    #ECFDF5;
+  --emerald-100:   #D1FAE5;
+  --emerald-200:   #A7F3D0;
+  --emerald-500:   #10B981;
+  --emerald-600:   #059669;
+  --emerald-700:   #047857;
+  --emerald-800:   #065F46;
+  --amber-50:      #FFFBEB;
+  --amber-100:     #FEF3C7;
+  --amber-200:     #FDE68A;
+  --amber-300:     #FCD34D;
+  --amber-400:     #FBBF24;
+  --amber-500:     #F59E0B;
+  --amber-600:     #D97706;
+  --amber-700:     #B45309;
+  --amber-800:     #92400E;
+  --amber-900:     #78350F;
+  --red-50:        #FEF2F2;
+  --red-100:       #FEE2E2;
+  --red-400:       #F87171;
+  --red-500:       #EF4444;
+  --red-600:       #DC2626;
+  --red-700:       #B91C1C;
+  --red-800:       #991B1B;
+  --purple-50:     #FAF5FF;
+  --purple-600:    #9333EA;
+
+  /* Tipografía */
+  --font-base:     'Inter', system-ui, -apple-system, sans-serif;
+  --font-display:  'Outfit', 'Inter', sans-serif;
+
+  /* Tamaños */
+  --sidebar-w:     252px; /* Sidebar refinado y más estilizado */
+  --topbar-h:      64px;  /* 4rem = h-16 */
+
+  /* Sombras */
+  --shadow-sm:     0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:     0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg:     0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --shadow-xl:     0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  --shadow-2xl:    0 25px 50px -12px rgba(0,0,0,0.25);
+  --shadow-blue:   0 10px 15px -3px rgba(37,99,235,0.3);
+}

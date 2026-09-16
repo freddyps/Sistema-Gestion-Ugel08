@@ -11,13 +11,13 @@
     .split-layout-container {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 20px;
       align-items: start;
     }
     @media (min-width: 1024px) {
       .split-layout-container {
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 20px;
       }
     }
 
@@ -25,21 +25,21 @@
     .split-left-column {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
     /* Columna Derecha: Visor de PDF Integrado y Sticky */
     .split-right-column {
       position: sticky;
-      top: calc(var(--topbar-h) + 16px);
+      top: calc(var(--topbar-h) + 14px);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
     .embedded-viewer-card {
       background: var(--slate-900);
-      border-radius: 16px;
+      border-radius: 14px;
       border: 1px solid var(--slate-700);
       box-shadow: var(--shadow-xl);
       overflow: hidden;
@@ -50,7 +50,7 @@
     .embedded-viewer-header {
       background: var(--slate-950);
       border-bottom: 1px solid var(--slate-800);
-      padding: 14px 20px;
+      padding: 12px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -59,10 +59,10 @@
 
     .embedded-viewer-body {
       background: #1e293b;
-      min-height: 640px;
-      max-height: 750px;
+      min-height: 600px;
+      max-height: 740px;
       overflow-y: auto;
-      padding: 24px 16px;
+      padding: 20px 14px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -73,8 +73,8 @@
       color: var(--slate-900);
       width: 100%;
       max-width: 580px;
-      min-height: 780px;
-      padding: 40px 32px;
+      min-height: 750px;
+      padding: 34px 28px;
       border-radius: 4px;
       box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
       font-family: 'Times New Roman', serif;
@@ -84,7 +84,7 @@
     .embedded-viewer-footer {
       background: var(--slate-950);
       border-top: 1px solid var(--slate-800);
-      padding: 12px 20px;
+      padding: 10px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -92,16 +92,202 @@
       font-size: 11px;
     }
 
-    /* Estilos específicos de trazabilidad y ficha */
+    /* Ficha Técnica Compacta y Profesional */
+    .detail-compact-card {
+      padding: 18px 20px !important;
+    }
+
+    .meta-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 640px) {
+      .meta-grid-4 {
+        grid-template-columns: 100px 1fr 1.1fr 1.1fr;
+      }
+    }
+
+    .meta-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 640px) {
+      .meta-grid-2 {
+        grid-template-columns: 1.1fr 1.3fr;
+      }
+    }
+
+    .cell-pro {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .cell-pro:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f9;
+    }
+    .cell-pro-label {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+    .cell-pro-value {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .cell-pro-code {
+      font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Administrado Pro Bar */
+    .user-pro-bar {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Asunto Box Optimizado */
+    .asunto-box-pro {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    /* Ubicación Física Rediseñada - Compacta y Horizontal */
+    .dark-card-compact {
+      background: linear-gradient(135deg, #091e3a 0%, #0d284f 100%);
+      border: 1px solid #1e3a8a;
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: white;
+      box-shadow: 0 10px 25px -5px rgba(10, 37, 64, 0.4);
+    }
+    .loc-hero-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(245, 158, 11, 0.15);
+      border: 1.5px solid rgba(245, 158, 11, 0.4);
+      border-radius: 10px;
+      padding: 10px 16px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .loc-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    @media (min-width: 640px) {
+      .loc-steps-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+    .loc-step-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 7px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .loc-step-chip-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .loc-step-num-badge {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--blue);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .loc-step-chip-label {
+      font-size: 9px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .loc-step-chip-val {
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    /* Subgrid de 2 Columnas para Notificación y Antecedentes */
+    .subgrid-2col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .subgrid-2col {
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+    }
+    .subgrid-2col > .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    /* Timeline Compacto */
     .timeline {
       position: relative;
-      padding-left: 28px;
-      margin-top: 16px;
+      padding-left: 22px;
+      margin-top: 10px;
     }
     .timeline::before {
       content: "";
       position: absolute;
-      left: 10px;
+      left: 7px;
       top: 0;
       bottom: 0;
       width: 2px;
@@ -109,40 +295,40 @@
     }
     .timeline-item {
       position: relative;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
     .timeline-dot {
       position: absolute;
-      left: -28px;
-      top: 2px;
-      width: 18px;
-      height: 18px;
+      left: -22px;
+      top: 3px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: var(--blue);
-      border: 3px solid white;
+      border: 2.5px solid white;
       box-shadow: 0 0 0 2px var(--blue-200);
     }
     .timeline-date {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       color: var(--blue);
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
     .timeline-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--slate-900);
       margin: 0;
     }
     .timeline-desc {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--slate-600);
-      margin: 2px 0 0;
+      margin: 1px 0 0;
     }
     .timeline-user {
       font-size: 10px;
       color: var(--slate-400);
-      margin-top: 2px;
+      margin-top: 1px;
     }
   </style>
 </head>
@@ -169,7 +355,7 @@
         <a href="resoluciones.html" class="btn btn-light btn--rounded">
           &larr; Volver al Listado
         </a>
-        <button id="btnRemitirArchivoTop" onclick="ejecutarRemisionArchivo()" class="btn btn-primary btn--rounded" style="display: none; background: #0A2540;">
+        <button id="btnRemitirArchivoTop" onclick="abrirModalRemitirDetalle()" class="btn btn-primary btn--rounded" style="display: none; background: #0A2540;">
           📦 Remitir a Archivo
         </button>
         <a id="btnEditLink" href="resoluciones.html" class="btn btn-ghost btn--rounded" style="display: none;">
@@ -187,243 +373,243 @@
         <div class="split-left-column">
           
           <!-- Bloque 1: Ficha Principal de la Resolución -->
-          <div class="card card--p">
-            <div class="card-header">
+          <div class="card detail-compact-card">
+            <div class="card-header" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--slate-100);">
               <div>
                 <span class="text-xs" style="color: var(--blue); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">
                   Unidad de Gestión Educativa Local N° 08 Cañete
                 </span>
-                <h2 class="card-title card-title--lg" style="font-size: 22px; margin-top: 4px;" id="rdHeaderTitle">
+                <h2 class="card-title card-title--lg" style="font-size: 20px; margin-top: 2px;" id="rdHeaderTitle">
                   RD-3874-2026
                 </h2>
               </div>
               <span id="rdStatusBadge"></span>
             </div>
 
-            <!-- Ficha técnica en celdas -->
-            <div class="detail-grid">
-              <div class="detail-cell">
-                <span class="detail-cell-label">Número RD:</span>
-                <span class="detail-cell-value" id="rdNum">RD-3874-2026</span>
+            <!-- Ficha técnica en rejilla compacta de alta densidad (4 columnas) -->
+            <div class="meta-grid-4">
+              <div class="cell-pro">
+                <span class="cell-pro-label">Año:</span>
+                <span class="cell-pro-value" id="rdAnio">2026</span>
               </div>
-              <div class="detail-cell">
-                <span class="detail-cell-label">Año de Emisión:</span>
-                <span class="detail-cell-value" id="rdAnio">2026</span>
+              <div class="cell-pro">
+                <span class="cell-pro-label">Fecha de Emisión:</span>
+                <span class="cell-pro-value" id="rdFecha">-</span>
               </div>
-              <div class="detail-cell">
-                <span class="detail-cell-label">Fecha de Emisión:</span>
-                <span class="detail-cell-value detail-cell-value--md" id="rdFecha">-</span>
+              <div class="cell-pro">
+                <span class="cell-pro-label">N° de Proyecto:</span>
+                <span class="cell-pro-value cell-pro-code" id="rdProyecto">-</span>
               </div>
-              <div class="detail-cell">
-                <span class="detail-cell-label">Número de Proyecto:</span>
-                <span class="detail-cell-value detail-cell-value--md" id="rdProyecto">-</span>
-              </div>
-            </div>
-
-            <div class="detail-grid">
-              <div class="detail-cell">
-                <span class="detail-cell-label">Expediente Técnico:</span>
-                <span class="detail-cell-value detail-cell-value--md" style="font-family: monospace;" id="rdExpediente">-</span>
-              </div>
-              <div class="detail-cell">
-                <span class="detail-cell-label">Área de Origen:</span>
-                <span class="detail-cell-value detail-cell-value--md" id="rdArea">-</span>
+              <div class="cell-pro">
+                <span class="cell-pro-label">Expediente Técnico:</span>
+                <span class="cell-pro-value cell-pro-code" id="rdExpediente">-</span>
               </div>
             </div>
 
-            <!-- Administrado / Beneficiario -->
-            <div class="user-highlight">
-              <span class="user-highlight-label">Administrado / Beneficiario / Interesado:</span>
-              <div class="flex-between">
-                <div>
-                  <span id="rdUsuarioNombre" style="font-size: 15px; font-weight: 800; color: var(--slate-900);">Prof. Juan Pérez García</span>
-                  <div style="font-size: 12px; color: var(--slate-500); font-weight: 500; margin-top: 2px;">
+            <!-- Fila con Área de Origen -->
+            <div class="meta-grid-2">
+              <div class="cell-pro" style="grid-column: span 2;">
+                <span class="cell-pro-label">Área de Origen / Emisora:</span>
+                <span class="cell-pro-value" style="font-weight: 700; color: #1e3a8a;" id="rdArea">-</span>
+              </div>
+            </div>
+
+            <!-- Administrado / Beneficiario en Barra Compacta -->
+            <div class="user-pro-bar">
+              <div style="min-width: 0;">
+                <span class="cell-pro-label" style="color: #0284c7; margin-bottom: 2px;">Administrado / Beneficiario / Interesado:</span>
+                <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+                  <span id="rdUsuarioNombre" style="font-size: 14px; font-weight: 800; color: var(--slate-900);">Prof. Juan Pérez García</span>
+                  <span style="font-size: 11.5px; color: var(--slate-600);">
                     DNI: <strong id="rdUsuarioDni" style="color: var(--slate-800);">12345678</strong> • 
-                    Tipo: <span id="rdUsuarioTipo" style="color: var(--blue);">Docente</span>
-                  </div>
+                    Tipo: <span id="rdUsuarioTipo" style="color: var(--blue); font-weight: 600;">Docente</span>
+                  </span>
                 </div>
-                <span class="badge badge-blue">Persona Registrada</span>
               </div>
+              <span class="badge badge-blue" style="flex-shrink: 0; padding: 4px 8px; font-size: 10.5px;">Persona Registrada</span>
             </div>
 
-            <!-- Asunto Institucional -->
-            <div style="margin-bottom: 16px;">
-              <span class="user-highlight-label">Asunto / Resumen de la Resolución:</span>
-              <div class="detalle-box" id="rdAsunto">
+            <!-- Asunto Institucional Compacto -->
+            <div>
+              <span class="cell-pro-label">Asunto / Resumen de la Resolución:</span>
+              <div class="asunto-box-pro" id="rdAsunto">
                 Nombramiento docente en plaza orgánica de educación secundaria especialidad Matemática.
               </div>
             </div>
 
             <!-- Observaciones si existen -->
-            <div id="rdObservacionesWrap" style="display: none;">
-              <span class="user-highlight-label">Observaciones Adicionales:</span>
+            <div id="rdObservacionesWrap" style="display: none; margin-top: 8px;">
+              <span class="cell-pro-label">Observaciones Adicionales:</span>
               <p class="text-xs" style="color: var(--slate-600); margin: 0; font-style: italic;" id="rdObservaciones"></p>
             </div>
           </div>
 
-          <!-- Bloque 2: Tarjeta de Ubicación Física ("¿DÓNDE ESTÁ?") -->
-          <div class="dark-card">
-            <div>
-              <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <h3 class="dark-card-title flex-center gap-2">
-                  <span>📍 ¿DÓNDE ESTÁ FÍSICAMENTE?</span>
-                </h3>
-                <span class="badge badge-amber-glow">Custodia UGEL 08</span>
-              </div>
-
-              <!-- Ubicación Disponible -->
-              <div id="ubicacionDisponibleBox">
-                <p class="text-xs" style="color: var(--slate-300); margin-bottom: 16px;">
-                  Coordenadas de archivo asignadas para la localización inmediata del legajo original:
-                </p>
-
-                <!-- Caja y Rango Destacados -->
-                <div style="background: rgba(245,158,11,0.25); border: 2px solid rgba(245,158,11,0.5); border-radius: 12px; padding: 16px; margin-bottom: 16px; text-align: center;">
-                  <span style="font-size: 11px; font-weight: 800; color: var(--amber-300); text-transform: uppercase; letter-spacing: 0.1em; display: block;">
-                    UBICACIÓN PRINCIPAL
-                  </span>
-                  <h2 style="font-size: 26px; font-weight: 900; color: var(--amber-300); margin: 4px 0; font-family: var(--font-display);" id="locCajaMain">
-                    Caja 025
-                  </h2>
-                  <p style="font-size: 13px; font-weight: 700; color: white; margin: 0;" id="locRangoMain">
-                    Rango: RD 3800 - RD 3900
-                  </p>
-                </div>
-
-                <!-- Pasos de Ubicación -->
-                <div class="space-y-2">
-                  <div class="location-step">
-                    <div class="location-step-num">1</div>
-                    <div>
-                      <span class="location-step-label">Sede:</span>
-                      <p class="location-step-value" id="locSede">Sede Principal</p>
-                    </div>
-                  </div>
-
-                  <div class="location-step">
-                    <div class="location-step-num">2</div>
-                    <div>
-                      <span class="location-step-label">Ambiente:</span>
-                      <p class="location-step-value" id="locAmbiente">Archivo</p>
-                    </div>
-                  </div>
-
-                  <div class="location-step">
-                    <div class="location-step-num">3</div>
-                    <div>
-                      <span class="location-step-label">Estante:</span>
-                      <p class="location-step-value" id="locEstante">Estante A</p>
-                    </div>
-                  </div>
-
-                  <div class="location-step">
-                    <div class="location-step-num">4</div>
-                    <div>
-                      <span class="location-step-label">Archivador:</span>
-                      <p class="location-step-value" id="locArchivador">Archivador 03</p>
-                    </div>
-                  </div>
-
-                  <div class="location-step">
-                    <div class="location-step-num">5</div>
-                    <div>
-                      <span class="location-step-label">Estado de Archivo:</span>
-                      <p class="location-step-value" id="locEstadoArchivo" style="color: var(--emerald-400);">Archivado</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Estado cuando no tiene ubicación física registrada -->
-              <div id="ubicacionNoDisponibleBox" style="display: none; padding: 24px 0; text-align: center;">
-                <div style="font-size: 32px; margin-bottom: 8px;">📦⚠️</div>
-                <h4 style="font-size: 15px; font-weight: 800; color: var(--amber-300); margin: 0;">Ubicación física pendiente de registrar</h4>
-                <p class="text-xs" style="color: var(--slate-300); margin: 8px 0 16px;">
-                  Esta resolución aún no tiene asignada una caja, estante o ambiente de custodia física.
-                </p>
-                <a id="btnAsignarUbicacion" href="ubicacion.html" class="btn btn-primary btn--sm btn--rounded">
-                  + Asignar Ubicación Física
-                </a>
-              </div>
-
+          <!-- Bloque 2: Tarjeta de Ubicación Física Compacta ("¿DÓNDE ESTÁ?") -->
+          <div class="dark-card-compact">
+            <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 10px; padding-bottom: 8px;">
+              <h3 class="dark-card-title flex-center gap-2" style="font-size: 13px;">
+                <span>📍 ¿DÓNDE ESTÁ FÍSICAMENTE?</span>
+              </h3>
+              <span class="badge badge-amber-glow" style="padding: 3px 8px; font-size: 10px;">Custodia UGEL 08</span>
             </div>
 
-            <div style="margin-top: 16px;">
-              <a id="btnVerEnArchivo" href="ubicacion.html" class="btn btn-primary btn--xl btn--rounded" style="background: var(--amber-500); color: var(--slate-900); font-weight: 800; width: 100%; justify-content: center;">
-                📦 VER EN MAPA DE ARCHIVO FÍSICO &rarr;
+            <!-- Ubicación Disponible -->
+            <div id="ubicacionDisponibleBox">
+              <!-- Caja y Rango Destacados en Barra Horizontal -->
+              <div class="loc-hero-bar">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 20px;">📦</span>
+                  <div>
+                    <span style="font-size: 9.5px; font-weight: 800; color: var(--amber-300); text-transform: uppercase; letter-spacing: 0.08em; display: block;">
+                      UBICACIÓN PRINCIPAL EN ARCHIVO
+                    </span>
+                    <h3 style="font-size: 20px; font-weight: 900; color: var(--amber-300); margin: 0; font-family: var(--font-display); line-height: 1.1;" id="locCajaMain">
+                      Caja 025
+                    </h3>
+                  </div>
+                </div>
+                <div style="text-align: right;">
+                  <p style="font-size: 12px; font-weight: 700; color: white; margin: 0;" id="locRangoMain">
+                    Rango: RD 3800 - RD 3900
+                  </p>
+                  <a id="btnVerEnArchivo" href="ubicacion.html" style="display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--amber-400); text-decoration: underline; margin-top: 2px;">
+                    Ver en mapa de archivo &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <!-- Pasos de Ubicación en Grid Horizontal de 5 Fichas -->
+              <div class="loc-steps-grid">
+                <div class="loc-step-chip">
+                  <div class="loc-step-chip-header">
+                    <span class="loc-step-num-badge">1</span>
+                    <span class="loc-step-chip-label">Sede</span>
+                  </div>
+                  <span class="loc-step-chip-val" id="locSede">Sede Principal</span>
+                </div>
+
+                <div class="loc-step-chip">
+                  <div class="loc-step-chip-header">
+                    <span class="loc-step-num-badge">2</span>
+                    <span class="loc-step-chip-label">Ambiente</span>
+                  </div>
+                  <span class="loc-step-chip-val" id="locAmbiente">Archivo</span>
+                </div>
+
+                <div class="loc-step-chip">
+                  <div class="loc-step-chip-header">
+                    <span class="loc-step-num-badge">3</span>
+                    <span class="loc-step-chip-label">Estante</span>
+                  </div>
+                  <span class="loc-step-chip-val" id="locEstante">Estante A</span>
+                </div>
+
+                <div class="loc-step-chip">
+                  <div class="loc-step-chip-header">
+                    <span class="loc-step-num-badge">4</span>
+                    <span class="loc-step-chip-label">Archivador</span>
+                  </div>
+                  <span class="loc-step-chip-val" id="locArchivador">Archivador 03</span>
+                </div>
+
+                <div class="loc-step-chip">
+                  <div class="loc-step-chip-header">
+                    <span class="loc-step-num-badge" style="background: var(--emerald-600);">5</span>
+                    <span class="loc-step-chip-label">Estado</span>
+                  </div>
+                  <span class="loc-step-chip-val" id="locEstadoArchivo" style="color: var(--emerald-400);">Archivado</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado cuando no tiene ubicación física registrada -->
+            <div id="ubicacionNoDisponibleBox" style="display: none; padding: 16px 0; text-align: center;">
+              <div style="font-size: 26px; margin-bottom: 4px;">📦⚠️</div>
+              <h4 style="font-size: 13.5px; font-weight: 800; color: var(--amber-300); margin: 0;">Ubicación física pendiente de registrar</h4>
+              <p class="text-xs" style="color: var(--slate-300); margin: 4px 0 12px;">
+                Esta resolución aún no tiene asignada una caja, estante o ambiente de custodia física.
+              </p>
+              <a id="btnAsignarUbicacion" href="ubicacion.html" class="btn btn-primary btn--xs btn--rounded">
+                + Asignar Ubicación Física
               </a>
             </div>
           </div>
 
-          <!-- Bloque 3: Estado de Notificación Oficial -->
-          <div class="card card--p">
-            <div class="card-header">
-              <h3 class="card-title">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                Estado de Notificación al Administrado
-              </h3>
-              <span id="notifStatusBadge"></span>
-            </div>
-
-            <div id="notifContent">
-              <div class="detail-grid">
-                <div class="detail-cell">
-                  <span class="detail-cell-label">Fecha de Notificación:</span>
-                  <span class="detail-cell-value detail-cell-value--md" id="notifFecha">-</span>
+          <!-- Subgrid de 2 Columnas para Notificación y Antecedentes -->
+          <div class="subgrid-2col">
+            <!-- Bloque 3: Estado de Notificación Oficial -->
+            <div class="card detail-compact-card">
+              <div>
+                <div class="card-header" style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
+                  <h3 class="card-title" style="font-size: 13px;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    Notificación
+                  </h3>
+                  <span id="notifStatusBadge"></span>
                 </div>
-                <div class="detail-cell">
-                  <span class="detail-cell-label">Medio de Entrega:</span>
-                  <span class="detail-cell-value detail-cell-value--md" id="notifMedio">-</span>
+
+                <div id="notifContent">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <div class="cell-pro" style="padding: 6px 10px;">
+                      <span class="cell-pro-label">Fecha:</span>
+                      <span class="cell-pro-value" style="font-size: 12px;" id="notifFecha">-</span>
+                    </div>
+                    <div class="cell-pro" style="padding: 6px 10px;">
+                      <span class="cell-pro-label">Medio:</span>
+                      <span class="cell-pro-value" style="font-size: 12px;" id="notifMedio">-</span>
+                    </div>
+                  </div>
+
+                  <div class="cell-pro" style="padding: 6px 10px; margin-bottom: 6px;">
+                    <span class="cell-pro-label">Destinatario:</span>
+                    <span class="cell-pro-value" style="font-size: 12px;" id="notifDestinatario">-</span>
+                  </div>
+
+                  <p class="text-xs" style="color: var(--slate-500); margin: 4px 0 8px; font-size: 11px;" id="notifObservacion"></p>
                 </div>
               </div>
 
-              <div class="detail-cell" style="margin-bottom: 8px;">
-                <span class="detail-cell-label">Destinatario / Receptor:</span>
-                <span class="detail-cell-value detail-cell-value--md" id="notifDestinatario">-</span>
-              </div>
-
-              <p class="text-xs" style="color: var(--slate-500); margin: 8px 0 12px;" id="notifObservacion"></p>
-
-              <!-- Botón interactivo para María Angélica / Responsable de Notificación -->
-              <div style="border-top: 1px dashed var(--slate-200); padding-top: 12px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                <div style="font-size: 11px; color: var(--slate-500); display: flex; align-items: center; gap: 6px;">
-                  <span>📧</span>
-                  <span>Canal Digital Institucional (Outlook)</span>
-                </div>
-                <button type="button" onclick="abrirModalNotificarOutlook()" class="btn btn-primary btn--sm btn--rounded" style="background: #0078d4; gap: 6px; box-shadow: 0 4px 10px rgba(0,120,212,0.3);">
-                  <svg style="width: 14px; height: 14px;" fill="currentColor" viewBox="0 0 24 24"><path d="M7 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-6-6H7zm9 7h-5V4l5 5zM8 12h8v2H8v-2zm0 3h8v2H8v-2z"/></svg>
-                  <span>Verificar y Notificar por Outlook &rarr;</span>
+              <!-- Botón interactivo para Notificación Outlook -->
+              <div style="border-top: 1px dashed var(--slate-200); padding-top: 10px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                <span style="font-size: 10px; color: var(--slate-500); display: flex; align-items: center; gap: 4px;">
+                  <span>📧</span> Outlook
+                </span>
+                <button type="button" onclick="prepararNotificacionOutlook()" class="btn btn-primary btn--xs btn--rounded" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); gap: 5px; font-weight: 700; box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);">
+                  <svg style="width: 13px; height: 13px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                  <span>Preparar notificación</span>
                 </button>
               </div>
             </div>
-          </div>
 
-          <!-- Bloque 4: Antecedentes y Documentos Sustentatorios -->
-          <div class="card card--p">
-            <div class="card-header">
-              <h3 class="card-title">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                Antecedentes y Documentos Sustentatorios
-              </h3>
-              <span class="badge badge-slate" id="antecedentesCount">0 vinculados</span>
-            </div>
+            <!-- Bloque 4: Antecedentes y Documentos Sustentatorios -->
+            <div class="card detail-compact-card">
+              <div>
+                <div class="card-header" style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--slate-100);">
+                  <h3 class="card-title" style="font-size: 13px;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Antecedentes
+                  </h3>
+                  <span class="badge badge-slate" style="padding: 2px 6px; font-size: 10px;" id="antecedentesCount">0 vinculados</span>
+                </div>
 
-            <div id="antecedentesList" style="display: flex; flex-direction: column; gap: 10px;">
-              <!-- Renderizado dinámico -->
+                <div id="antecedentesList" style="display: flex; flex-direction: column; gap: 8px; font-size: 11.5px;">
+                  <!-- Renderizado dinámico -->
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Bloque 5: Historial y Trazabilidad Cronológica -->
-          <div class="card card--p">
-            <div class="card-header">
-              <h3 class="card-title">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div class="card detail-compact-card">
+            <div class="card-header" style="margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--slate-100);">
+              <h3 class="card-title" style="font-size: 13px;">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 16px; height: 16px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 Historial y Trazabilidad Cronológica
               </h3>
-              <span class="badge badge-blue">Auditoría</span>
+              <span class="badge badge-blue" style="padding: 2px 6px; font-size: 10px;">Auditoría</span>
             </div>
 
-            <p class="text-xs" style="color: var(--slate-500); margin: 0 0 12px;">
+            <p class="text-xs" style="color: var(--slate-500); margin: 0 0 8px; font-size: 11px;">
               Registro cronológico de las acciones efectuadas sobre este expediente:
             </p>
 
@@ -508,94 +694,114 @@
   </main>
 </div>
 
-<!-- MODAL DE VERIFICACIÓN DE NOTIFICACIÓN POR CORREO (OUTLOOK) -->
+<!-- ============================================================
+     MODAL DE PREPARACIÓN DE NOTIFICACIÓN POR CORREO (OUTLOOK)
+     ============================================================ -->
 <div id="modalNotificarOutlook" class="modal-backdrop" onclick="if(event.target.id==='modalNotificarOutlook') cerrarModalNotificarOutlook();" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
-  <div style="background: white; border-radius: 16px; width: 100%; max-width: 640px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; animation: modalFadeIn 0.2s ease-out;">
+  <div style="background: white; border-radius: 16px; width: 100%; max-width: 650px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; animation: modalSlideUp 0.2s ease-out;">
     
     <!-- Encabezado del Modal -->
-    <div style="background: #0078d4; color: white; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%); color: white; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.15);">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px;">
           📧
         </div>
         <div>
           <h3 style="margin: 0; font-size: 16px; font-weight: 800; font-family: var(--font-display); color: white;">
-            Verificación de Notificación Institucional (Outlook)
+            Notificación por correo electrónico
           </h3>
-          <p style="margin: 2px 0 0; font-size: 11px; color: rgba(255,255,255,0.85);">
-            Oficina de Resoluciones • Responsable: María Angélica Sánchez
+          <p style="margin: 2px 0 0; font-size: 11px; color: #e0f2fe;">
+            Preparación de Comunicación Oficial • UGEL N.° 08 Cañete
           </p>
         </div>
       </div>
-      <button onclick="cerrarModalNotificarOutlook()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer; line-height: 1; padding: 4px;">&times;</button>
+      <button onclick="cerrarModalNotificarOutlook()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer; line-height: 1; padding: 4px; opacity: 0.85;" title="Cerrar">&times;</button>
     </div>
 
     <!-- Cuerpo con los datos jalados para verificación -->
     <div style="padding: 24px; max-height: 75vh; overflow-y: auto;">
       
-      <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; color: #1e40af; line-height: 1.5;">
-        <strong>Paso de Seguridad Oficial:</strong> María Angélica, verifique que los datos del destinatario, asunto y documento sean exactos. Al hacer clic en <em>"Abrir en Outlook"</em> se preparará el correo automáticamente con todo completado y se descargará el PDF oficial para adjuntarlo.
+      <!-- Banner Informativo Oficial -->
+      <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; font-size: 12px; color: #0369a1; line-height: 1.5;">
+        <strong>Preparación Automatizada:</strong> Los datos de la resolución, administrado, expediente y documento PDF se han cargado automáticamente. Puede revisar o ajustar el contenido antes de transferirlo a Outlook.
+      </div>
+
+      <!-- Ficha de Datos de la Resolución -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; font-size: 12px;">
+        <div><strong style="color: var(--slate-600);">Resolución:</strong> <span id="notifFichaRd" class="td-code" style="font-size: 12px;">-</span></div>
+        <div><strong style="color: var(--slate-600);">Expediente:</strong> <span id="notifFichaExp">-</span></div>
+        <div style="grid-column: span 2;"><strong style="color: var(--slate-600);">Administrado:</strong> <span id="notifFichaAdmin" style="font-weight: 600; color: #0f172a;">-</span></div>
       </div>
 
       <!-- Destinatario y Correo -->
       <div style="margin-bottom: 16px;">
         <label style="display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
-          Destinatario (Administrado / Notificado) *
+          Correo del Destinatario *
         </label>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-          <input type="text" id="outlookDestinatarioNombre" class="form-input" placeholder="Nombre completo">
-          <input type="email" id="outlookDestinatarioCorreo" class="form-input" placeholder="correo@ejemplo.com" required style="font-weight: 600; color: #0078d4;">
+        <div style="position: relative;">
+          <input type="email" id="outlookDestinatarioCorreo" class="form-input" placeholder="correo@ejemplo.com" required style="font-weight: 600; color: #0284c7; padding-left: 36px;">
+          <span style="position: absolute; left: 12px; top: 11px; font-size: 14px;">✉️</span>
         </div>
-        <span style="font-size: 10px; color: var(--slate-400); margin-top: 3px; display: block;">Puede ajustar el correo si el administrado proporcionó uno actualizado.</span>
+        <span style="font-size: 10.5px; color: var(--slate-500); margin-top: 4px; display: block;">
+          Correo registrado del administrado/docente (puede modificarse si cuenta con uno actualizado).
+        </span>
       </div>
 
       <!-- Asunto jalado automáticamente -->
       <div style="margin-bottom: 16px;">
         <label style="display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
-          Asunto del Correo Electrónico *
+          Asunto del Correo *
         </label>
         <input type="text" id="outlookAsunto" class="form-input" style="font-weight: 700; color: var(--slate-900);">
       </div>
 
-      <!-- Documento Digital PDF Asociado -->
+      <!-- Documento Digital PDF Asociado (Reutilizado, NO recargar) -->
       <div style="margin-bottom: 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 12px;">
             <div style="width: 38px; height: 38px; border-radius: 8px; background: #fee2e2; color: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px;">
               PDF
             </div>
             <div>
               <h5 style="margin: 0; font-size: 13px; font-weight: 800; color: var(--slate-900);" id="outlookPdfNombre">
-                RD-3874-2026.pdf
+                -
               </h5>
               <span style="font-size: 11px; color: var(--slate-500);" id="outlookPdfMeta">
                 Documento Oficial Autenticado • UGEL 08 Cañete
               </span>
             </div>
-          </div>
-          <button type="button" onclick="descargarPdfNotificacion()" class="btn btn-light btn--xs" style="gap: 4px;">
-            ⬇ Descargar PDF
-          </button>
+          <span style="font-size: 11px; font-weight: 700; color: #047857; background: #ecfdf5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px;">
+            ✅ Vinculado en el enlace oficial
+          </span>
         </div>
       </div>
 
-      <!-- Vista previa del Mensaje Institucional -->
-      <div style="margin-bottom: 12px;">
-        <label style="display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
-          Cuerpo del Mensaje Formal
+      <!-- Plantilla de Cuerpo de Mensaje Editable -->
+      <div style="margin-bottom: 14px;">
+        <label style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--slate-600); margin-bottom: 6px;">
+          <span>Cuerpo del Mensaje (Editable) *</span>
+          <span style="font-size: 10px; font-weight: 600; color: #0284c7; text-transform: none;">Incluye enlace directo al PDF oficial</span>
         </label>
-        <textarea id="outlookCuerpoMensaje" rows="5" class="form-input" style="font-family: inherit; font-size: 12px; line-height: 1.6; resize: vertical;"></textarea>
+        <textarea id="outlookCuerpoMensaje" rows="8" class="form-input" style="font-family: inherit; font-size: 12px; line-height: 1.6; resize: vertical;"></textarea>
+      </div>
+
+      <!-- Alerta Clara y Transparente -->
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px;">
+        <span style="font-size: 16px; line-height: 1;">⚡</span>
+        <div style="font-size: 11.5px; color: #166534; line-height: 1.45;">
+          <strong>Listo para enviar:</strong> Los datos, destinatario y enlace de descarga directa del documento digital se cargaron automáticamente en el mensaje para que María Angélica solo revise y presione Enviar en Outlook.
+        </div>
       </div>
 
       <!-- Selección de Outlook Web o App de Escritorio -->
-      <div style="background: #f1f5f9; padding: 10px 14px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
-        <span style="font-weight: 600; color: var(--slate-700);">Destino de apertura:</span>
+      <div style="background: #f1f5f9; padding: 12px 14px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; font-size: 12px;">
+        <span style="font-weight: 700; color: var(--slate-700);">Abrir mediante:</span>
         <div style="display: flex; gap: 16px;">
-          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;">
-            <input type="radio" name="outlookDestino" value="web" checked style="accent-color: #0078d4;"> Outlook Web (Navegador)
+          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; color: #0f172a;">
+            <input type="radio" name="outlookDestino" value="web" checked style="accent-color: #0284c7;"> Outlook Web (Navegador)
           </label>
-          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;">
-            <input type="radio" name="outlookDestino" value="app" style="accent-color: #0078d4;"> Outlook App (Escritorio)
+          <label style="cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600; color: #0f172a;">
+            <input type="radio" name="outlookDestino" value="app" style="accent-color: #0284c7;"> Outlook App (Escritorio / Mailto)
           </label>
         </div>
       </div>
@@ -607,12 +813,134 @@
       <button type="button" onclick="cerrarModalNotificarOutlook()" class="btn btn-light">
         Cancelar
       </button>
-      <button type="button" onclick="enviarAOutlook()" class="btn btn-primary btn--lg" style="background: #0078d4; gap: 8px;">
+      <button type="button" onclick="abrirEnOutlookYPreparar()" class="btn btn-primary btn--lg" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); gap: 8px; font-weight: 700; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
         <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-        Confirmar y Abrir en Outlook &rarr;
+        Abrir y Revisar en Outlook &rarr;
       </button>
     </div>
 
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL CORPORATIVO: REMITIR A ARCHIVO CENTRAL (EN DETALLE)
+     ============================================================ -->
+<div id="modalRemitirArchivoDetalle" class="modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: white; border-radius: 16px; width: 100%; max-width: 540px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; animation: modalSlideUp 0.2s ease-out;">
+    
+    <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+          📦
+        </div>
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 800; font-family: var(--font-display); color: white;">
+            Remitir a Archivo Central
+          </h3>
+          <p style="margin: 2px 0 0; font-size: 11px; color: #c7d2fe;">
+            Transferencia de Custodia Física • UGEL N.° 08 Cañete
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="cerrarModalRemitirDetalle()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer; line-height: 1; padding: 4px; opacity: 0.8;" title="Cerrar">&times;</button>
+    </div>
+
+    <div style="padding: 22px;">
+      
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700; color: var(--slate-400); text-transform: uppercase;">Resolución Directoral</span>
+          <span id="remitDetalleRdNum" class="td-code" style="font-size: 13px; font-weight: 800;">-</span>
+        </div>
+        <div style="font-size: 12px; color: var(--slate-800); font-weight: 600; margin-bottom: 6px;" id="remitDetalleAdmin">
+          -
+        </div>
+        <div style="font-size: 11.5px; color: var(--slate-500); line-height: 1.45;" id="remitDetalleAsunto">
+          -
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #4338ca; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+          <span>🏛️ Área de origen:</span>
+          <span id="remitDetalleArea">-</span>
+        </div>
+      </div>
+
+      <p style="font-size: 12.5px; color: var(--slate-700); margin: 0 0 14px; line-height: 1.5;">
+        Esta acción registrará la <strong>remisión física</strong> de la Resolución Directoral al <strong>Archivo Central</strong> para su recepción formal y custodia definitiva por parte de <strong>Marcos (Responsable de Archivo)</strong>.
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; color: #7c3aed; text-transform: uppercase; display: block;">Estado actual</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;" id="remitDetalleEstadoActual">Lista para remisión</span>
+        </div>
+        <div style="color: #7c3aed; font-size: 18px; font-weight: 700;">&rarr;</div>
+        <div>
+          <span style="font-size: 10px; font-weight: 700; color: #7c3aed; text-transform: uppercase; display: block;">Estado posterior</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #7c3aed;">Pendiente de archivo</span>
+        </div>
+      </div>
+
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;">
+        <span style="font-size: 16px; line-height: 1;">⚠️</span>
+        <div style="font-size: 11.5px; color: #92400e; line-height: 1.45;">
+          <strong>Verificación requerida:</strong> Verifique que el documento físico original autógrafo haya sido entregado al personal de Archivo Central antes de confirmar la remisión formal.
+        </div>
+      </div>
+
+      <div style="margin-top: 14px;">
+        <label style="display: block; font-size: 11px; font-weight: 700; color: var(--slate-600); margin-bottom: 4px;">
+          Anotación u observación de entrega (Opcional):
+        </label>
+        <input type="text" id="remitDetalleObservacion" class="form-input" placeholder="Ej: Entregado en físico con 1 folio original autógrafo" style="font-size: 12px;">
+      </div>
+
+    </div>
+
+    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 22px; display: flex; justify-content: space-between; align-items: center;">
+      <button type="button" onclick="cerrarModalRemitirDetalle()" class="btn btn-light">
+        Cancelar
+      </button>
+      <button type="button" onclick="confirmarRemisionDetalle()" class="btn btn-primary" style="background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); gap: 8px; font-weight: 700; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
+        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        Confirmar remisión
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL PARA REGISTRAR ENVÍO CONFIRMADO DE NOTIFICACIÓN -->
+<div id="modalConfirmarEnvioNotificacion" class="modal-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: white; border-radius: 16px; width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column;">
+    <div style="background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+      <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: white;">
+        ✅ Registrar Diligencia de Notificación
+      </h3>
+      <button onclick="cerrarModalConfirmarEnvio()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">&times;</button>
+    </div>
+    <div style="padding: 20px;">
+      <p style="font-size: 12.5px; color: var(--slate-700); margin: 0 0 14px;">
+        Confirme el resultado de la diligencia tras haber emitido el correo en Outlook:
+      </p>
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label">Estado de la Diligencia de Notificación</label>
+        <select id="modalNotifEstadoResultado" class="form-select">
+          <option value="Enviada" selected>✅ Notificación Enviada por Correo</option>
+          <option value="Pendiente de acuse">⏳ Enviada - Pendiente de Acuse de Recibo</option>
+          <option value="No enviada">❌ No enviada (Observación)</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label class="form-label">Anotación / Observación de Diligencia</label>
+        <input type="text" id="modalNotifObsResultado" class="form-input" placeholder="Ej: Correo enviado y confirmado sin rebote">
+      </div>
+    </div>
+    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 12px 20px; display: flex; justify-content: space-between;">
+      <button type="button" onclick="cerrarModalConfirmarEnvio()" class="btn btn-light">Cancelar</button>
+      <button type="button" onclick="guardarDiligenciaConfirmada()" class="btn btn-primary" style="background: #059669; font-weight: 700;">
+        Guardar Diligencia
+      </button>
+    </div>
   </div>
 </div>
 
@@ -633,6 +961,13 @@
     const id = urlParams.get("id") || 1; // Por defecto resolución 1 (RD-3874-2026)
 
     loadResolutionDetail(id);
+
+    // Si viene directamente con la intención de notificar desde la tabla principal
+    if (urlParams.get("action") === "notificar") {
+      setTimeout(() => {
+        prepararNotificacionOutlook();
+      }, 300);
+    }
   });
 
   function loadResolutionDetail(id) {
@@ -646,8 +981,11 @@
     currentResolutionDetail = rd;
 
     // Cabecera y Topbar
-    document.getElementById("topbarRdTitle").innerText = `Ficha: ${rd.numero_rd}`;
-    document.getElementById("rdHeaderTitle").innerText = rd.numero_rd;
+    const topbarTitle = document.getElementById("topbarRdTitle");
+    if (topbarTitle) topbarTitle.innerText = "Detalle de Resolución Directoral";
+    
+    const headerTitle = document.getElementById("rdHeaderTitle");
+    if (headerTitle) headerTitle.innerText = rd.numero_rd;
     // Control de permisos según el Rol Oficial
     const canEdit = window.authService ? window.authService.hasPermission("resoluciones.editar") : false;
     const canRemitir = window.authService ? window.authService.hasPermission("resoluciones.remitir") : false;
@@ -663,7 +1001,8 @@
     }
 
     // Datos Principales
-    document.getElementById("rdNum").innerText = rd.numero_rd;
+    const elRdNum = document.getElementById("rdNum");
+    if (elRdNum) elRdNum.innerText = rd.numero_rd;
     document.getElementById("rdAnio").innerText = rd.anio;
     document.getElementById("rdFecha").innerText = rd.fecha_emision || "-";
     document.getElementById("rdProyecto").innerText = rd.numero_proyecto || "No asignado";
@@ -805,15 +1144,15 @@
     document.getElementById("antecedentesCount").innerText = `${antList.length} vinculado${antList.length === 1 ? '' : 's'}`;
     const antContainer = document.getElementById("antecedentesList");
     if (!antList.length) {
-      antContainer.innerHTML = `<p class="text-xs" style="color: var(--slate-400); font-style: italic; margin: 8px 0;">No se registran antecedentes previos vinculados a este expediente.</p>`;
+      antContainer.innerHTML = `<p class="text-xs" style="color: var(--slate-400); font-style: italic; margin: 4px 0;">No se registran antecedentes previos vinculados a este expediente.</p>`;
     } else {
       antContainer.innerHTML = antList.map(a => `
-        <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: 8px; padding: 12px; font-size: 12px;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; font-size: 11.5px;">
           <div class="flex-between">
-            <strong style="color: var(--slate-900);">${a.tipo}: ${a.numero}</strong>
-            <span class="text-xs" style="color: var(--slate-400);">${a.fecha}</span>
+            <strong style="color: var(--slate-900); font-size: 12px;">${a.tipo}: ${a.numero}</strong>
+            <span style="font-size: 10px; color: var(--slate-500);">${a.fecha}</span>
           </div>
-          <p style="color: var(--slate-600); margin: 4px 0 0;">${a.descripcion}</p>
+          <p style="color: var(--slate-600); margin: 3px 0 0; line-height: 1.4;">${a.descripcion}</p>
         </div>
       `).join('');
     }
@@ -836,55 +1175,88 @@
     }
   }
 
-  // Lógica de Notificación por Outlook
-  function abrirModalNotificarOutlook() {
-    if (!currentResolutionDetail) return;
+  // ============================================================
+  // FLUJO DE NOTIFICACIÓN POR CORREO (MARÍA ANGÉLICA)
+  // ============================================================
+
+  // 1. Validar y preparar el modal de notificación con datos precargados
+  function prepararNotificacionOutlook() {
+    if (!currentResolutionDetail) {
+      showToast("No se ha cargado la resolución directoral.", "error");
+      return;
+    }
     const rd = currentResolutionDetail;
 
-    const modal = document.getElementById("modalNotificarOutlook");
-    const nomDest = rd.administrado_nombre || (rd.persona ? `${rd.persona.nombres} ${rd.persona.apellidos}` : "Administrado");
-    
-    // Buscar correo de la persona en la base de datos si existe
-    let correoSugerido = "";
+    // Validación rigurosa de requisitos previos
+    if (!rd.numero_rd) {
+      showToast("La resolución no tiene un número oficial asignado.", "warning");
+      return;
+    }
+
+    const administradoNombre = rd.administrado_nombre || (rd.persona ? `${rd.persona.nombres} ${rd.persona.apellidos}`.trim() : "");
+    if (!administradoNombre || administradoNombre === "No registrado") {
+      showToast("La resolución no tiene un administrado o docente asignado.", "warning");
+      return;
+    }
+
+    // Obtener correo del administrado/docente
+    let correoDestino = "";
     if (rd.persona && rd.persona.correo) {
-      correoSugerido = rd.persona.correo;
-    } else if (rd.persona && rd.persona.dni) {
-      const p = window.personService ? window.personService.findByDni(rd.persona.dni) : null;
-      if (p && p.correo) correoSugerido = p.correo;
-    }
-    if (!correoSugerido) {
-      // Sugerir formato institucional
-      const dniVal = (rd.persona && rd.persona.dni) ? rd.persona.dni : "usuario";
-      correoSugerido = `${dniVal}@ugel08canete.gob.pe`;
+      correoDestino = rd.persona.correo.trim();
+    } else if (rd.persona && rd.persona.dni && window.personService) {
+      const p = window.personService.findByDni(rd.persona.dni);
+      if (p && p.correo) correoDestino = p.correo.trim();
     }
 
-    document.getElementById("outlookDestinatarioNombre").value = nomDest;
-    document.getElementById("outlookDestinatarioCorreo").value = correoSugerido;
-    
-    const asuntoPredeterminado = `NOTIFICACIÓN OFICIAL: ${rd.numero_rd} - UGEL N° 08 CAÑETE`;
-    document.getElementById("outlookAsunto").value = asuntoPredeterminado;
+    if (!correoDestino) {
+      // Sugerir correo institucional si no tiene personal registrado
+      const dniVal = (rd.persona && rd.persona.dni) ? rd.persona.dni : "administrado";
+      correoDestino = `${dniVal}@ugel08canete.gob.pe`;
+    }
 
+    // Verificar si cuenta con PDF asociado
     const pdfName = (rd.documento && rd.documento.nombre_archivo) ? rd.documento.nombre_archivo : `${rd.numero_rd}.pdf`;
+    const numPags = (rd.documento && rd.documento.numero_paginas) || 8;
+
+    // Poblar ficha de resumen en el modal
+    document.getElementById("notifFichaRd").innerText = rd.numero_rd;
+    document.getElementById("notifFichaExp").innerText = rd.expediente || "Sin expediente";
+    document.getElementById("notifFichaAdmin").innerText = administradoNombre;
+
+    // Poblar campos editables
+    document.getElementById("outlookDestinatarioCorreo").value = correoDestino;
+    document.getElementById("outlookAsunto").value = `Notificación de la Resolución Directoral N.° ${rd.numero_rd} - UGEL N.° 08 Cañete`;
     document.getElementById("outlookPdfNombre").innerText = pdfName;
-    document.getElementById("outlookPdfMeta").innerText = `${(rd.documento && rd.documento.numero_paginas) || 8} páginas • Archivo Digitalizado Autenticado`;
+    document.getElementById("outlookPdfMeta").innerText = `${numPags} páginas • Documento Oficial Autenticado • UGEL 08`;
 
-    // Cuerpo redactado institucional formal
-    const cuerpoTexto = `Estimado(a) ${nomDest},\n\nPor medio del presente, la Unidad de Gestión Educativa Local N° 08 Cañete, a través de la Oficina de Resoluciones, le notifica formalmente la emisión del siguiente acto administrativo:\n\n` +
-      `• Acto Resolutivo: ${rd.numero_rd}\n` +
-      `• Expediente: ${rd.expediente || 'EXP-2026-000001'}\n` +
-      `• Fecha de Emisión: ${rd.fecha_emision || '2026'}\n` +
-      `• Asunto: ${rd.asunto || 'Resolución Directoral oficial'}\n\n` +
-      `Se adjunta a este correo el documento digital oficial en formato PDF (${pdfName}) debidamente suscrito con firma digital conforme a ley.\n\n` +
-      `Atentamente,\n` +
-      `María Angélica Sánchez\n` +
-      `Oficina de Resoluciones y Actos Administrativos\n` +
-      `UGEL N° 08 - Cañete\n` +
-      `Gobierno Regional de Lima • DRELP`;
+    // Enlace de consulta directa al documento digital en el sistema UGEL 08
+    const baseUrl = window.location.origin + window.location.pathname.replace(/\/pages\/.*$/, "");
+    const enlaceVisualizacion = `${baseUrl}/pages/detalle-resolucion.html?id=${rd.id}`;
 
-    document.getElementById("outlookCuerpoMensaje").value = cuerpoTexto;
+    // Redacción oficial formal institucional predeterminada
+    const plantillaCuerpo = `Estimado(a) ${administradoNombre}:
 
-    modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
+Por medio del presente se comunica formalmente la Resolución Directoral N.º ${rd.numero_rd}, correspondiente al expediente administrativo N.º ${rd.expediente || 'EXP-2026-000001'}.
+
+Puede consultar y descargar directamente la copia digital oficial autenticada de su Resolución en el siguiente enlace del Sistema Institucional:
+${enlaceVisualizacion}
+
+Documento: ${pdfName} (${numPags} páginas)
+
+Atentamente,
+
+Oficina de Resoluciones
+UGEL N.° 08 - Cañete
+Gobierno Regional de Lima • DRELP`;
+
+    document.getElementById("outlookCuerpoMensaje").value = plantillaCuerpo;
+
+    // Abrir modal
+    const modal = document.getElementById("modalNotificarOutlook");
+    if (modal) {
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
   }
 
   function cerrarModalNotificarOutlook() {
@@ -909,16 +1281,17 @@
     a.click();
     document.body.removeChild(a);
 
-    showToast(`Descargando ${pdfName} para adjuntar en Outlook`, "success");
+    showToast(`Descargando copia de ${pdfName} para adjuntar en Outlook`, "info");
   }
 
-  function enviarAOutlook() {
+  // 2. Transferir a Outlook Web o Desktop App
+  function abrirEnOutlookYPreparar() {
     if (!currentResolutionDetail) return;
     const rd = currentResolutionDetail;
 
     const emailTo = document.getElementById("outlookDestinatarioCorreo").value.trim();
-    if (!emailTo) {
-      showToast("Por favor ingrese un correo de destino válido.", "warning");
+    if (!emailTo || !emailTo.includes("@")) {
+      showToast("Por favor ingrese un correo electrónico de destino válido.", "warning");
       document.getElementById("outlookDestinatarioCorreo").focus();
       return;
     }
@@ -926,64 +1299,195 @@
     const subject = document.getElementById("outlookAsunto").value.trim();
     const body = document.getElementById("outlookCuerpoMensaje").value.trim();
 
-    // 1. Descargar el archivo PDF automáticamente para que María Angélica lo adjunte de inmediato
-    descargarPdfNotificacion();
+    // Ya no forzamos la descarga del PDF: el cuerpo del mensaje incluye el enlace directo de consulta/descarga oficial
+    // y la resolución ya se encuentra en el repositorio digital.
 
-    // 2. Actualizar estado de la resolución a "Notificada" en la base de datos institucional
+    // Actualizar estado de notificación a "Preparada" (NO a Enviada aún, hasta confirmación real)
     try {
-      const today = new Date().toISOString().split("T")[0];
-      if (window.resolutionService) {
-        window.resolutionService.update(rd.id, {
-          estado: "Notificada",
-          estado_notificacion: "Notificado con éxito",
-          fecha_notificacion: today,
-          medio_notificacion: "Correo Electrónico (Outlook)",
-          destinatario_notificacion: emailTo
+      const now = new Date();
+      const currentUser = window.authService ? window.authService.getCurrentUser().nombre : "María Angélica Sánchez";
+      
+      // Actualizar en DB
+      window.db.update("resoluciones", rd.id, {
+        estado_notificacion: "Preparada",
+        destinatario_notificacion: emailTo,
+        medio_notificacion: "Correo Electrónico (Outlook)"
+      });
+
+      // Si existe registro en notificaciones
+      if (window.db.getTable("notificaciones")) {
+        const notifs = window.db.getTable("notificaciones").filter(n => Number(n.resolucion_id) === Number(rd.id));
+        if (notifs.length > 0) {
+          window.db.update("notificaciones", notifs[0].id, {
+            destinatario: emailTo,
+            medio: "Correo Electrónico (Outlook)",
+            estado: "Preparada"
+          });
+        }
+      }
+
+      // Registrar auditoría
+      if (window.db.getTable("historial_resoluciones")) {
+        window.db.insert("historial_resoluciones", {
+          resolucion_id: Number(rd.id),
+          accion: "Preparación de Notificación por Correo",
+          descripcion: `Notificación para ${emailTo} preparada y transferida a Outlook por ${currentUser}.`,
+          usuario: currentUser,
+          fecha: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
+          estado_anterior: rd.notificacion ? rd.notificacion.estado : "Pendiente",
+          estado_nuevo: "Preparada"
         });
       }
-      showToast("Estado actualizado a 'Notificada' en la UGEL 08.", "info");
-    } catch (err) {
-      console.warn("No se pudo actualizar estado automáticamente:", err);
+
+      if (window.resolutionService && window.resolutionService._invalidateCache) {
+        window.resolutionService._invalidateCache();
+      }
+    } catch (e) {
+      console.warn("Error al registrar preparación de notificación:", e);
     }
 
-    // 3. Generar enlace de Outlook (Web o Cliente de Escritorio)
+    // Determinar destino (Web o App de escritorio)
     const destinoEl = document.querySelector('input[name="outlookDestino"]:checked');
     const tipoDestino = destinoEl ? destinoEl.value : "web";
 
     let urlOutlook = "";
     if (tipoDestino === "web") {
-      // Outlook en la Web (Office 365 / Outlook Live)
       urlOutlook = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(emailTo)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     } else {
-      // Protocolo Mailto nativo para abrir la aplicación de escritorio Outlook
       urlOutlook = `mailto:${encodeURIComponent(emailTo)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
 
-    // 4. Redirigir / Abrir en pestaña nueva
-    showToast("Redirigiendo a Outlook con asunto, destinatario y cuerpo listo...", "success");
+    cerrarModalNotificarOutlook();
+    window.open(urlOutlook, "_blank");
 
+    showToast("Correo preparado. Transfiriendo a Outlook...", "success");
+
+    // Abrir modal de confirmación de envío para cuando María complete el envío
     setTimeout(() => {
-      cerrarModalNotificarOutlook();
-      window.open(urlOutlook, "_blank");
-      // Recargar detalles para reflejar nuevo estado
-      setTimeout(() => {
-        loadResolutionDetail(rd.id);
-      }, 1000);
-    }, 800);
+      abrirModalConfirmarEnvio();
+    }, 1200);
   }
 
-  function ejecutarRemisionArchivo() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id") || 1;
+  // 3. Modal de Confirmación de Envío Real
+  function abrirModalConfirmarEnvio() {
+    const modal = document.getElementById("modalConfirmarEnvioNotificacion");
+    if (modal) {
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function cerrarModalConfirmarEnvio() {
+    const modal = document.getElementById("modalConfirmarEnvioNotificacion");
+    if (modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "";
+    }
+    // Refrescar detalle para mostrar estado 'Preparada'
+    if (currentResolutionDetail) {
+      loadResolutionDetail(currentResolutionDetail.id);
+    }
+  }
+
+  function guardarDiligenciaConfirmada() {
+    if (!currentResolutionDetail) return;
+    const rd = currentResolutionDetail;
+
+    const estadoSeleccionado = document.getElementById("modalNotifEstadoResultado").value;
+    const obs = document.getElementById("modalNotifObsResultado").value.trim();
+    const currentUser = window.authService ? window.authService.getCurrentUser().nombre : "María Angélica Sánchez";
+    const today = new Date().toISOString().split("T")[0];
+    const now = new Date();
 
     try {
-      window.resolutionService.remitirAArchivo(id, "Remisión formal desde ficha de detalle.");
-      showToast("Resolución remitida formalmente a Archivo Central.", "success");
+      window.db.update("resoluciones", rd.id, {
+        estado_notificacion: estadoSeleccionado,
+        fecha_notificacion: today,
+        observacion_notificacion: obs
+      });
+
+      // Actualizar tabla notificaciones
+      if (window.db.getTable("notificaciones")) {
+        const notifs = window.db.getTable("notificaciones").filter(n => Number(n.resolucion_id) === Number(rd.id));
+        if (notifs.length > 0) {
+          window.db.update("notificaciones", notifs[0].id, {
+            estado: estadoSeleccionado,
+            fecha_notificacion: today,
+            observacion: obs
+          });
+        }
+      }
+
+      // Historial
+      if (window.db.getTable("historial_resoluciones")) {
+        window.db.insert("historial_resoluciones", {
+          resolucion_id: Number(rd.id),
+          accion: "Diligencia de Notificación Registrada",
+          descripcion: `Diligencia registrada como '${estadoSeleccionado}' por ${currentUser}. ${obs}`,
+          usuario: currentUser,
+          fecha: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`,
+          estado_anterior: "Preparada",
+          estado_nuevo: estadoSeleccionado
+        });
+      }
+
+      if (window.resolutionService && window.resolutionService._invalidateCache) {
+        window.resolutionService._invalidateCache();
+      }
+
+      cerrarModalConfirmarEnvio();
+      showToast(`Diligencia de notificación guardada como '${estadoSeleccionado}'.`, "success");
+      loadResolutionDetail(rd.id);
+
+    } catch (e) {
+      showToast(e.message || "Error al registrar diligencia de notificación", "error");
+    }
+  }
+
+  // ============================================================
+  // FLUJO DE REMISIÓN A ARCHIVO CENTRAL (CUSTODIA FÍSICA)
+  // ============================================================
+
+  function abrirModalRemitirDetalle() {
+    if (!currentResolutionDetail) return;
+    const rd = currentResolutionDetail;
+
+    document.getElementById("remitDetalleRdNum").innerText = rd.numero_rd;
+    document.getElementById("remitDetalleAdmin").innerText = `Administrado: ${rd.administrado_nombre || 'No registrado'}`;
+    document.getElementById("remitDetalleAsunto").innerText = rd.asunto || "-";
+    document.getElementById("remitDetalleArea").innerText = rd.area_origen || "Oficina de Resoluciones";
+    document.getElementById("remitDetalleEstadoActual").innerText = rd.estado || "Registrada";
+    document.getElementById("remitDetalleObservacion").value = "";
+
+    const modal = document.getElementById("modalRemitirArchivoDetalle");
+    if (modal) {
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function cerrarModalRemitirDetalle() {
+    const modal = document.getElementById("modalRemitirArchivoDetalle");
+    if (modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  }
+
+  function confirmarRemisionDetalle() {
+    if (!currentResolutionDetail) return;
+    const rd = currentResolutionDetail;
+    const obs = document.getElementById("remitDetalleObservacion").value.trim();
+
+    try {
+      window.resolutionService.remitirAArchivo(rd.id, obs || "Remisión formal desde ficha de detalle a Archivo Central.");
+      cerrarModalRemitirDetalle();
+      showToast(`Resolución ${rd.numero_rd} remitida a Archivo Central exitosamente.`, "success");
       setTimeout(() => {
         location.reload();
-      }, 900);
+      }, 700);
     } catch (e) {
-      showToast(e.message || "Error al remitir", "error");
+      showToast(e.message || "Error al remitir a archivo", "error");
     }
   }
 </script>

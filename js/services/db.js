@@ -24,9 +24,12 @@ const db = {
       // Auto-migración si faltan colecciones agregadas recientemente en SEED_DATA
       if (typeof window.SEED_DATA !== "undefined") {
         let modified = false;
-        // Asegurar que usuarios contenga los 3 perfiles oficiales
+        // Asegurar que usuarios contenga los 3 perfiles oficiales y roles actualizados
         if (!parsed.usuarios || parsed.usuarios.length !== window.SEED_DATA.usuarios.length) {
           parsed.usuarios = [...window.SEED_DATA.usuarios];
+          parsed.roles = [...window.SEED_DATA.roles];
+          modified = true;
+        } else if (!parsed.roles || parsed.roles.some(r => r.permisos && !r.permisos.includes("reportes.ver") && !r.permisos.includes("*"))) {
           parsed.roles = [...window.SEED_DATA.roles];
           modified = true;
         }

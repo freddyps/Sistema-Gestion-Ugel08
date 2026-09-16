@@ -1,0 +1,82 @@
+/* ============================================================
+   TABLAS
+   ============================================================ */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 12px;
+}
+
+.data-table {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  border-collapse: separate;
+  border-spacing: 0;
+  white-space: normal;
+  table-layout: auto;
+}
+.data-table thead tr {
+  background: #f8fafc;
+}
+.data-table th {
+  padding: 12px 14px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-bottom: 1.5px solid #e2e8f0;
+  background: #f8fafc;
+}
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  line-height: 1.45;
+}
+.data-table tbody tr {
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+.data-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Tabla compacta */
+.data-table--sm th { padding: 9px 10px; }
+.data-table--sm td { padding: 8px 10px; }
+
+/* Celda de código y expediente (sin quiebre de línea feo) */
+.td-code {
+  font-weight: 700;
+  color: var(--blue);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.td-expediente {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 11px;
+  color: #475569;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  display: inline-block;
+}
+.td-date {
+  white-space: nowrap;
+  color: #64748b;
+  font-size: 11px;
+}
+.td-name    {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.35;
+}
+.td-muted   {
+  color: #64748b;
+  line-height: 1.4;
+}
+.td-primary { font-weight: 700; color: var(--primary); }

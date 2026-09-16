@@ -1,0 +1,262 @@
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.15s, opacity 0.15s;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+.btn-primary {
+  background: var(--blue);
+  color: white;
+  box-shadow: var(--shadow-blue);
+}
+.btn-primary:hover { background: var(--blue-hover); }
+
+.btn-dark {
+  background: var(--primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+.btn-dark:hover { background: var(--slate-900); }
+
+.btn-ghost {
+  background: var(--slate-800);
+  color: var(--slate-200);
+  border: 1px solid var(--slate-700);
+}
+.btn-ghost:hover { background: var(--slate-700); }
+
+.btn-light {
+  background: var(--slate-100);
+  color: var(--slate-700);
+}
+.btn-light:hover { background: var(--slate-200); }
+
+.btn-outline-blue {
+  background: var(--blue-50);
+  color: var(--blue);
+  border: 1px solid var(--blue-200);
+}
+.btn-outline-blue:hover { background: var(--blue-100); }
+
+.btn-emerald {
+  background: var(--emerald-600);
+  color: white;
+}
+.btn-emerald:hover { background: var(--emerald-700); }
+
+.btn-white-ghost {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-white-ghost:hover { background: rgba(255,255,255,0.2); }
+
+.btn-zoom-reset {
+  background: rgba(37,99,235,0.3);
+  color: var(--blue-light);
+  border: 1px solid rgba(96,165,250,0.4);
+}
+.btn-zoom-reset:hover { background: rgba(37,99,235,0.5); }
+
+.btn--sm { padding: 6px 12px; font-size: 11px; }
+.btn--xs { padding: 4px 10px; font-size: 11px; }
+.btn--lg { padding: 10px 24px; font-size: 12px; }
+.btn--xl { padding: 14px 20px; font-size: 12px; width: 100%; justify-content: center; }
+.btn--uppercase { text-transform: uppercase; letter-spacing: 0.06em; }
+.btn--rounded { border-radius: 12px; }
+.btn--pill    { border-radius: 9999px; }
+
+
+/* ============================================================
+   BOTONES DE ACCIÓN DE TABLA (DISEÑO CORPORATIVO Y ELEGANTE)
+   ============================================================ */
+.table-actions-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.16s ease-in-out;
+  white-space: nowrap;
+  line-height: 1;
+  font-family: inherit;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.action-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  stroke-width: 2.2;
+}
+
+/* Botón Ver (Ficha / Detalle): Azul Institucional */
+.action-btn--view {
+  background: #f0f7ff;
+  color: #0284c7;
+  border-color: #bae6fd;
+}
+.action-btn--view svg {
+  color: #0284c7;
+}
+.action-btn--view:hover {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+}
+.action-btn--view:hover svg {
+  color: #ffffff;
+}
+
+/* Botón Editar: Pizarra / Neutral elegante */
+.action-btn--edit {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+.action-btn--edit svg {
+  color: #64748b;
+}
+.action-btn--edit:hover {
+  background: #334155;
+  color: #ffffff;
+  border-color: #334155;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(51, 65, 85, 0.2);
+}
+.action-btn--edit:hover svg {
+  color: #ffffff;
+}
+
+/* Botón Notificar: Azul / Correo institucional formal */
+.action-btn--notify {
+  background: #f0f9ff;
+  color: #0369a1;
+  border-color: #bae6fd;
+}
+.action-btn--notify svg {
+  color: #0369a1;
+}
+.action-btn--notify:hover {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(2, 132, 199, 0.25);
+}
+.action-btn--notify:hover svg {
+  color: #ffffff;
+}
+
+/* Botón Remitir: Índigo / Púrpura formal */
+.action-btn--remit {
+  background: #faf5ff;
+  color: #7c3aed;
+  border-color: #e9d5ff;
+}
+.action-btn--remit svg {
+  color: #7c3aed;
+}
+.action-btn--remit:hover {
+  background: #7c3aed;
+  color: #ffffff;
+  border-color: #7c3aed;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(124, 58, 237, 0.25);
+}
+.action-btn--remit:hover svg {
+  color: #ffffff;
+}
+
+/* Botón Recibir: Ámbar / Dorado */
+.action-btn--receive {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+.action-btn--receive svg {
+  color: #b45309;
+}
+.action-btn--receive:hover {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(217, 119, 6, 0.25);
+}
+.action-btn--receive:hover svg {
+  color: #ffffff;
+}
+
+/* Botón Ubicar: Esmeralda / Verde archivo */
+.action-btn--locate {
+  background: #ecfdf5;
+  color: #059669;
+  border-color: #a7f3d0;
+}
+.action-btn--locate svg {
+  color: #059669;
+}
+.action-btn--locate:hover {
+  background: #059669;
+  color: #ffffff;
+  border-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(5, 150, 105, 0.25);
+}
+.action-btn--locate:hover svg {
+  color: #ffffff;
+}
+
+/* Botón Eliminar: Rojo suave / Alerta */
+.action-btn--delete {
+  background: #fff1f2;
+  color: #e11d48;
+  border-color: #fecdd3;
+  padding: 0 8px;
+}
+.action-btn--delete svg {
+  color: #e11d48;
+}
+.action-btn--delete:hover {
+  background: #e11d48;
+  color: #ffffff;
+  border-color: #e11d48;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(225, 29, 72, 0.25);
+}
+.action-btn--delete:hover svg {
+  color: #ffffff;
+}

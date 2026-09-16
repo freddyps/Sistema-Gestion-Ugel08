@@ -677,79 +677,112 @@ const authService = {
     return userRole.permisos.includes(permission);
   },
 
-  // Obtener definición de navegación exclusiva para el usuario logueado
+  // Definición centralizada del árbol de navegación del sistema
+  getNavigationTree() {
+    return [
+      {
+        key: "inicio",
+        title: "INICIO",
+        items: [
+          {
+            key: "dashboard",
+            label: "Inicio",
+            url: "dashboard.html",
+            icon: "home",
+            permission: null
+          }
+        ]
+      },
+      {
+        key: "resoluciones",
+        title: "RESOLUCIONES",
+        items: [
+          {
+            key: "resoluciones",
+            label: "Gestión de Resoluciones",
+            url: "resoluciones.html",
+            icon: "document",
+            permission: "resoluciones.ver"
+          },
+          {
+            key: "ubicacion",
+            label: "Ubicación Física",
+            url: "ubicacion.html",
+            icon: "archive",
+            permission: "archivo.ver"
+          },
+          {
+            key: "reportes",
+            label: "Reportes",
+            url: "reportes.html",
+            icon: "chart",
+            permission: "reportes.ver"
+          }
+        ]
+      },
+      {
+        key: "administracion",
+        title: "ADMINISTRACIÓN",
+        items: [
+          {
+            key: "usuarios",
+            label: "Usuarios",
+            url: "usuarios.html",
+            icon: "users",
+            permission: "admin.config"
+          },
+          {
+            key: "roles",
+            label: "Roles y Permisos",
+            url: "roles-permisos.html",
+            icon: "shield",
+            permission: "admin.config"
+          },
+          {
+            key: "configuracion",
+            label: "Configuración",
+            url: "configuracion.html",
+            icon: "cog",
+            permission: "admin.config"
+          }
+        ]
+      }
+    ];
+  },
+
+  // Obtener definición de navegación filtrada por permisos para el usuario logueado
   getMenuForCurrentUser() {
     const user = this.getCurrentUser();
-    const rol = (user && user.rol) ? user.rol.toLowerCase() : "administrador";
+    const tree = this.getNavigationTree();
 
-    // 1. ADMINISTRADOR
-    if (rol.includes("administrador") || (user && user.usuario === "admin")) {
-      return {
-        roleKey: "admin",
-        roleTitle: "Administrador del Sistema",
-        items: [
-          { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
-          { 
-            key: "resoluciones", 
-            label: "Resoluciones", 
-            url: "resoluciones.html", 
-            icon: "document",
-            subitems: [
-              { key: "resoluciones-lista", label: "Gestión de Resoluciones", url: "resoluciones.html", icon: "document" },
-              { key: "notificaciones", label: "Notificaciones", url: "notificaciones.html", icon: "bell" },
-              { key: "archivo", label: "Archivo Físico", url: "ubicacion.html", icon: "archive" },
-              { key: "usuarios", label: "Usuarios del Sistema", url: "usuarios.html", icon: "users" },
-              { key: "roles", label: "Roles y Permisos", url: "roles-permisos.html", icon: "shield" },
-              { key: "catalogos", label: "Catálogos / Config.", url: "configuracion.html", icon: "cog" },
-              { key: "reportes", label: "Reportes Estadísticos", url: "reportes.html", icon: "chart" },
-              { key: "auditoria", label: "Auditoría / Historial", url: "auditoria.html", icon: "clock" }
-            ]
-          }
-        ]
-      };
+    const sections = [];
+    tree.forEach(section => {
+      const allowedItems = section.items.filter(item => {
+        if (!item.permission) return true;
+        return this.hasPermission(item.permission);
+      });
+
+      if (allowedItems.length > 0) {
+        sections.push({
+          key: section.key,
+          title: section.title,
+          items: allowedItems
+        });
+      }
+    });
+
+    let roleTitle = "UGEL 08 Cañete";
+    if (user) {
+      if (user.cargo) {
+        roleTitle = user.cargo;
+      } else if (user.rol) {
+        roleTitle = user.rol;
+      }
     }
 
-    // 2. MARÍA ANGÉLICA — OFICINA DE RESOLUCIONES
-    if (rol.includes("resoluciones") || (user && user.usuario === "maria")) {
-      return {
-        roleKey: "maria",
-        roleTitle: "Oficina de Resoluciones — María Angélica",
-        items: [
-          { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
-          { 
-            key: "resoluciones", 
-            label: "Resoluciones", 
-            url: "resoluciones.html", 
-            icon: "document",
-            subitems: [
-              { key: "resoluciones-lista", label: "Búsqueda y Gestión RD", url: "resoluciones.html", icon: "document" },
-              { key: "documentos", label: "Documentos Digitales", url: "resoluciones.html?doc=DISPONIBLE", icon: "file-text" },
-              { key: "notificaciones", label: "Control de Notificaciones", url: "resoluciones.html?estado=Pendiente+de+notificaci%C3%B3n", icon: "bell" }
-            ]
-          }
-        ]
-      };
-    }
-
-    // 3. MARCOS — ARCHIVO
     return {
-      roleKey: "marcos",
-      roleTitle: "Archivo Central — Marcos",
-      items: [
-        { key: "dashboard", label: "Inicio", url: "dashboard.html", icon: "home" },
-        { 
-          key: "resoluciones", 
-          label: "Resoluciones", 
-          url: "resoluciones.html", 
-          icon: "document",
-          subitems: [
-            { key: "recibidas", label: "Resoluciones Recibidas", url: "recepcion-archivo.html", icon: "inbox" },
-            { key: "resoluciones-lista", label: "Consulta de Resoluciones", url: "resoluciones.html", icon: "document" },
-            { key: "ubicacion", label: "Ubicación Física (Cajas)", url: "ubicacion.html", icon: "archive" },
-            { key: "localizar", label: "Buscar / Localizar", url: "ubicacion.html?modo=localizar", icon: "search" }
-          ]
-        }
-      ]
+      roleTitle,
+      sections
     };
   }
 };

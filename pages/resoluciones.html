@@ -278,8 +278,8 @@
 
             <!-- 6. Botón de Acción -->
             <div class="filter-field-wrapper" style="justify-content: flex-end;">
-              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 46px; font-size: 13px; border-radius: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.3);">
-                <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; height: 44px; font-size: 13px; font-weight: 700; border-radius: 12px; background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%); box-shadow: 0 4px 14px rgba(37,99,235,0.25); letter-spacing: 0.02em; transition: all 0.2s ease;">
+                <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 FILTRAR RESOLUCIONES
               </button>
             </div>
@@ -323,7 +323,7 @@
                 <th>Documento</th>
                 <th>Ubicación Física</th>
                 <th>Estado</th>
-                <th style="text-align: right;">Acciones</th>
+                <th style="text-align: left; min-width: 140px;">Acciones</th>
               </tr>
             </thead>
             <tbody id="resultsTableBody">
@@ -372,6 +372,101 @@
         Eliminar Registro
       </button>
     </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL CORPORATIVO: REMITIR A ARCHIVO CENTRAL (CUSTODIA FÍSICA)
+     ============================================================ -->
+<div id="modalRemitirArchivo" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: white; border-radius: 16px; width: 100%; max-width: 540px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35); overflow: hidden; display: flex; flex-direction: column; animation: modalSlideUp 0.2s ease-out;">
+    
+    <!-- Header del Modal -->
+    <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.1);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+          📦
+        </div>
+        <div>
+          <h3 style="margin: 0; font-size: 16px; font-weight: 800; font-family: var(--font-display); color: white;">
+            Remitir a Archivo Central
+          </h3>
+          <p style="margin: 2px 0 0; font-size: 11px; color: #c7d2fe;">
+            Transferencia de Custodia Física • UGEL N.° 08 Cañete
+          </p>
+        </div>
+      </div>
+      <button type="button" onclick="closeModalRemitirArchivo()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer; line-height: 1; padding: 4px; opacity: 0.8;" title="Cerrar">&times;</button>
+    </div>
+
+    <!-- Cuerpo del Modal -->
+    <div style="padding: 22px;">
+      
+      <!-- Ficha de la Resolución -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700; color: var(--slate-400); text-transform: uppercase;">Resolución Directoral</span>
+          <span id="remitModalRdNum" class="td-code" style="font-size: 13px; font-weight: 800;">-</span>
+        </div>
+        <div style="font-size: 12px; color: var(--slate-800); font-weight: 600; margin-bottom: 6px;" id="remitModalAdmin">
+          -
+        </div>
+        <div style="font-size: 11.5px; color: var(--slate-500); line-height: 1.45;" id="remitModalAsunto">
+          -
+        </div>
+        <div style="margin-top: 8px; font-size: 11px; color: #4338ca; font-weight: 600; display: flex; align-items: center; gap: 6px;">
+          <span>🏛️ Área de origen:</span>
+          <span id="remitModalArea">-</span>
+        </div>
+      </div>
+
+      <!-- Explicación del Trámite -->
+      <p style="font-size: 12.5px; color: var(--slate-700); margin: 0 0 14px; line-height: 1.5;">
+        Esta acción registrará la <strong>remisión física</strong> de la Resolución Directoral al <strong>Archivo Central</strong> para su recepción formal y custodia definitiva por parte de <strong>Marcos (Responsable de Archivo)</strong>.
+      </p>
+
+      <!-- Estados actual y posterior -->
+      <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; color: #7c3aed; text-transform: uppercase; display: block;">Estado actual</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #0f172a;" id="remitModalEstadoActual">Lista para remisión</span>
+        </div>
+        <div style="color: #7c3aed; font-size: 18px; font-weight: 700;">&rarr;</div>
+        <div>
+          <span style="font-size: 10px; font-weight: 700; color: #7c3aed; text-transform: uppercase; display: block;">Estado posterior</span>
+          <span style="font-size: 11.5px; font-weight: 700; color: #7c3aed;">Pendiente de archivo</span>
+        </div>
+      </div>
+
+      <!-- Advertencia Operativa Oficial -->
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;">
+        <span style="font-size: 16px; line-height: 1;">⚠️</span>
+        <div style="font-size: 11.5px; color: #92400e; line-height: 1.45;">
+          <strong>Verificación requerida:</strong> Verifique que el documento físico original autógrafo haya sido entregado al personal de Archivo Central antes de confirmar la remisión formal.
+        </div>
+      </div>
+
+      <!-- Observación opcional -->
+      <div style="margin-top: 14px;">
+        <label style="display: block; font-size: 11px; font-weight: 700; color: var(--slate-600); margin-bottom: 4px;">
+          Anotación u observación de entrega (Opcional):
+        </label>
+        <input type="text" id="remitModalObservacion" class="form-input" placeholder="Ej: Entregado en físico con 1 folio original autógrafo" style="font-size: 12px;">
+      </div>
+
+    </div>
+
+    <!-- Footer del Modal -->
+    <div style="background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 22px; display: flex; justify-content: space-between; align-items: center;">
+      <button type="button" onclick="closeModalRemitirArchivo()" class="btn btn-light">
+        Cancelar
+      </button>
+      <button type="button" onclick="confirmarRemisionArchivoDesdeModal()" class="btn btn-primary" style="background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%); gap: 8px; font-weight: 700; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);">
+        <svg style="width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+        Confirmar remisión
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -713,7 +808,7 @@
       document.getElementById("filterEstado").value = estadoParam;
       const csVal = document.getElementById("csValEstado");
       if (csVal) csVal.innerHTML = `<span>⏳ ${estadoParam}</span>`;
-      renderSidebar("notificaciones");
+      renderSidebar("resoluciones");
     }
 
     const docParam = urlParams.get("doc");
@@ -721,13 +816,13 @@
       document.getElementById("filterDocumento").value = docParam;
       const csVal = document.getElementById("csValDoc");
       if (csVal) csVal.innerHTML = `<span>📕 Con PDF digitalizado</span>`;
-      renderSidebar("documentos");
+      renderSidebar("resoluciones");
     }
 
     // Parámetro para abrir modal de creación o edición directamente
     if (urlParams.get("nueva") === "1" || urlParams.get("action") === "nueva") {
       openModalResolucion();
-      renderSidebar("registrar-rd");
+      renderSidebar("resoluciones");
     } else if (urlParams.get("editar")) {
       openModalResolucion(urlParams.get("editar"));
     }
@@ -876,7 +971,7 @@
     tbody.innerHTML = paginatedItems.map(r => `
       <tr>
         <td class="td-code">${r.numero_rd}</td>
-        <td style="color: var(--slate-600); white-space: nowrap;">${r.fecha_emision}</td>
+        <td class="td-date">${r.fecha_emision}</td>
         <td class="td-name">
           ${r.administrado_nombre}
           ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
@@ -884,8 +979,8 @@
         <td class="td-muted" style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${r.asunto}">
           ${r.asunto}
         </td>
-        <td style="font-family: monospace; font-size: 11px; color: var(--slate-600);">${r.expediente || '-'}</td>
-        <td style="color: var(--slate-700); font-weight: 500;">${r.area_origen}</td>
+        <td><span class="td-expediente">${r.expediente || '-'}</span></td>
+        <td style="color: var(--slate-700); font-weight: 500; white-space: nowrap;">${r.area_origen}</td>
         <td>
           ${r.tiene_documento ? `
             <button onclick="openPdfViewerModal('${r.numero_rd}', ${r.documento.numero_paginas}, '${r.documento.tamanio}')" class="badge-pdf-dark" title="Visualizar documento digital">
@@ -905,34 +1000,52 @@
           `}
         </td>
         <td>${renderBadgeEstado(r.estado)}</td>
-        <td style="text-align: right;">
-          <div class="flex-center gap-1" style="justify-content: flex-end;">
-            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs" title="Ver ficha completa y trazabilidad">
-              👁 Ver
+        <td style="text-align: left; white-space: nowrap;">
+          <div class="table-actions-group">
+            <!-- 1. Gestión Informativa -->
+            <a href="detalle-resolucion.html?id=${r.id}" class="action-btn action-btn--view" title="Consultar detalle de la resolución">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span>Ver</span>
             </a>
             ${window.authService.hasPermission("resoluciones.editar") ? `
-              <button type="button" onclick="openModalResolucion(${r.id})" class="btn btn-light btn--xs" title="Editar resolución en panel">
-                ✏
+              <button type="button" onclick="openModalResolucion(${r.id})" class="action-btn action-btn--edit" title="Editar información de la resolución">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Editar</span>
               </button>
             ` : ''}
-            ${window.authService.hasPermission("resoluciones.remitir") && r.estado !== 'Pendiente de archivo' && r.estado !== 'Archivado' ? `
-              <button onclick="remitirDesdeLista(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;" title="Remitir física y formalmente a Archivo">
-                📤 Remitir
+
+            <!-- 2. Comunicación con Administrado / Docente -->
+            ${window.authService.hasPermission("resoluciones.notificar") || window.authService.hasPermission("resoluciones.crear") ? `
+              <a href="detalle-resolucion.html?id=${r.id}&action=notificar" class="action-btn action-btn--notify" title="Preparar notificación por correo al administrado">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>Notificar</span>
+              </a>
+            ` : ''}
+
+            <!-- 3. Transferencia Física hacia Archivo Central -->
+            ${window.authService.hasPermission("resoluciones.remitir") && r.estado !== 'Pendiente de archivo' && r.estado !== 'Recibida en archivo' && r.estado !== 'Archivado' ? `
+              <button onclick="abrirModalRemitirArchivo(${r.id})" class="action-btn action-btn--remit" title="Remitir documento físico a Archivo Central">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <span>Remitir</span>
               </button>
             ` : ''}
+
+            <!-- 4. Acciones de Custodia en Archivo Central (Marcos) -->
             ${window.authService.hasPermission("archivo.recibir") && r.estado === 'Pendiente de archivo' ? `
-              <button onclick="recibirDesdeLista(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a;" title="Confirmar recepción física en Archivo">
-                📥 Recibir
+              <button onclick="recibirDesdeLista(${r.id}, '${r.numero_rd}')" class="action-btn action-btn--receive" title="Confirmar recepción física en Archivo">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                <span>Recibir</span>
               </button>
             ` : ''}
             ${window.authService.hasPermission("ubicacion.crear") && !r.tiene_ubicacion && (r.estado === 'Recibida en archivo' || r.estado === 'Archivado') ? `
-              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="btn btn--xs" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0;" title="Asignar ubicación física">
-                📍 Ubicar
+              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="action-btn action-btn--locate" title="Asignar ubicación física en caja/estante">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                <span>Ubicar</span>
               </a>
             ` : ''}
             ${window.authService.hasPermission("admin.config") ? `
-              <button onclick="promptDeleteRd(${r.id}, '${r.numero_rd}', '${r.administrado_nombre}')" class="btn btn-light btn--xs" style="color: var(--red-600);" title="Eliminar">
-                🗑
+              <button onclick="promptDeleteRd(${r.id}, '${r.numero_rd}', '${r.administrado_nombre}')" class="action-btn action-btn--delete" title="Eliminar registro">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
               </button>
             ` : ''}
           </div>
@@ -983,26 +1096,73 @@
     window.scrollTo({ top: 300, behavior: 'smooth' });
   }
 
-  // Modal de Eliminación
-  function remitirDesdeLista(id, num) {
-    if (!confirm(`¿Confirmas la remisión formal de la RD N.° ${num} al área de Archivo Central para su custodia física definitiva?`)) return;
-    const res = window.resolutionService.remitirAArchivo(id, "Remisión formal desde bandeja de resoluciones");
-    if (res.success) {
-      showToast(`RD N.° ${num} remitida a Archivo exitosamente`, "success");
-      applyFilters();
-    } else {
-      showToast(res.message || "Error al remitir", "error");
+  // Variable de estado para el modal de remisión a archivo
+  let targetRemitRdId = null;
+
+  function abrirModalRemitirArchivo(id) {
+    const rd = window.resolutionService.getById(id);
+    if (!rd) {
+      showToast("Resolución no encontrada", "error");
+      return;
+    }
+
+    targetRemitRdId = id;
+    document.getElementById("remitModalRdNum").innerText = rd.numero_rd;
+    document.getElementById("remitModalAdmin").innerText = `Administrado: ${rd.administrado_nombre}`;
+    document.getElementById("remitModalAsunto").innerText = rd.asunto;
+    document.getElementById("remitModalArea").innerText = rd.area_origen;
+    document.getElementById("remitModalEstadoActual").innerText = rd.estado || "Registrada";
+    document.getElementById("remitModalObservacion").value = "";
+
+    const modal = document.getElementById("modalRemitirArchivo");
+    if (modal) {
+      modal.style.display = "flex";
+      document.body.style.overflow = "hidden";
     }
   }
 
+  function closeModalRemitirArchivo() {
+    targetRemitRdId = null;
+    const modal = document.getElementById("modalRemitirArchivo");
+    if (modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "";
+    }
+  }
+
+  function confirmarRemisionArchivoDesdeModal() {
+    if (!targetRemitRdId) return;
+    const obs = document.getElementById("remitModalObservacion").value.trim();
+
+    try {
+      const rd = window.resolutionService.getById(targetRemitRdId);
+      const numRd = rd ? rd.numero_rd : "RD";
+      const res = window.resolutionService.remitirAArchivo(targetRemitRdId, obs || "Remisión física formal a Archivo Central");
+
+      if (res) {
+        closeModalRemitirArchivo();
+        showToast(`Resolución ${numRd} remitida a Archivo Central exitosamente`, "success");
+        applyFilters();
+      }
+    } catch (e) {
+      showToast(e.message || "Error al remitir la resolución", "error");
+    }
+  }
+
+  // Compatibilidad con botón directo anterior
+  function remitirDesdeLista(id, num) {
+    abrirModalRemitirArchivo(id);
+  }
+
   function recibirDesdeLista(id, num) {
-    if (!confirm(`¿Confirmar recepción física de la RD N.° ${num} en el Archivo Central (Responsable: Marcos)?`)) return;
-    const res = window.resolutionService.recibirEnArchivo(id, "Recepción física confirmada en Archivo");
-    if (res.success) {
-      showToast(`RD N.° ${num} recibida en Archivo. Procede a registrar su ubicación.`, "success");
-      applyFilters();
-    } else {
-      showToast(res.message || "Error al recibir", "error");
+    try {
+      const res = window.resolutionService.recibirEnArchivo(id, "Recepción física confirmada en Archivo Central");
+      if (res) {
+        showToast(`RD N.° ${num} recibida físicamente en Archivo Central`, "success");
+        applyFilters();
+      }
+    } catch (e) {
+      showToast(e.message || "Error al recibir", "error");
     }
   }
 

@@ -293,23 +293,31 @@
         </div>
 
         <div class="table-wrapper">
-          <table class="data-table data-table--sm" style="min-width: 960px;">
+          <table class="data-table data-table--sm" style="width: 100%;">
             <thead>
               <tr>
-                <th style="width: 130px;">N° RD</th>
-                <th style="width: 105px;">Fecha</th>
-                <th>Administrado / Interesado</th>
-                <th style="width: 170px;">Área</th>
-                <th style="width: 130px;">Ubicación Física</th>
-                <th style="width: 120px;">Estado</th>
-                <th style="width: 110px;">Documento</th>
-                <th style="width: 90px; text-align: right;">Acción</th>
+                <th style="width: 13%;">N° RD</th>
+                <th style="width: 10%;">Fecha</th>
+                <th style="width: 23%;">Administrado / Interesado</th>
+                <th style="width: 15%;">Área</th>
+                <th style="width: 13%;">Ubicación Física</th>
+                <th style="width: 12%;">Estado</th>
+                <th style="width: 11%;">Documento</th>
+                <th style="width: 3%; text-align: center; padding-right: 18px;">Acción</th>
               </tr>
             </thead>
             <tbody id="repTableBody">
               <!-- Renderizado dinámico -->
             </tbody>
           </table>
+        </div>
+
+        <!-- Paginación Corporativa -->
+        <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; margin-top: 14px; border-top: 1px solid var(--slate-100); flex-wrap: wrap; gap: 12px;">
+          <span style="font-size: 12px; color: var(--slate-500); font-weight: 500;" id="repPaginationInfo">
+            Mostrando registros
+          </span>
+          <div id="repPaginationButtons" style="display: flex; align-items: center; gap: 6px;"></div>
         </div>
       </div>
 
@@ -373,6 +381,7 @@
     `;
 
     renderBarChart(all);
+    reportCurrentPage = 1;
     renderReportTable(all);
   }
 
@@ -403,21 +412,39 @@
     }).join('');
   }
 
-  function renderReportTable(list) {
-    const tbody = document.getElementById("repTableBody");
-    document.getElementById("repTableCount").innerText = `${list.length} registros`;
+  let reportCurrentPage = 1;
+  const reportPageSize = 10;
+  let reportFilteredList = [];
 
-    if (!list.length) {
+  function renderReportTable(list) {
+    reportFilteredList = list || [];
+    const total = reportFilteredList.length;
+    document.getElementById("repTableCount").innerText = `${total} registros`;
+
+    const tbody = document.getElementById("repTableBody");
+    const infoEl = document.getElementById("repPaginationInfo");
+    const buttonsContainer = document.getElementById("repPaginationButtons");
+
+    if (!total) {
       tbody.innerHTML = `<tr><td colspan="8" class="text-center" style="padding: 24px; color: var(--slate-400);">No se encontraron resoluciones con los parámetros seleccionados.</td></tr>`;
+      if (infoEl) infoEl.innerText = "Sin resultados";
+      if (buttonsContainer) buttonsContainer.innerHTML = "";
       return;
     }
 
-    tbody.innerHTML = list.map(r => `
+    const totalPages = Math.ceil(total / reportPageSize);
+    if (reportCurrentPage > totalPages) reportCurrentPage = 1;
+
+    const startIndex = (reportCurrentPage - 1) * reportPageSize;
+    const endIndex = Math.min(startIndex + reportPageSize, total);
+    const paginatedItems = reportFilteredList.slice(startIndex, endIndex);
+
+    tbody.innerHTML = paginatedItems.map(r => `
       <tr>
         <td class="td-code">${r.numero_rd}</td>
-        <td style="color: var(--slate-600); white-space: nowrap;">${r.fecha_emision}</td>
+        <td class="td-date">${r.fecha_emision}</td>
         <td class="td-name">${r.administrado_nombre}</td>
-        <td style="color: var(--slate-700);">${r.area_origen}</td>
+        <td style="color: var(--slate-700); font-weight: 500;">${r.area_origen}</td>
         <td>
           ${r.tiene_ubicacion ? `<span class="badge-caja">📦 ${r.ubicacion_caja}</span>` : `<span style="color: var(--slate-400); font-size: 11px;">Pendiente</span>`}
         </td>
@@ -425,13 +452,61 @@
         <td>
           ${r.tiene_documento ? `<span class="badge badge-blue">PDF Disponible</span>` : `<span style="color: var(--slate-400); font-size: 11px;">Sin PDF</span>`}
         </td>
-        <td style="text-align: right; white-space: nowrap;">
-          <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
-            👁 Ver
-          </a>
+        <td style="text-align: center; white-space: nowrap; padding-right: 18px;">
+          <div class="table-actions-group" style="justify-content: center;">
+            <a href="detalle-resolucion.html?id=${r.id}" class="action-btn action-btn--view" title="Ver ficha y trazabilidad">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span>Ver</span>
+            </a>
+          </div>
         </td>
       </tr>
     `).join('');
+
+    if (infoEl) {
+      infoEl.innerText = `Mostrando ${startIndex + 1} a ${endIndex} de ${total} registros`;
+    }
+
+    renderReportPaginationButtons(total, totalPages);
+  }
+
+  function renderReportPaginationButtons(total, totalPages) {
+    const container = document.getElementById("repPaginationButtons");
+    if (!container) return;
+
+    if (totalPages <= 1) {
+      container.innerHTML = "";
+      return;
+    }
+
+    let html = `
+      <button onclick="goToReportPage(${reportCurrentPage - 1})" class="btn btn-light btn--xs" ${reportCurrentPage === 1 ? 'disabled style="opacity: 0.4;"' : ''}>
+        ◀ Anterior
+      </button>
+    `;
+
+    for (let p = 1; p <= totalPages; p++) {
+      html += `
+        <button onclick="goToReportPage(${p})" class="btn btn--xs ${reportCurrentPage === p ? 'btn-primary' : 'btn-light'}">
+          ${p}
+        </button>
+      `;
+    }
+
+    html += `
+      <button onclick="goToReportPage(${reportCurrentPage + 1})" class="btn btn-light btn--xs" ${reportCurrentPage === totalPages ? 'disabled style="opacity: 0.4;"' : ''}>
+        Siguiente ▶
+      </button>
+    `;
+
+    container.innerHTML = html;
+  }
+
+  function goToReportPage(page) {
+    reportCurrentPage = page;
+    renderReportTable(reportFilteredList);
+    const tableCard = document.querySelector(".data-table");
+    if (tableCard) tableCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function resetReportFilters() {

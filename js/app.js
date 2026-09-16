@@ -68,25 +68,72 @@ function getIconSvg(iconName) {
   }
 }
 
-// Renderizar Sidebar exclusivo según el ROL institucional activo (Inicio y Resoluciones como módulos principales)
+// Control de Acceso por Ruta (Route Guard Middleware)
+function checkRouteAccess() {
+  if (!window.authService) return;
+  const user = window.authService.getCurrentUser();
+  const path = window.location.pathname.toLowerCase();
+
+  // Mapeo de rutas protegidas y sus permisos requeridos
+  const protectedRoutes = [
+    { pattern: "usuarios.html", permission: "admin.config" },
+    { pattern: "roles-permisos.html", permission: "admin.config" },
+    { pattern: "configuracion.html", permission: "admin.config" },
+    { pattern: "auditoria.html", permission: "admin.config" },
+    { pattern: "reportes.html", permission: "reportes.ver" },
+    { pattern: "ubicacion.html", permission: "archivo.ver" },
+    { pattern: "recepcion-archivo.html", permission: "archivo.ver" }
+  ];
+
+  for (const route of protectedRoutes) {
+    if (path.includes(route.pattern)) {
+      if (!window.authService.hasPermission(route.permission)) {
+        showToast("Acceso denegado: Su perfil no tiene privilegios para acceder a este módulo.", "error");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1200);
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+// Renderizar Sidebar unificado para todo el sistema basado en roles y permisos
 function renderSidebar(activeMenuKey) {
   const sidebarContainer = document.getElementById("mainSidebar");
   if (!sidebarContainer) return;
 
-  const currentUser = window.authService ? window.authService.getCurrentUser() : { nombre: "Administrador", rol: "Administrador" };
-  const menuConfig = window.authService ? window.authService.getMenuForCurrentUser() : { roleTitle: "Menú Principal", items: [] };
+  // Ejecutar verificación de permisos en la ruta actual
+  checkRouteAccess();
 
-  // Detectar si el menú activo pertenece a los subitems de Resoluciones
-  let isSubitemActive = false;
-  menuConfig.items.forEach(item => {
-    if (item.subitems && item.subitems.some(sub => sub.key === activeMenuKey)) {
-      isSubitemActive = true;
-    }
-  });
+  const currentUser = window.authService ? window.authService.getCurrentUser() : { nombre: "Administrador", rol: "Administrador" };
+  const menuConfig = window.authService ? window.authService.getMenuForCurrentUser() : { roleTitle: "UGEL 08 Cañete", sections: [] };
 
   const isInsideSubdir = window.location.pathname.includes("/pages/") || window.location.pathname.includes("\\pages\\");
   const logoPath = isInsideSubdir ? "../assets/logo-ugel-canete.jpg" : "assets/logo-ugel-canete.jpg";
   const loginUrl = isInsideSubdir ? "../index.html" : "index.html";
+
+  // Renderizar secciones unificadas (INICIO, RESOLUCIONES, ADMINISTRACIÓN)
+  const sectionsHtml = (menuConfig.sections || []).map((section, idx) => {
+    const groupClass = idx === 0 ? "sidebar-nav-group sidebar-nav-group--top" : "sidebar-nav-group sidebar-nav-group--section";
+    
+    const itemsHtml = section.items.map(item => {
+      const isActive = activeMenuKey === item.key;
+      const targetUrl = isInsideSubdir ? item.url : `pages/${item.url}`;
+      return `
+        <a href="${targetUrl}" class="nav-link ${isActive ? 'active' : ''}">
+          ${getIconSvg(item.icon)}
+          <span>${item.label}</span>
+        </a>
+      `;
+    }).join("");
+
+    return `
+      <div class="${groupClass}">${section.title}</div>
+      ${itemsHtml}
+    `;
+  }).join("");
 
   sidebarContainer.innerHTML = `
     <div class="sidebar-brand">
@@ -98,46 +145,7 @@ function renderSidebar(activeMenuKey) {
     </div>
 
     <nav class="sidebar-nav">
-      <div class="sidebar-nav-group sidebar-nav-group--top">MÓDULOS PRINCIPALES</div>
-      
-      ${menuConfig.items.map(item => {
-        const isParentActive = activeMenuKey === item.key || (item.subitems && item.subitems.some(sub => sub.key === activeMenuKey));
-        
-        if (item.subitems && item.subitems.length > 0) {
-          const isOpen = isParentActive || activeMenuKey === 'resoluciones';
-          return `
-            <div class="nav-group-wrapper">
-              <button type="button" class="nav-parent ${isParentActive ? 'active' : ''} ${isOpen ? 'open' : ''}" onclick="toggleSidebarSubmenu(this)">
-                <div class="nav-parent-left">
-                  ${getIconSvg(item.icon)}
-                  <span>${item.label}</span>
-                </div>
-                <svg class="nav-parent-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-              </button>
-              <div class="nav-submenu ${isOpen ? 'open' : ''}">
-                ${item.subitems.map(sub => {
-                  const isSubActive = activeMenuKey === sub.key || (activeMenuKey === 'resoluciones' && sub.key === 'resoluciones-lista');
-                  return `
-                    <a href="${sub.url}" class="nav-sublink ${isSubActive ? 'active' : ''}">
-                      ${getIconSvg(sub.icon)}
-                      <span>${sub.label}</span>
-                    </a>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-          `;
-        } else {
-          return `
-            <a href="${item.url}" class="nav-link ${activeMenuKey === item.key ? 'active' : ''}">
-              ${getIconSvg(item.icon)}
-              <span>${item.label}</span>
-            </a>
-          `;
-        }
-      }).join('')}
+      ${sectionsHtml}
     </nav>
 
     <div class="sidebar-footer">
@@ -155,22 +163,6 @@ function renderSidebar(activeMenuKey) {
       </a>
     </div>
   `;
-}
-
-function toggleSidebarSubmenu(btn) {
-  const wrapper = btn.closest(".nav-group-wrapper");
-  if (!wrapper) return;
-  const submenu = wrapper.querySelector(".nav-submenu");
-  if (!submenu) return;
-  
-  const isOpen = submenu.classList.contains("open");
-  if (isOpen) {
-    submenu.classList.remove("open");
-    btn.classList.remove("open");
-  } else {
-    submenu.classList.add("open");
-    btn.classList.add("open");
-  }
 }
 
 // Modal visor PDF interactivo

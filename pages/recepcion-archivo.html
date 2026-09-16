@@ -53,47 +53,49 @@
         </div>
       </div>
 
-      <!-- KPI Summary Cards -->
-      <div class="stats-grid stats-grid--3" style="margin-bottom: 24px;">
-        <div class="stat-card" style="border-top: 3px solid #f59e0b;">
-          <div class="stat-icon" style="background: #fef3c7; color: #b45309;">⏳</div>
+      <!-- KPI Summary Cards con Diseño Premium -->
+      <div class="stats-grid stats-grid--3">
+        <div class="stat-card" style="border-left: 4px solid #f59e0b;">
+          <div class="stat-icon" style="background: #fffbeb; color: #b45309; border: 1px solid #fef3c7;">⏳</div>
           <div class="stat-content">
-            <h3 class="stat-value" id="kpiPendientes">0</h3>
-            <p class="stat-label">Pendientes de Recepción Física</p>
+            <h3 class="stat-value" style="color: #b45309;" id="kpiPendientes">0</h3>
+            <p class="stat-label">Pendientes de Recepción</p>
           </div>
         </div>
-        <div class="stat-card" style="border-top: 3px solid #3b82f6;">
-          <div class="stat-icon" style="background: #dbeafe; color: #1d4ed8;">📥</div>
+        <div class="stat-card" style="border-left: 4px solid #3b82f6;">
+          <div class="stat-icon" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe;">📥</div>
           <div class="stat-content">
-            <h3 class="stat-value" id="kpiRecibidasSinUbicar">0</h3>
-            <p class="stat-label">Recibidas (Sin Ubicación Asignada)</p>
+            <h3 class="stat-value" style="color: #1d4ed8;" id="kpiRecibidasSinUbicar">0</h3>
+            <p class="stat-label">Recibidas (Sin Ubicación)</p>
           </div>
         </div>
-        <div class="stat-card" style="border-top: 3px solid #10b981;">
-          <div class="stat-icon" style="background: #d1fae5; color: #047857;">✅</div>
+        <div class="stat-card" style="border-left: 4px solid #10b981;">
+          <div class="stat-icon" style="background: #ecfdf5; color: #047857; border: 1px solid #d1fae5;">✅</div>
           <div class="stat-content">
-            <h3 class="stat-value" id="kpiCustodiadas">0</h3>
-            <p class="stat-label">En Custodia Archivística Definitiva</p>
+            <h3 class="stat-value" style="color: #047857;" id="kpiCustodiadas">0</h3>
+            <p class="stat-label">En Custodia Archivística</p>
           </div>
         </div>
       </div>
 
-      <!-- Filter / Switch Tabs -->
-      <div class="card card--p" style="padding: 14px 20px; margin-bottom: 16px;">
-        <div class="flex-center justify-between" style="flex-wrap: wrap; gap: 12px;">
-          <div class="flex-center gap-2">
-            <button onclick="setBandejaTab('pendientes')" id="tabPendientes" class="btn btn-primary btn--sm">
+      <!-- Filter / Switch Tabs con estilo Píldora -->
+      <div class="card card--p" style="padding: 12px 20px; margin-bottom: 20px; background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+        <div class="flex-center justify-between" style="flex-wrap: wrap; gap: 14px;">
+          <div class="flex-center gap-2" style="background: #f1f5f9; padding: 4px; border-radius: 10px;">
+            <button onclick="setBandejaTab('pendientes')" id="tabPendientes" class="btn btn-primary btn--sm" style="border-radius: 8px;">
               ⏳ Pendientes por Recepcionar
             </button>
-            <button onclick="setBandejaTab('recibidas')" id="tabRecibidas" class="btn btn-light btn--sm">
+            <button onclick="setBandejaTab('recibidas')" id="tabRecibidas" class="btn btn-light btn--sm" style="border-radius: 8px;">
               📥 Recibidas por Ubicar
             </button>
-            <button onclick="setBandejaTab('historial')" id="tabHistorial" class="btn btn-light btn--sm">
+            <button onclick="setBandejaTab('historial')" id="tabHistorial" class="btn btn-light btn--sm" style="border-radius: 8px;">
               📁 Historial en Custodia
             </button>
           </div>
-          <div style="min-width: 260px;">
-            <input type="text" id="filtroTexto" placeholder="Buscar por N° RD, administrado o asunto..." class="form-control" style="font-size: 12px; padding: 6px 12px;" oninput="renderBandeja()">
+          <div style="min-width: 280px; flex-grow: 1; max-width: 380px;">
+            <div class="input-wrapper" style="width: 100%;">
+              <input type="text" id="filtroTexto" placeholder="Buscar por N° RD, administrado o asunto..." class="form-control" style="font-size: 12.5px; padding: 8px 14px; border-radius: 8px;" oninput="renderBandeja()">
+            </div>
           </div>
         </div>
       </div>
@@ -109,10 +111,11 @@
                 <th>Administrado</th>
                 <th>Asunto</th>
                 <th>Área Origen</th>
+                <th>Remitido Por</th>
                 <th>PDF</th>
                 <th>Estado Archivo</th>
                 <th>Ubicación Física</th>
-                <th style="text-align: right;">Acciones de Archivo</th>
+                <th style="text-align: left; min-width: 140px;">Acciones de Archivo</th>
               </tr>
             </thead>
             <tbody id="bandejaTableBody">
@@ -180,13 +183,13 @@
   let targetRdId = null;
 
   document.addEventListener("DOMContentLoaded", () => {
-    renderSidebar("recibidas");
+    renderSidebar("ubicacion");
     actualizarKpis();
     renderBandeja();
   });
 
   function actualizarKpis() {
-    const list = window.db.getTable("resoluciones");
+    const list = window.resolutionService ? window.resolutionService.getAll() : window.db.getTable("resoluciones");
     const pendientes = list.filter(r => r.estado === 'Pendiente de archivo').length;
     const recibidasSinUbicar = list.filter(r => r.estado === 'Recibida en archivo' && !r.tiene_ubicacion).length;
     const custodiadas = list.filter(r => r.tiene_ubicacion).length;
@@ -207,7 +210,7 @@
   function renderBandeja() {
     const tbody = document.getElementById("bandejaTableBody");
     const query = (document.getElementById("filtroTexto").value || "").toLowerCase().trim();
-    let items = window.db.getTable("resoluciones");
+    let items = window.resolutionService ? window.resolutionService.getAll() : window.db.getTable("resoluciones");
 
     if (activeTab === 'pendientes') {
       items = items.filter(r => r.estado === 'Pendiente de archivo');
@@ -228,7 +231,7 @@
     if (!items.length) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="9" class="text-center" style="padding: 40px;">
+          <td colspan="10" class="text-center" style="padding: 40px;">
             <div style="font-size: 32px; margin-bottom: 6px;">📂</div>
             <h4 style="font-size: 14px; font-weight: 700; color: var(--slate-700); margin: 0;">No hay resoluciones en esta bandeja</h4>
             <p style="font-size: 11px; color: var(--slate-500); margin-top: 4px;">Todo el acervo remitido se encuentra debidamente procesado.</p>
@@ -243,13 +246,16 @@
         <td class="td-code">${r.numero_rd}</td>
         <td style="white-space: nowrap; color: var(--slate-600); font-size: 11px;">${r.fecha_emision}</td>
         <td class="td-name">
-          ${r.administrado_nombre}
-          ${r.administrado_dni ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni}</span>` : ''}
+          ${r.administrado_nombre || (r.persona ? (r.persona.nombres + ' ' + (r.persona.apellidos || '')).trim() : 'Institucional / Varios')}
+          ${r.administrado_dni || (r.persona && r.persona.dni) ? `<br><span style="font-size: 10px; color: var(--slate-400);">DNI: ${r.administrado_dni || r.persona.dni}</span>` : ''}
         </td>
         <td style="max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 11px; color: var(--slate-600);" title="${r.asunto}">
           ${r.asunto}
         </td>
         <td style="font-size: 11px; color: var(--slate-700);">${r.area_origen}</td>
+        <td style="font-size: 11px; color: #4338ca; white-space: nowrap;">
+          ${r.remitido_por ? `<strong>${r.remitido_por}</strong><br><span style="font-size: 9.5px; color: var(--slate-500);">${r.fecha_remision_archivo || ''}</span>` : '<span style="color: var(--slate-400); font-style: italic;">Sin remisión</span>'}
+        </td>
         <td>
           ${r.tiene_documento ? `
             <button onclick="openPdfViewerModal('${r.numero_rd}', ${r.documento?.numero_paginas || 1}, '${r.documento?.tamanio || '1.2 MB'}')" class="badge-pdf-dark">
@@ -265,24 +271,28 @@
             </a>
           ` : '<span style="font-size: 10px; color: #b45309; background: #fef3c7; padding: 2px 6px; border-radius: 4px;">Por ubicar</span>'}
         </td>
-        <td style="text-align: right;">
-          <div class="flex-center gap-1" style="justify-content: flex-end;">
-            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-light btn--xs" title="Ver detalle">
-              👁 Ficha
+        <td style="text-align: left; white-space: nowrap;">
+          <div class="table-actions-group">
+            <a href="detalle-resolucion.html?id=${r.id}" class="action-btn action-btn--view" title="Ver detalle">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span>Ficha</span>
             </a>
             ${r.estado === 'Pendiente de archivo' ? `
-              <button onclick="abrirModalRecepcion(${r.id}, '${r.numero_rd}')" class="btn btn--xs" style="background: #fef3c7; color: #92400e; border: 1px solid #fde68a; font-weight: 700;">
-                📥 Confirmar Recepción
+              <button onclick="abrirModalRecepcion(${r.id}, '${r.numero_rd}')" class="action-btn action-btn--receive" title="Confirmar recepción física de expediente">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                <span>Confirmar Recepción</span>
               </button>
             ` : ''}
             ${(r.estado === 'Recibida en archivo' || r.estado === 'Archivado') && !r.tiene_ubicacion ? `
-              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="btn btn--xs" style="background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; font-weight: 700;">
-                📍 Registrar Ubicación
+              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="action-btn action-btn--locate" title="Registrar ubicación física en estante/caja">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                <span>Ubicar</span>
               </a>
             ` : ''}
             ${r.tiene_ubicacion ? `
-              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="btn btn-light btn--xs" title="Modificar ubicación física">
-                📍 Mover
+              <a href="ubicacion.html?rdId=${r.id}&rdNum=${encodeURIComponent(r.numero_rd)}" class="action-btn action-btn--edit" title="Modificar ubicación física">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                <span>Reubicar</span>
               </a>
             ` : ''}
           </div>
@@ -309,14 +319,16 @@
     const obs = document.getElementById("modalObsRecepcion").value.trim();
     const obsTotal = `Condición física: ${condicion}. ${obs}`;
 
-    const res = window.resolutionService.recibirEnArchivo(targetRdId, obsTotal);
-    if (res.success) {
-      showToast("Recepción física confirmada exitosamente en Archivo", "success");
-      cerrarModalRecepcion();
-      actualizarKpis();
-      renderBandeja();
-    } else {
-      showToast(res.message || "Error al registrar recepción", "error");
+    try {
+      const res = window.resolutionService.recibirEnArchivo(targetRdId, obsTotal);
+      if (res) {
+        showToast("Recepción física confirmada exitosamente en Archivo Central", "success");
+        cerrarModalRecepcion();
+        actualizarKpis();
+        renderBandeja();
+      }
+    } catch (err) {
+      showToast(err.message || "Error al registrar recepción física", "error");
     }
   }
 </script>

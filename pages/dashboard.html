@@ -463,19 +463,22 @@
             <span style="font-size: 10px; color: var(--slate-400);">Sin PDF</span>
           `}
         </td>
-        <td style="text-align: right;">
-          <div style="display: inline-flex; align-items: center; gap: 6px;">
-            <a href="detalle-resolucion.html?id=${r.id}" class="btn btn-primary btn--xs">
-              👁 Ver
+        <td style="text-align: right; white-space: nowrap;">
+          <div class="table-actions-group">
+            <a href="detalle-resolucion.html?id=${r.id}" class="action-btn action-btn--view" title="Ver ficha completa">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              <span>Ver</span>
             </a>
             ${allowEdit ? `
-              <a href="resoluciones.html?editar=${r.id}" class="btn btn-light btn--xs" title="Editar en panel">
-                ✏
+              <a href="resoluciones.html?editar=${r.id}" class="action-btn action-btn--edit" title="Editar resolución">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                <span>Editar</span>
               </a>
             ` : ''}
             ${isArchivo && !r.tiene_ubicacion ? `
-              <a href="ubicacion.html?rd=${r.id}" class="btn btn-dark btn--xs" title="Asignar Ubicación">
-                📦 Ubicar
+              <a href="ubicacion.html?rd=${r.id}" class="action-btn action-btn--locate" title="Asignar Ubicación">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                <span>Ubicar</span>
               </a>
             ` : ''}
           </div>

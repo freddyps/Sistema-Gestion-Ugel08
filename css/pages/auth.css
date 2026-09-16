@@ -1,0 +1,64 @@
+/* ============================================================
+   LOGIN (index.html)
+   ============================================================ */
+.login-page {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--slate-950) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.login-card {
+  width: 100%;
+  max-width: 448px;
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow-2xl);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.login-logo-wrap img {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.18), 0 0 0 4px #eff6ff;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+.login-sup {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  display: block;
+  margin-bottom: 4px;
+}
+.login-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  margin: 0;
+}
+.login-sub { font-size: 12px; color: var(--slate-500); margin: 4px 0 0; }
+
+.login-form { display: flex; flex-direction: column; gap: 16px; font-size: 12px; }
+.login-form .form-input,
+.login-form .form-select {
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+
+.login-footer {
+  border-top: 1px solid var(--slate-100);
+  padding-top: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--slate-400);
+}

@@ -10043,7 +10043,8 @@ const SEED_DATA = {
         "notificaciones.crear",
         "notificaciones.editar",
         "consultas.ver",
-        "historial.ver"
+        "historial.ver",
+        "reportes.ver"
       ]
     },
     {
@@ -10060,7 +10061,8 @@ const SEED_DATA = {
         "resoluciones.ver",
         "documentos.ver",
         "consultas.ver",
-        "historial.ver"
+        "historial.ver",
+        "reportes.ver"
       ]
     }
   ],

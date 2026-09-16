@@ -1,0 +1,66 @@
+/* ============================================================
+   GRIDS RESPONSIVOS GENERALES
+   ============================================================ */
+.grid-12 { display: grid; grid-template-columns: repeat(1, 1fr); gap: 24px; align-items: start; }
+@media(min-width: 1024px) { .grid-12 { grid-template-columns: repeat(12, 1fr); } }
+
+.col-5  { grid-column: span 5; }
+.col-7  { grid-column: span 7; }
+.col-4  { grid-column: span 4; }
+.col-8  { grid-column: span 8; }
+@media(max-width: 1023px) {
+  .col-5, .col-7, .col-4, .col-8 { grid-column: span 1; }
+}
+
+.grid-5col { display: grid; grid-template-columns: repeat(1, 1fr); gap: 24px; }
+@media(min-width: 1024px) { .grid-5col { grid-template-columns: 3fr 2fr; } }
+
+.grid-2col { display: grid; grid-template-columns: repeat(1, 1fr); gap: 16px; }
+@media(min-width: 768px) { .grid-2col { grid-template-columns: repeat(2, 1fr); } }
+
+.grid-3col { display: grid; grid-template-columns: repeat(1, 1fr); gap: 16px; }
+@media(min-width: 768px) { .grid-3col { grid-template-columns: repeat(2, 1fr); } }
+@media(min-width: 1024px) { .grid-3col { grid-template-columns: repeat(3, 1fr); } }
+
+
+/* ============================================================
+   UTILIDADES MENORES
+   ============================================================ */
+.flex-center  { display: flex; align-items: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.gap-2  { gap: 8px; }
+.gap-3  { gap: 12px; }
+.gap-4  { gap: 16px; }
+.gap-6  { gap: 24px; }
+.text-xs   { font-size: 12px; }
+.text-sm   { font-size: 13px; }
+.text-mono { font-family: 'Courier New', monospace; }
+.font-display { font-family: var(--font-display); }
+.shrink-0  { flex-shrink: 0; }
+.w-full    { width: 100%; }
+.text-center { text-align: center; }
+.overflow-x-auto { overflow-x: auto; }
+
+/* Alineación datos solicitante */
+.sol-meta-pair { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; font-size: 12px; margin-bottom: 16px; }
+
+/* Espaciado de formulario seccionado */
+.form-actions {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--slate-200);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ============================================================
+   @MEDIA PRINT
+   ============================================================ */
+@media print {
+  aside, header, #toastContainer,
+  button, .no-print { display: none !important; }
+  .main-content   { margin-left: 0 !important; }
+  body            { background: white !important; }
+  .print-section  { break-inside: avoid; }
+}

@@ -1,0 +1,111 @@
+/* ============================================================
+   BADGES / PILLS
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+}
+.badge-pendiente           { background: var(--amber-50);   color: var(--amber-800);   border-color: var(--amber-200); }
+.badge-documento-localizado { background: var(--blue-50);   color: #1e40af;            border-color: var(--blue-200); }
+.badge-atendida            { background: var(--emerald-50); color: var(--emerald-800); border-color: var(--emerald-200); }
+.badge-notificada          { background: var(--emerald-100);color: var(--emerald-800); border-color: var(--emerald-200); }
+.badge-observada           { background: var(--red-100);    color: var(--red-800);     border-color: var(--red-200); }
+.badge-entregada           { background: var(--blue-50);    color: #1e40af;            border-color: var(--blue-200); }
+.badge-vigente             { background: var(--emerald-100);color: var(--emerald-800); border-color: var(--emerald-200); }
+.badge-vencido             { background: var(--red-100);    color: var(--red-800);     border-color: var(--red-200); }
+
+/* Badge azul genérico */
+.badge-blue {
+  background: var(--blue-50);
+  color: #1e40af;
+  border-color: var(--blue-200);
+}
+.badge-slate {
+  background: var(--slate-100);
+  color: var(--slate-700);
+}
+.badge-amber {
+  background: var(--amber-50);
+  color: var(--amber-900);
+  border: 1px solid var(--amber-200);
+}
+.badge-emerald-solid {
+  background: var(--emerald-600);
+  color: white;
+  font-size: 10px;
+}
+.badge-amber-glow {
+  background: rgba(251,191,36,0.2);
+  color: var(--amber-300);
+  border: 1px solid rgba(251,191,36,0.3);
+  font-size: 10px;
+  padding: 2px 8px;
+}
+
+/* Dot badge (topbar) */
+.dot-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+.dot-badge--blue {
+  background: var(--blue-50);
+  color: #1d4ed8;
+  border: 1px solid var(--blue-200);
+}
+.dot-badge--amber {
+  background: var(--amber-50);
+  color: var(--amber-700);
+  border: 1px solid var(--amber-200);
+}
+.dot-badge--emerald {
+  background: var(--emerald-50);
+  color: var(--emerald-700);
+  border: 1px solid var(--emerald-200);
+}
+.dot-badge .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+.dot-badge--blue .dot   { background: var(--blue); }
+
+/* Custodia badge (caja física) */
+.badge-caja {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--amber-50);
+  color: var(--amber-900);
+  border: 1px solid var(--amber-200);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* PDF badge dark */
+.badge-pdf-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--slate-900);
+  border: 1px solid var(--slate-700);
+  color: var(--red-400);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.badge-pdf-dark:hover { background: var(--slate-800); }
